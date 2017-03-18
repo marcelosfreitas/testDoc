@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8"/>
 </head>
-<body ng-controller="UfCtrl as ctrl">
+<body>
 	<div class="container">
 		<ul id="dropdownCadastros" class="dropdown-content">
-			<li><a href="#">Unidade Federativa</a>
+			<li><a href="#/uf">Unidade Federativa</a>
 			<li><a href="#">Cidade</a>
 			<li class="divider"></li>
 			<li><a href="#">Usuário</a></li>
@@ -31,74 +31,14 @@
 			</div>
 		</nav>
 
-        <ul class="center">
-            <a class="waves-effect blue btn" ng-click="ctrl.novo()"><i class="material-icons left">note_add</i>Novo</a>
-            <a class="waves-effect green btn" ng-click="ctrl.atualizar()"><i class="material-icons left">loop</i>Atualizar</a>
-            <a class="waves-effect purple btn" ng-click="ctrl.salvar()"><i class="material-icons left">done</i>Salvar</a>
-            <a class="waves-effect red btn" ng-click="ctrl.excluir()"><i class="material-icons left">delete</i>Excluir</a>
-        </ul>
-		<form class="row col s12">
-			<div class="row">
-				<div class="input-field col s4">
-					<input id="uf_id" type="text" class="validate" ng-model="ctrl.uf.id" disabled>
-					<label class="active" for="uf_id">Código</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s4">
-					<input id="uf_sigla" type="text" class="validate" ng-model="ctrl.uf.sigla">
-					<label class="active" for="uf_sigla">Sigla</label>
-				</div>
-				<div class="input-field col s8">
-					<input id="uf_nome" type="text" class="validate" ng-model="ctrl.uf.descricao">
-					<label class="active" for="uf_nome">Nome</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s6">
-					<input id="uf_codIBGE" type="text" class="validate"  ng-model="ctrl.uf.codIBGE">
-					<label class="active" for="uf_codIBGE">Código IBGE</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s6">
-					<input id="uf_dtCriacao" type="text" class="validate" ng-model="ctrl.uf.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'">
-					<label class="active" for="uf_dtCriacao">Data Criação</label>
-				</div>
-				<div class="input-field col s6">
-					<input id="uf_dtAlteracao" type="text" class="validate" ng-model="ctrl.uf.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'">
-					<label class="active" for="uf_dtAlteracao">Data Última Alteração</label>
-				</div>
-			</div>
-		</form>
-
-		<table class="highlight">
-			<thead>
-			<tr>
-				<th data-field="id">ID</th>
-				<th data-field="sigla">Sigla</th>
-				<th data-field="nome">Nome</th>
-				<th data-field="codIbge">Cod. IBGE</th>
-			</tr>
-			</thead>
-
-			<tbody>
-			<tr ng-repeat="uftb in ctrl.ufs">
-				<td ng-bind="uftb.id"></td>
-				<td ng-bind="uftb.sigla"></td>
-				<td ng-bind="uftb.descricao"></td>
-				<td ng-bind="uftb.codIBGE"></td>
-				<td><button class="btn-floating blue" ng-click="ctrl.editar(uftb.id)"><i class="material-icons">mode_edit</i></button></td>
-				<td><button class="btn-floating red" ng-click="ctrl.excluir(uftb.id)"><i class="material-icons">delete</i></button></td>
-			</tr>
-			</tbody>
-		</table>
+        <div ng-view></div>
 	</div>
 <!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="angular/angular.min.js"></script>
 <script type="text/javascript" src="js/docrotasApp.js"></script>
+<script type="text/javascript" src="angular/angular-route.min.js"></script>
 <script>
 	$(document).ready(function(){
 		Materialize.updateTextField();

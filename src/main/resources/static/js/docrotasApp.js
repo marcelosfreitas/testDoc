@@ -1,5 +1,14 @@
-angular.module('docrotasApp', [])
-    .controller('UfCtrl', ['$http',function ($http) {
+var app = angular.module('docrotasApp', ['ngRoute']);
+
+app.config(['$routeProvider', function($routeProvider){
+	$routeProvider.when('/uf',{
+		templateUrl: 'views/cadastro_uf.html',
+		controller: 'UfCtrl',
+		controllerAs: 'ctrl'
+	})
+}])
+
+app.controller('UfCtrl', ['$http',function ($http, $rootScope) {
         var self = this;
         self.ufs = [];
         self.uf = {};
