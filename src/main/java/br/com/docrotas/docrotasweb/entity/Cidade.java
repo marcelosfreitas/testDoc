@@ -3,42 +3,45 @@ package br.com.docrotas.docrotasweb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.docrotas.docrotasweb.listerner.UfListerner;
+import br.com.docrotas.docrotasweb.listerner.CidadeListerner;
 
 @Entity
-@Table(name = "uf")
-@EntityListeners(value=UfListerner.class)
-public class Uf implements Serializable  {
-
+@Table(name = "cidade")
+@EntityListeners(value=CidadeListerner.class)
+public class Cidade implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "descricao", length = 45, nullable = false)
-	private String descricao;
 	
-	@Column(name = "sigla", length = 2, nullable = false)
-	private String sigla;
-
-	@Column(name = "cod_ibge", precision = 2)
+	@Column(name = "nome", length = 45)
+	private String nome;
+	
+	@Column(name = "cod_ibge")
 	private Long codIBGE;
-
+	
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
-
+	
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "uf_id")
+	private Uf uf;
 
 	public Long getId() {
 		return id;
@@ -48,20 +51,12 @@ public class Uf implements Serializable  {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public String getSigla() {
-		return sigla;
-	}
-
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Long getCodIBGE() {
@@ -88,6 +83,15 @@ public class Uf implements Serializable  {
 		this.dtAlteracao = dtAlteracao;
 	}
 
+	public Uf getUf() {
+		return uf;
+	}
+
+	public void setUf(Uf uf) {
+		this.uf = uf;
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -104,7 +108,7 @@ public class Uf implements Serializable  {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Uf other = (Uf) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -115,8 +119,8 @@ public class Uf implements Serializable  {
 
 	@Override
 	public String toString() {
-		return "Uf [id=" + id + ", descricao=" + descricao + ", sigla=" + sigla + ", codIBGE=" + codIBGE
-				+ ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
+		return "Cidade [id=" + id + ", nome=" + nome + ", codIBGE=" + codIBGE + ", dtCriacao=" + dtCriacao
+				+ ", dtAlteracao=" + dtAlteracao + ", uf=" + uf + "]";
 	}
-
+	
 }
