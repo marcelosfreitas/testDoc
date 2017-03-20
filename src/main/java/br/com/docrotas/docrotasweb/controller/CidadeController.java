@@ -30,6 +30,10 @@ public class CidadeController {
 		List<Cidade> cidades = new ArrayList<>();
 		if(id != null){
 			cidades.add(cidadeRepository.findById(id));
+			
+			for (Cidade cidade : cidades) {
+				cidade.getUf();
+			}
 		}else if(nome != null){
 			cidades = cidadeRepository.findByNomeContaining(nome);
 		}else if(ufId != null){
