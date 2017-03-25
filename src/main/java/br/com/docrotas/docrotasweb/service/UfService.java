@@ -3,8 +3,6 @@ package br.com.docrotas.docrotasweb.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.com.docrotas.docrotasweb.entity.Uf;
-import br.com.docrotas.docrotasweb.repository.RepositoryException;
 import br.com.docrotas.docrotasweb.repository.UfRepository;
 
 @Component
