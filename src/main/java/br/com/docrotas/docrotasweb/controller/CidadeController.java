@@ -1,8 +1,5 @@
 package br.com.docrotas.docrotasweb.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,29 +22,28 @@ public class CidadeController {
 	private CidadeRepository cidadeRepository;
 	
 	@GetMapping("/cidade")
-	public List<Cidade> buscarTodos(@RequestParam(value = "id", required = false)Long id,
+	public Page<Cidade> buscarTodos(@RequestParam(value = "pagina", required = true)int pagina,
+									@RequestParam(value = "qtd", required = true)int qtd,
+									@RequestParam(value = "id", required = false)Long id,
 									@RequestParam(value = "nome", required = false)String nome,
 									@RequestParam(value = "ufId", required = false)Long ufId,
 									@RequestParam(value = "codibge", required = false)Long codibge) throws Exception{
+		Pageable pageable = new PageRequest(pagina, qtd); 
 		
-		List<Cidade> cidades = new ArrayList<>();
+		Page<Cidade> pageCidades;
 		if(id != null){
-			cidades.add(cidadeRepository.findById(id));
-			
-			for (Cidade cidade : cidades) {
-				cidade.getUf();
-			}
+			pageCidades = cidadeRepository.findById(id, pageable);
 		}else if(nome != null){
-			cidades = cidadeRepository.findByNomeContaining(nome);
+			pageCidades = cidadeRepository.findByNomeContaining(nome, pageable);
 		}else if(ufId != null){
-			cidades = cidadeRepository.findByUf(ufId);
+			pageCidades = cidadeRepository.findByUfId(ufId, pageable);
 		}else if(codibge != null){
-			cidades.add(cidadeRepository.findByCodIBGE(codibge));
+			pageCidades = cidadeRepository.findByCodIBGE(codibge, pageable);
 		}else{
-			cidades = cidadeRepository.findAll();
+			pageCidades = cidadeRepository.findAll(pageable);
 		}
 		
-		return cidades;
+		return pageCidades;
 	}
 	
 	@PostMapping(value = "/cidade")
