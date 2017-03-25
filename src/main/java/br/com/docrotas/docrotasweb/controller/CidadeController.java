@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,4 +60,34 @@ public class CidadeController {
 		cidadeRepository.delete(id);
 	}	
 	
+	@GetMapping("/cidade/paginada")
+	public List<Cidade> buscaPaginada(@RequestParam(value = "pagina", required = true)int pagina,
+			@RequestParam(value = "qtd", required = true)int qtd){
+		Pageable pageable = new PageRequest(pagina, qtd);
+		
+		Page<Cidade> pageCidades = cidadeRepository.findAll(pageable);
+		
+		System.out.println("TOTAL DE PAGINAS: " + pageCidades.getTotalPages());
+		System.out.println("TOTAL DE ELEMENTOS: " + pageCidades.getTotalElements());
+
+		return cidadeRepository.findAll(pageable).getContent();
+	}
+	
+	@GetMapping("/cidade/paginada/nome")
+	public Page<Cidade> buscaPaginada(	@RequestParam(value = "pagina", required = true) int pagina,
+										@RequestParam(value = "qtd", required = true) int qtd,
+										@RequestParam(value = "nome", required = true) String nome){
+		Pageable pageable = new PageRequest(pagina, qtd);
+		
+		Page<Cidade> pageCidades = cidadeRepository.findByNomeContaining(nome, pageable);
+		
+		System.out.println("TOTAL DE PAGINAS: " + pageCidades.getTotalPages());
+		System.out.println("TOTAL DE ELEMENTOS: " + pageCidades.getTotalElements());
+		
+		List<Cidade> cidades = pageCidades.getContent();
+
+		return pageCidades;
+	}
+	
 }
+
