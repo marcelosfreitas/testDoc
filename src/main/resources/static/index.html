@@ -4,33 +4,43 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen,projection">
 	<link type="text/css" rel="stylesheet" href="css/docrotas-style.css" media="screen,projection">
 </head>
 <body>
-	<div id="main">
-			<ul id="slide-out" class="side-nav fixed blue darken-1">
-				<li><a href="#/uf" class="grey-text text-lighten-5">Unidade Federativa</a></li>
-      			<li><a href="#/cidade" class="grey-text text-lighten-5">Cidade</a></li>
-			</ul>
-			<div class="container">
-				<div ng-view></div>
-			</div>
-	</div>
-
+	<nav class="navbar navbar-default sidebar" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>      
+    </div>
+    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Endereços <span class="caret"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="#/uf">Unidade Federativa</a></li>
+			<li class="divider"></li>
+            <li><a href="#/cidade">Cidade</a></li>
+          </ul>
+        </li>       
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+	<div ng-view></div>
+</div>
 	
-	
-<!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="angular/angular.min.js"></script>
 <script type="text/javascript" src="js/docrotasApp.js"></script>
 <script type="text/javascript" src="angular/angular-route.min.js"></script>
-<script>
-	$(document).ready(function(){
-		// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-		$('.modal').modal();
-	});
-</script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -55,35 +55,6 @@ public class CidadeController {
 	public void excluir(@PathVariable Long id) {
 		cidadeRepository.delete(id);
 	}	
-	
-	@GetMapping("/cidade/paginada")
-	public List<Cidade> buscaPaginada(@RequestParam(value = "pagina", required = true)int pagina,
-			@RequestParam(value = "qtd", required = true)int qtd){
-		Pageable pageable = new PageRequest(pagina, qtd);
 		
-		Page<Cidade> pageCidades = cidadeRepository.findAll(pageable);
-		
-		System.out.println("TOTAL DE PAGINAS: " + pageCidades.getTotalPages());
-		System.out.println("TOTAL DE ELEMENTOS: " + pageCidades.getTotalElements());
-
-		return cidadeRepository.findAll(pageable).getContent();
-	}
-	
-	@GetMapping("/cidade/paginada/nome")
-	public Page<Cidade> buscaPaginada(	@RequestParam(value = "pagina", required = true) int pagina,
-										@RequestParam(value = "qtd", required = true) int qtd,
-										@RequestParam(value = "nome", required = true) String nome){
-		Pageable pageable = new PageRequest(pagina, qtd);
-		
-		Page<Cidade> pageCidades = cidadeRepository.findByNomeContaining(nome, pageable);
-		
-		System.out.println("TOTAL DE PAGINAS: " + pageCidades.getTotalPages());
-		System.out.println("TOTAL DE ELEMENTOS: " + pageCidades.getTotalElements());
-		
-		List<Cidade> cidades = pageCidades.getContent();
-
-		return pageCidades;
-	}
-	
 }
 
