@@ -2,44 +2,64 @@
 
 <div class="row">
 	<div align="center">
-		<a ng-click="ctrl.novo()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-	  	<a ng-click="ctrl.atualizar()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
-	  	<a ng-click="ctrl.salvar()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-	  	<a ng-click="ctrl.excluir(ctrl.uf.id)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-	  	<a ng-click=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-  		<a ng-click=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
-		<a ng-click=""><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+		<a ng-click="ctrl.novo()"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></a>
+	  	<a ng-click="ctrl.atualizar()"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></a>
+	  	<a ng-click="ctrl.salvar()"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></a>
+	  	<a ng-click="ctrl.excluir(ctrl.uf.id)"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></a>
+	  	<a ng-click=""><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></a>
+  		<a ng-click=""><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></a>
+		<a ng-click=""><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></a>
   </div>
 </div>
 <form>
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="uf_id">ID</label>
-			<input type="text" class="form-control" id="uf_id">
+			<input type="text" class="form-control" id="uf_id" ng-model="ctrl.uf.id">
 		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="uf_descricao">Nome</label>
-			<input type="text" class="form-control" id="uf_descricao">
+			<input type="text" class="form-control" id="uf_descricao" ng-model="ctrl.uf.descricao">
 		</div>
 		<div class="form-group col-md-4">
 			<label for="uf_sigla">Sigla</label>
-			<input type="text" class="form-control" id="uf_sigla">
+			<input type="text" class="form-control" id="uf_sigla" ng-model="ctrl.uf.sigla">
 		</div>
 		<div class="form-group col-md-4">
 			<label for="uf_ibge">Cód. IBGE</label>
-			<input type="text" class="form-control" id="uf_ibge">
+			<input type="text" class="form-control" id="uf_ibge" ng-model="ctrl.uf.codIBGE">
 		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="uf_dt_criacao">Data criação</label>
-			<input type="text" class="form-control" id="uf_dt_criacao">
+			<input type="text" class="form-control" id="uf_dt_criacao" ng-model="ctrl.uf.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'">
 		</div>
 		<div class="form-group col-md-4">
 			<label for="uf_dt_alteracao">Data alteração</label>
-			<input type="text" class="form-control" id="uf_dt_alteracao">
+			<input type="text" class="form-control" id="uf_dt_alteracao" ng-model="ctrl.uf.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'">
 		</div>
 	</div>
 </form>
+
+<table class="table table-hover">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Nome</strong></td>
+	  <td><strong>Sigla</strong></td>
+	  <td><strong>Cód. IBGE</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="uftb in ctrl.ufs">
+	  <td ng-bind="uftb.id"></td>
+	  <td ng-bind="uftb.descricao"></td>
+	  <td ng-bind="uftb.sigla"></td>
+	  <td ng-bind="uftb.codIBGE"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.buscarPorId(uftb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(uftb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>

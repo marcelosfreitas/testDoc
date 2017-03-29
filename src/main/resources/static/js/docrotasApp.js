@@ -19,18 +19,18 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope) {
     self.filtro = {};
 
     self.buscarTodos = function () {
-        return $http.get('uf/').then(
+        return $http.get('uf?pagina=0&qtd=20').then(
             function (response) {
-                self.ufs = response.data;
+                self.ufs = response.data.content;
             }, function (errResponse) {
                 console.error('Erro');
             });
     };
 
     self.buscarPorId = function (id) {
-        return $http.get('uf?id=' + id).then(
+        return $http.get('uf?id=' + id + '&pagina=0&qtd=20').then(
             function (response) {
-                self.uf = response.data[0];
+                self.uf = response.data.content[0];
             }, function(errReponse) {
                 console.error('Erro');
             });
