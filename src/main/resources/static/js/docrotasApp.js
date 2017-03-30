@@ -1,4 +1,4 @@
-var app = angular.module('docrotasApp', ['ngRoute', 'ui.bootstrap','ngAnimate', 'ngSanitize']);
+var app = angular.module('docrotasApp', ['ngRoute', 'ui.bootstrap.tpls', 'ui.bootstrap.pagination','ngAnimate', 'ngSanitize']);
 
 app.config(['$routeProvider', function($routeProvider){
 	$routeProvider.when('/uf',{
@@ -27,7 +27,11 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
     self.numPaginas = 1;
 
     self.pageChanged = function() {
-         $log.log('Page changed to: ' + self.currentPage);
+         self.buscarTodos(paginaAtual);
+    };
+
+    self.setPage = function (pageNo) {
+       self.paginaAtual = pageNo;
     };
 
     self.habilitarModoGrade = function () {
@@ -40,8 +44,8 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
         self.modoFormulario = true;
     }
 
-    self.buscarTodos = function () {
-        var pagina = self.paginaAtual - 1;
+    self.buscarTodos = function (pageNo) {
+        var pagina = pageNo - 1;
         return $http.get('uf?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
             function (response) {
                 self.ufs = response.data.content;
@@ -70,7 +74,7 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
     self.salvar = function () {
         $http.post('uf/', self.uf)
             .then(function sucesso (response) {
-                self.buscarTodos();
+                self.buscarTodos(self.paginaAtual);
                 self.novo();
             }, function(response) {
                 console.log(response);
@@ -93,7 +97,7 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
                 console.error(errResponse);
             })
     };
-    self.buscarTodos();
+    self.buscarTodos(1);
 }]);
 
 app.controller('CidadeCtrl', ['$http', function ($http, $rootScope) {
