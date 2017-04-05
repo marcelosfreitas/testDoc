@@ -1,4 +1,4 @@
-var app = angular.module('docrotasApp', ['ngRoute', 'ui.bootstrap.tpls', 'ui.bootstrap.pagination','ngAnimate', 'ngSanitize']);
+var app = angular.module('docrotasApp', ['ngRoute', 'ui.bootstrap','ngAnimate', 'ngSanitize']);
 
 app.config(['$routeProvider', function($routeProvider){
 	$routeProvider.when('/uf',{
@@ -12,7 +12,7 @@ app.config(['$routeProvider', function($routeProvider){
     })
 }])
 
-app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
+app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log, $uibModal) {
     var self = this;
     self.ufs = [];
     self.uf = {};
@@ -20,6 +20,26 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
     var qtd = 15;
     self.modoGrade = true;
     self.modoFormulario = false;
+    self.items = [];
+
+    self.openModalFiltro = function () {
+        var paramElem = undefined;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'modalFiltroUf.html',
+            controller: 'ModalFiltroUfCtrl',
+            controllerAs: 'self',
+            size: 'lg',
+            appendTo: parentElem,
+            resolve: {
+                items: function () {
+                    return self.items;
+                }
+            }
+        })
+    }
 
     self.tamanhoMax = 15;
     self.totalItens = 1;
@@ -100,7 +120,7 @@ app.controller('UfCtrl', ['$http',function ($http, $rootScope, $log) {
     self.buscarTodos(1);
 }]);
 
-app.controller('CidadeCtrl', ['$http', function ($http, $rootScope) {
+app.controller('CidadeCtrl', ['$http', 'ui.grid','ui.grid.pagination', function ($http, $rootScope) {
     var self = this;
     self.cidades = [];
     self.cidade = {};
