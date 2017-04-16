@@ -47,8 +47,8 @@ public class CidadeController {
 	}
 	
 	@PostMapping(value = "/cidade")
-	public Cidade salvar(@RequestBody Cidade uf) {
-		return cidadeRepository.save(uf);
+	public Cidade salvar(@RequestBody Cidade cidade) {
+		return cidadeRepository.save(cidade);
 	}
 	
 	@DeleteMapping("/cidade/{id}")
