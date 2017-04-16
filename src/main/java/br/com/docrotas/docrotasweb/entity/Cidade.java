@@ -3,7 +3,6 @@ package br.com.docrotas.docrotasweb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -39,7 +38,7 @@ public class Cidade implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "uf_id")
 	private Uf uf;
 

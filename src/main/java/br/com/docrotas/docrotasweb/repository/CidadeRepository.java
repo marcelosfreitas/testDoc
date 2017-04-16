@@ -11,7 +11,6 @@ import br.com.docrotas.docrotasweb.entity.Cidade;
 @Repository
 public interface CidadeRepository extends JpaRepository<Cidade, Long>, JpaSpecificationExecutor<Cidade>{
 	
-	
 	public Page<Cidade> findById(Long id, Pageable pageable);
 	
 	public Page<Cidade> findByCodIBGE(Long codIBGE, Pageable pageable);
