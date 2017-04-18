@@ -1,82 +1,70 @@
+<h3>Cadastro Cidade</h3>
+<div class="modal-demo">
 <div class="row">
-	<h5>Cadastro de Cidade</h5>
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.cidade.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+	  <!--	<button ng-click="ctrl.open()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
 </div>
-
-	
-<div class="row center">
-	<a class="waves-effect blue btn" ng-click="ctrl.novo()"><i class="material-icons">note_add</i></a>
-	<a class="waves-effect green btn" ng-click="ctrl.atualizar()"><i class="material-icons">loop</i></a>
-	<a class="waves-effect purple btn" ng-click="ctrl.salvar()"><i class="material-icons">done</i></a>
-	<a class="waves-effect red btn" ng-click="ctrl.excluir(cidade.id)"><i class="material-icons">delete</i></a>
-	<a class="waves-effect orange darken-2 btn" ng-click=""><i class="material-icons">view_column</i></a>
-	<a class="waves-effect brown darken-1 btn" ng-click=""><i class="material-icons">view_headline</i></a>
-	<a class="waves-effect yellow btn" href="#modalUF"><i class="material-icons black-text">search</i></a>
-</div>
-
-<div id="formulario">
-	<form class="row col s12">
-		<div class="row">
-			<div class="input-field col s4">
-				<input id="cidade_id" type="text" class="validate" ng-model="ctrl.cidade.id" disabled>
-				<label class="active" for="cidade_id">Código</label>
-			</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_id">ID</label>
+			<input type="text" class="form-control" id="cidade_id" ng-model="ctrl.cidade.id" ng-disabled="true">
 		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="cidade_nome" type="text" class="validate" ng-model="ctrl.cidade.nome">
-				<label class="active" for="cidade_nome">Nome</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s6">
-				<input id="cidade_codIBGE" type="text" class="validate"  ng-model="ctrl.cidade.codIBGE">
-				<label class="active" for="cidade_codIBGE">Código IBGE</label>
-			</div>
-			<div class="input-field col s6">
-				<input id="cidade_uf" type="text" class="validate"  ng-model="ctrl.cidade.uf.descricao">
-				<label class="active" for="cidade_uf">Unidade Federativa</label>
-			</div>
-		</div>
-		<!--<div class="row">
-			<div class="input-field col s6">
-				<input id="cidade_dtCriacao" type="text" class="validate" ng-model="ctrl.cidade.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'">
-				<label class="active" for="cidade_dtCriacao">Data Criação</label>
-			</div>
-			<div class="input-field col s6">
-				<input id="cidade_dtAlteracao" type="text" class="validate" ng-model="ctrl.cidade.dtAlteracao  	:'dd/MM/yyyy HH:mm:ss'">
-				<label class="active" for="cidade_dtAlteracao">Data Última Alteração</label>
-			</div>
-		</div>-->
-	</form>
-</div>
-
-<div id="grade">
-	<table class="highlight">
-		<thead>
-		<tr>
-			<th data-field="id">ID</th>
-			<th data-field="sigla">Sigla</th>
-			<th data-field="nome">Nome</th>
-			<th data-field="codIbge">Cod. IBGE</th>
-		</tr>
-		</thead>
-
-		<tbody>
-		<tr ng-repeat="cidadeTb in ctrl.cidades">
-			<td ng-bind="cidadeTb.id"></td>
-			<td ng-bind="cidadeTb.nome"></td>
-			<td><button class="btn-floating blue" ng-click="ctrl.buscarPorId(cidadeTb.id)"><i class="material-icons">mode_edit</i></button></td>
-			<td><button class="btn-floating red" ng-click="ctrl.excluir(cidadeTb.id)"><i class="material-icons">delete</i></button></td>
-		</tr>
-		</tbody>
-	</table>
-</div>
-<div id="modalUF" class="modal">
-	<div class="modal-content">
-		<h4>Buscar UF</h4>
-		
 	</div>
-	<div class="modal-footer">
-		<button class="waves-effect orange btn"><i class="material-icons left">search</i>Filtrar</button>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_nome">Nome</label>
+			<input type="text" class="form-control" id="cidade_nome" ng-model="ctrl.cidade.nome">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_uf">Unidade Federativa</label>
+			<input type="text" class="form-control" id="cidade_uf" ng-model="ctrl.cidade.uf.descricao">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_ibge">Cód. IBGE</label>
+			<input type="text" class="form-control" id="cidade_ibge" ng-model="ctrl.cidade.codIBGE">
+		</div>
 	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_dt_criacao">Data criação</label>
+			<input type="text" class="form-control" id="cidade_dt_criacao" ng-model="ctrl.cidade.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="cidade_dt_alteracao" ng-model="ctrl.cidade.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+	</div>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Nome</strong></td>
+	  <td><strong>Unidade Federativa</strong></td>
+	  <td><strong>Cód. IBGE</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="cidadetb in ctrl.cidades">
+	  <td ng-bind="cidadetb.id"></td>
+	  <td ng-bind="cidadetb.nome"></td>
+	  <td ng-bind="cidadetb.uf.descricao"></td>
+	  <td ng-bind="cidadetb.codIBGE"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(cidadetb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(cidadetb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
 </div>
