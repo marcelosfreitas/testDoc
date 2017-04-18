@@ -1,0 +1,67 @@
+<h3>Cadastro Usuário</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.uf.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+	  	<!--<button ng-click="ctrl.openModalFiltro()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="usuario_id">ID</label>
+			<input type="text" class="form-control" id="usuario_id" ng-model="ctrl.usuario.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="usuario_login">Login</label>
+			<input type="text" class="form-control" id="usuario_login" ng-model="ctrl.usuario.login">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="usuario_senha">Senha</label>
+			<input type="password" class="form-control" id="usuario_senha" ng-model="ctrl.usuario.senha">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="usuario_email">E-mail</label>
+			<input type="text" class="form-control" id="usuario_email" ng-model="ctrl.usuario.email">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="usuario_dt_criacao">Data criação</label>
+			<input type="text" class="form-control" id="usuario_dt_criacao" ng-model="ctrl.usuario.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="usuario_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="usuario_dt_alteracao" ng-model="ctrl.usuario.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+	</div>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Login</strong></td>
+	  <td><strong>E-mail</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="usuariotb in ctrl.usuarios">
+	  <td ng-bind="usuariotb.id"></td>
+	  <td ng-bind="usuariotb.login"></td>
+	  <td ng-bind="usuariotb.email"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(usuariotb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(usuariotb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>

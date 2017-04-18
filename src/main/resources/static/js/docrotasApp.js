@@ -9,5 +9,9 @@ app.config(['$routeProvider', function($routeProvider){
         templateUrl: 'views/cadastro_cidade.html',
         controller: 'CidadeCtrl',
         controllerAs: 'ctrl'
+    }).when('/usuario',{
+        templateUrl: 'views/cadastro_usuario.html',
+        controller: 'UsuarioCtrl',
+        controllerAs: 'ctrl'
     })
 }]);
