@@ -1,62 +1,75 @@
-<ul class="center">
-            <a class="waves-effect blue btn" ng-click="ctrl.novo()"><i class="material-icons left">note_add</i>Novo</a>
-            <a class="waves-effect green btn" ng-click="ctrl.atualizar()"><i class="material-icons left">loop</i>Atualizar</a>
-            <a class="waves-effect purple btn" ng-click="ctrl.salvar()"><i class="material-icons left">done</i>Salvar</a>
-            <a class="waves-effect red btn" ng-click="ctrl.excluir(ctrl.uf.id)"><i class="material-icons left">delete</i>Excluir</a>
-        </ul>
-		<form class="row col s12">
-			<div class="row">
-				<div class="input-field col s4">
-					<input id="uf_id" type="text" class="validate" ng-model="ctrl.uf.id" disabled>
-					<label class="active" for="uf_id">Código</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s4">
-					<input id="uf_sigla" type="text" class="validate" ng-model="ctrl.uf.sigla">
-					<label class="active" for="uf_sigla">Sigla</label>
-				</div>
-				<div class="input-field col s8">
-					<input id="uf_nome" type="text" class="validate" ng-model="ctrl.uf.descricao">
-					<label class="active" for="uf_nome">Nome</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s6">
-					<input id="uf_codIBGE" type="text" class="validate"  ng-model="ctrl.uf.codIBGE">
-					<label class="active" for="uf_codIBGE">Código IBGE</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s6">
-					<input id="uf_dtCriacao" type="text" class="validate" ng-model="ctrl.uf.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'">
-					<label class="active" for="uf_dtCriacao">Data Criação</label>
-				</div>
-				<div class="input-field col s6">
-					<input id="uf_dtAlteracao" type="text" class="validate" ng-model="ctrl.uf.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'">
-					<label class="active" for="uf_dtAlteracao">Data Última Alteração</label>
-				</div>
-			</div>
-		</form>
+<h3>Cadastro Unidade Federativa</h3>
 
-		<table class="highlight">
-			<thead>
-			<tr>
-				<th data-field="id">ID</th>
-				<th data-field="sigla">Sigla</th>
-				<th data-field="nome">Nome</th>
-				<th data-field="codIbge">Cod. IBGE</th>
-			</tr>
-			</thead>
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.uf.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+	  	<!--<button ng-click="ctrl.openModalFiltro()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="uf_id">ID</label>
+			<input type="text" class="form-control" id="uf_id" ng-model="ctrl.uf.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="uf_descricao">Nome</label>
+			<input type="text" class="form-control" id="uf_descricao" ng-model="ctrl.uf.descricao">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="uf_sigla">Sigla</label>
+			<input type="text" class="form-control" id="uf_sigla" ng-model="ctrl.uf.sigla">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="uf_ibge">Cód. IBGE</label>
+			<input type="text" class="form-control" id="uf_ibge" ng-model="ctrl.uf.codIBGE">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="uf_dt_criacao">Data criação</label>
+			<input type="text" class="form-control" id="uf_dt_criacao" ng-model="ctrl.uf.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="uf_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="uf_dt_alteracao" ng-model="ctrl.uf.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+	</div>
+</form>
 
-			<tbody>
-			<tr ng-repeat="uftb in ctrl.ufs">
-				<td ng-bind="uftb.id"></td>
-				<td ng-bind="uftb.sigla"></td>
-				<td ng-bind="uftb.descricao"></td>
-				<td ng-bind="uftb.codIBGE"></td>
-				<td><button class="btn-floating blue" ng-click="ctrl.editar(uftb.id)"><i class="material-icons">mode_edit</i></button></td>
-				<td><button class="btn-floating red" ng-click="ctrl.excluir(uftb.id)"><i class="material-icons">delete</i></button></td>
-			</tr>
-			</tbody>
-		</table>
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Nome</strong></td>
+	  <td><strong>Sigla</strong></td>
+	  <td><strong>Cód. IBGE</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="uftb in ctrl.ufs">
+	  <td ng-bind="uftb.id"></td>
+	  <td ng-bind="uftb.descricao"></td>
+	  <td ng-bind="uftb.sigla"></td>
+	  <td ng-bind="uftb.codIBGE"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(uftb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(uftb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+
+<script type="text/ng-template" id="modalFiltroUf.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Teste</h3>
+	</div>
+</script>

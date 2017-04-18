@@ -1,0 +1,70 @@
+<h3>Cadastro Cidade</h3>
+<div class="modal-demo">
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.cidade.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+	  <!--	<button ng-click="ctrl.open()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_id">ID</label>
+			<input type="text" class="form-control" id="cidade_id" ng-model="ctrl.cidade.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_nome">Nome</label>
+			<input type="text" class="form-control" id="cidade_nome" ng-model="ctrl.cidade.nome">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_uf">Unidade Federativa</label>
+			<input type="text" class="form-control" id="cidade_uf" ng-model="ctrl.cidade.uf.descricao">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_ibge">Cód. IBGE</label>
+			<input type="text" class="form-control" id="cidade_ibge" ng-model="ctrl.cidade.codIBGE">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cidade_dt_criacao">Data criação</label>
+			<input type="text" class="form-control" id="cidade_dt_criacao" ng-model="ctrl.cidade.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cidade_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="cidade_dt_alteracao" ng-model="ctrl.cidade.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+	</div>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Nome</strong></td>
+	  <td><strong>Unidade Federativa</strong></td>
+	  <td><strong>Cód. IBGE</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="cidadetb in ctrl.cidades">
+	  <td ng-bind="cidadetb.id"></td>
+	  <td ng-bind="cidadetb.nome"></td>
+	  <td ng-bind="cidadetb.uf.descricao"></td>
+	  <td ng-bind="cidadetb.codIBGE"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(cidadetb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(cidadetb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+</div>

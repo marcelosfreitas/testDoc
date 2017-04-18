@@ -55,5 +55,6 @@ public class CidadeController {
 	public void excluir(@PathVariable Long id) {
 		cidadeRepository.delete(id);
 	}	
-	
+		
 }
+
