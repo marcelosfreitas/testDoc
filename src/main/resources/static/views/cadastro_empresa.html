@@ -1,0 +1,105 @@
+<h3>Cadastro Empresa</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.empresa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+	  	<!--<button ng-click="ctrl.openModalFiltro()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa_id">ID</label>
+			<input type="text" class="form-control" id="empresa_id" ng-model="ctrl.empresa.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_razao">Razão Social</label>
+			<input type="text" class="form-control" id="empresa_razao" ng-model="ctrl.empresa.razao">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_cnpj">CNPJ</label>
+			<input type="text" class="form-control" id="empresa_cnpj" ng-model="ctrl.empresa.cnpj">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_fantasia">Fantasia</label>
+			<input type="text" class="form-control" id="empresa_fantasia" ng-model="ctrl.empresa.fantasia">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_ie">Inscrição Estadual</label>
+			<input type="text" class="form-control" id="empresa_ie" ng-model="ctrl.empresa.ie">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_logradouro">Logradouro</label>
+			<input type="text" class="form-control" id="empresa_logradouro" ng-model="ctrl.empresa.logradouro">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_nro">Número</label>
+			<input type="text" class="form-control" id="empresa_nro" ng-model="ctrl.empresa.nro">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa_complemento">Complemento</label>
+			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.complemento">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_bairro">Bairro</label>
+			<input type="text" class="form-control" id="empresa_bairro" ng-model="ctrl.empresa.bairro">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_cep">CEP</label>
+			<input type="text" class="form-control" id="empresa_cep" ng-model="ctrl.empresa.cep">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa.cidade">Cidade</label>
+			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_dt_criacao">Data criação</label>
+			<input type="text" class="form-control" id="empresa_dt_criacao" ng-model="ctrl.empresa.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="empresa_dt_alteracao" ng-model="ctrl.empresa.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+		</div>
+	</div>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Razão</strong></td>
+	  <td><strong>CNPJ</strong></td>
+	  <td><strong>Inscrição Estadual</strong></td>
+	  <td><strong>Cidade</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="empresatb in ctrl.empresas">
+	  <td ng-bind="empresatb.id"></td>
+	  <td ng-bind="empresatb.razao"></td>
+	  <td ng-bind="empresatb.cnpj"></td>
+	  <td ng-bind="empresatb.ie"></td>
+	  <td ng-bind="empresatb.cidade.nome"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(empresatb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(empresatb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>

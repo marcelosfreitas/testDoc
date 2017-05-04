@@ -9,13 +9,13 @@ import br.com.docrotas.docrotasweb.entity.Empresa;
 
 public class EmpresaListerner {
 	@PrePersist
-	public void prePersistUfEvent(Empresa empresa) {
+	public void prePersistEmpresaEvent(Empresa empresa) {
 		inseriDtCriacao(empresa);
 		atualizaDtAlteracao(empresa);
 	}
 	
 	@PreUpdate
-	public void preUpdateUfEvent(Empresa empresa){
+	public void preUpdateEmpresaEvent(Empresa empresa){
 		atualizaDtAlteracao(empresa);
 	}
 	
