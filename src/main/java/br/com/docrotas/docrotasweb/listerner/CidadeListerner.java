@@ -10,7 +10,7 @@ import br.com.docrotas.docrotasweb.entity.Cidade;
 public class CidadeListerner {
 
 	@PrePersist
-	public void prePersistCidadEvent(Cidade cidade) {
+	public void prePersistCidadeEvent(Cidade cidade) {
 		inseriDtCriacao(cidade);
 		atualizaDtAlteracao(cidade);
 	}
