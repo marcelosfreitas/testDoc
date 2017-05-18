@@ -1,3 +1,5 @@
+<div class="modal-demo">
+
 <h3>Cadastro Empresa</h3>
 
 <div class="row">
@@ -6,7 +8,7 @@
 	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.excluir(ctrl.empresa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
-	  	<!--<button ng-click="ctrl.openModalFiltro()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
+	  	<button ng-click="ctrl.abrirPopUp()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
   		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
 		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
   </div>
@@ -102,4 +104,22 @@
 <div align="center">
 	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
 		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<ul>
+			<li ng-repeat="item in modalCtrl.items">
+				<a href="#" ng-click="$event.preventDefault(); modalCtrl.selected.item = item">{{ item }}</a>
+			</li>
+		</ul>
+		Selected: <b>{{ modalCtrl.selected.item }}</b>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="modalCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="modalCtrl.cancel()">Cancel</button>
+	</div>
+</script>
 </div>

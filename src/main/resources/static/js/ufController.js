@@ -13,6 +13,13 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
     self.paginaAtual = 1;
     self.numPaginas = 1;
 
+    self.valuationDate = new Date();
+    self.valuationDatePickerIsOpen = false;
+  
+    self.valuationDatePickerOpen = function () {
+        this.valuationDatePickerIsOpen = true;
+    };
+
     self.pageChanged = function() {
          self.buscarTodos(self.paginaAtual);
     };
