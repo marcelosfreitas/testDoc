@@ -36,38 +36,6 @@
 <div class="container">
 	<div ng-view></div>
 </div>
-<div ng-controller="ModalDemoCtrl as ctrl" class="modal-demo">
-    <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <ul>
-                <li ng-repeat="item in modalCtrl.items">
-                    <a href="#" ng-click="$event.preventDefault(); modalCtrl.selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ modalCtrl.selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="modalCtrl.ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="modalCtrl.cancel()">Cancel</button>
-        </div>
-    </script>
-    <script type="text/ng-template" id="stackedModal.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title-{{name}}">The {{name}} modal!</h3>
-        </div>
-        <div class="modal-body" id="modal-body-{{name}}">
-            Having multiple modals open at once is probably bad UX but it's technically possible.
-        </div>
-    </script>
-
-    <button type="button" class="btn btn-default" ng-click="ctrl.open()">Open me!</button>
-    <div ng-show="ctrl.selected">Selection from a modal: {{ ctrl.selected }}</div>
-    <div class="modal-parent">
-    </div>
-</div>
 
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="angular/angular.min.js"></script>

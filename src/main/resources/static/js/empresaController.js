@@ -1,4 +1,4 @@
-angular.module('docrotasApp').controller('EmpresaCtrl', ['$http', '$uibModal',function ($http, $rootScope, $log, $uibModal, $document) {
+angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootScope, $log, $uibModal, $document) {
     var self = this;
     self.empresas = [];
     self.empresa = {};
@@ -7,6 +7,7 @@ angular.module('docrotasApp').controller('EmpresaCtrl', ['$http', '$uibModal',fu
     self.modoGrade = true;
     self.modoFormulario = false;
     self.items = [];
+    self.busca = "";
 
     self.tamanhoMax = 15;
     self.totalItens = 1;
@@ -97,9 +98,9 @@ angular.module('docrotasApp').controller('EmpresaCtrl', ['$http', '$uibModal',fu
         animation: self.animationsEnabled,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
-        templateUrl: 'myModalContent.html',
-        controller: 'ModalInstanceCtrl',
-        controllerAs: 'modalCtrl',
+        templateUrl: 'popUpPesquisaEmpresa.html',
+        controller: 'PesquisaEmpresaCtrl',
+        controllerAs: 'pesquisaEmpresaCtrl',
         size: 'lg',
         appendTo: parentElem,
         resolve: {
@@ -111,15 +112,15 @@ angular.module('docrotasApp').controller('EmpresaCtrl', ['$http', '$uibModal',fu
 
         modalInstance.result.then(function (selectedItem) {
         self.selected = selectedItem;
-        }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
+    }, function () {
+        
         });
     };
 
     self.openComponentModal = function () {
         var modalInstance = $uibModal.open({
         animation: self.animationsEnabled,
-        component: 'modalComponent',
+        component: 'popUpPesquisaEmpresa',
         resolve: {
             items: function () {
             return self.items;
@@ -133,9 +134,9 @@ angular.module('docrotasApp').controller('EmpresaCtrl', ['$http', '$uibModal',fu
         $log.info('modal-component dismissed at: ' + new Date());
         });
     };
-}]);
+});
 
-angular.module('docrotasApp').controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibModalInstance, items) {
   var self = this;
   self.items = items;
   self.selected = {
@@ -153,8 +154,8 @@ angular.module('docrotasApp').controller('ModalInstanceCtrl', function ($uibModa
 
 // Please note that the close and dismiss bindings are from $uibModalInstance.
 
-angular.module('docrotasApp').component('modalComponent', {
-  templateUrl: 'views/myModalContent.html',
+angular.module('docrotasApp').component('popUpPesquisaEmpresa', {
+  templateUrl: 'views/popUpPesquisaEmpresa.html',
   bindings: {
     resolve: '<',
     close: '&',
@@ -179,3 +180,4 @@ angular.module('docrotasApp').component('modalComponent', {
     };
   }
 });
+

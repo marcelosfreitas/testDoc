@@ -8,7 +8,6 @@
 	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.excluir(ctrl.empresa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
-	  	<button ng-click="ctrl.abrirPopUp()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
   		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
 		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
   </div>
@@ -69,15 +68,30 @@
 			<label for="empresa.cidade">Cidade</label>
 			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
 		</div>
-		<div class="form-group col-md-4">
+		<!--<div class="form-group col-md-4">
 			<label for="empresa_dt_criacao">Data criação</label>
 			<input type="text" class="form-control" id="empresa_dt_criacao" ng-model="ctrl.empresa.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
 		</div>
 		<div class="form-group col-md-4">
 			<label for="empresa_dt_alteracao">Data alteração</label>
 			<input type="text" class="form-control" id="empresa_dt_alteracao" ng-model="ctrl.empresa.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
-		</div>
+		</div>-->
 	</div>
+</form>
+
+<form class="form-inline">
+	<div class="form-group">
+		<select class="form-control">
+			<option>Razão Social</option>
+			<option>Nome Fantasia</option>
+			<option>CNPJ</option>
+			<option>Inscrição Estadual</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.busca">
+	</div>
+	<button ng-click="ctrl.abrirPopUp()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 </form>
 
 <table class="table table-hover" ng-show="ctrl.modoGrade">
@@ -105,17 +119,14 @@
 	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
 		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
 </div>
-<script type="text/ng-template" id="myModalContent.html">
+<script type="text/ng-template" id="popUpPesquisaEmpresa.html">
 	<div class="modal-header">
-		<h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+		<h3 class="modal-title" id="modal-title">Buscar Cidade</h3>
 	</div>
 	<div class="modal-body" id="modal-body">
-		<ul>
-			<li ng-repeat="item in modalCtrl.items">
-				<a href="#" ng-click="$event.preventDefault(); modalCtrl.selected.item = item">{{ item }}</a>
-			</li>
-		</ul>
-		Selected: <b>{{ modalCtrl.selected.item }}</b>
+		<form>
+			<select class="form-cont"
+		</form>
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-primary" type="button" ng-click="modalCtrl.ok()">OK</button>

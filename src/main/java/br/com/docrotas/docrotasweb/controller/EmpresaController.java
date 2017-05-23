@@ -22,13 +22,13 @@ public class EmpresaController {
 	private EmpresaRepository empresaRepository;
 	
 	@GetMapping("/empresa")
-	public Page<Empresa> buscarTodas(@RequestParam(value = "pagina", required = true)int pagina,
-								     @RequestParam(value = "qtd", required = true)int qtd,
-									 @RequestParam(value = "id", required = false)Long id,
-									 @RequestParam(value = "razao", required = false)String razao,
-									 @RequestParam(value = "fantasia", required = false)String fantasia,
-									 @RequestParam(value = "cidadeId", required = false)Long cidadeId,
-									 @RequestParam(value = "cnpj", required = false)String cnpj) throws Exception{
+	public Page<Empresa> buscarTodas(@RequestParam(value = "pagina", required = true) int pagina,
+								     @RequestParam(value = "qtd", required = true) int qtd,
+									 @RequestParam(value = "id", required = false) Long id,
+									 @RequestParam(value = "razao", required = false) String razao,
+									 @RequestParam(value = "fantasia", required = false) String fantasia,
+									 @RequestParam(value = "cidadeId", required = false) Long cidadeId,
+									 @RequestParam(value = "cnpj", required = false) String cnpj) throws Exception{
 		Pageable pageable = new PageRequest(pagina, qtd);
 		
 		Page<Empresa> pageEmpresas;
