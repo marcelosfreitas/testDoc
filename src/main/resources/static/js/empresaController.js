@@ -13,6 +13,8 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
     self.totalItens = 1;
     self.paginaAtual = 1;
     self.numPaginas = 1;
+    self.campoSelecionado;
+    self.valorBusca;
 
     self.pageChanged = function() {
          self.buscarTodos(self.paginaAtual);
@@ -34,7 +36,21 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
-        return $http.get('empresa?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
+        var url = 'empresa?pagina=' + pagina + '&qtd=' + self.tamanhoMax;
+
+        if (self.campoSelecionado && self.valorBusca) {
+            if (self.campoSelecionado === "id") {
+                url += '&id=' + self.valorBusca;
+            } else if (self.campoSelecionado === "razao") {
+                url += '&razao=' + self.valorBusca;
+            } else if (self.campoSelecionado === "fantasia") {
+                url += '&fantasia=' + self.valorBusca;
+            } else if (self.campoSelecionado === "cnpj") {
+                url += '&cnpj=' + self.valorBusca;
+            }  
+        }
+
+        return $http.get(url).then(
             function (response) {
                 self.empresas = response.data.content;
                 self.paginaAtual = response.data.number + 1;
@@ -91,7 +107,7 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
 
     self.animationsEnabled = true;
 
-    self.abrirPopUp = function (size, parentSelector) {
+    self.abrirPopUpPesquisaCidade = function (size, parentSelector) {
         var parentElem = parentSelector ? 
         angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
         var modalInstance = $uibModal.open({
@@ -101,7 +117,7 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
         templateUrl: 'popUpPesquisaEmpresa.html',
         controller: 'PesquisaEmpresaCtrl',
         controllerAs: 'pesquisaEmpresaCtrl',
-        size: 'lg',
+        windowClass: 'popUpPesquisaEntidade',
         appendTo: parentElem,
         resolve: {
             items: function () {
@@ -136,20 +152,57 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
     };
 });
 
-angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibModalInstance, items) {
-  var self = this;
-  self.items = items;
-  self.selected = {
-    item: self.items[0]
-  };
+angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibModalInstance, $http, items) {
+    var self = this;
+    
+    self.campoSelecionado;
+    self.valorBusca;
+    self.cidades = [];
 
-  self.ok = function () {
-    $uibModalInstance.close(self.selected.item);
-  };
+    self.tamanhoMax = 5;
+    self.totalItens = 1;
+    self.paginaAtual = 1;
+    self.numPaginas = 1;
 
-  self.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+    self.pageChanged = function() {
+         self.buscarTodos(self.paginaAtual);
+    };
+
+    self.setPage = function (pageNo) {
+       self.paginaAtual = pageNo;
+    };
+
+    self.ok = function () {
+        $uibModalInstance.close(self.selected.item);
+    };
+
+    self.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    self.buscarTodos = function (pageNo) {
+        var pagina = pageNo - 1;
+
+        var url = 'cidade?pagina=' + pagina + '&qtd=' + self.tamanhoMax;
+
+        if (self.campoSelecionado && self.valorBusca) {
+            if (self.campoSelecionado === "nome") {
+                url += '&nome=' + self.valorBusca;
+            } else if (self.campoSelecionado === "codibge") {
+                url += '&codibge=' + self.valorBusca;
+            } 
+        }
+
+        return $http.get(url).then(
+            function (response) {
+                self.cidades = response.data.content;
+                self.paginaAtual = response.data.number + 1;
+                self.totalItens = response.data.totalElements;
+                self.numPaginas = response.data.totalPages;
+            }, function (errResponse) {
+                console.error('Erro');
+            });
+    };
 });
 
 // Please note that the close and dismiss bindings are from $uibModalInstance.

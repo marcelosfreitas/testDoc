@@ -8,8 +8,8 @@
 	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.excluir(ctrl.empresa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
-  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
-		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true" ></span></button>
   </div>
 </div>
 <form ng-show="ctrl.modoFormulario">
@@ -67,6 +67,7 @@
 		<div class="form-group col-md-4">
 			<label for="empresa.cidade">Cidade</label>
 			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
+			<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 		</div>
 		<!--<div class="form-group col-md-4">
 			<label for="empresa_dt_criacao">Data criação</label>
@@ -79,19 +80,20 @@
 	</div>
 </form>
 
-<form class="form-inline">
+<form class="form-inline" ng-show="ctrl.modoGrade">
 	<div class="form-group">
-		<select class="form-control">
-			<option>Razão Social</option>
-			<option>Nome Fantasia</option>
-			<option>CNPJ</option>
-			<option>Inscrição Estadual</option>
+		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
+			<option value=""></option>
+			<option value="id">ID</option>
+			<option value="razao">Razão Social</option>
+			<option value="fantasia">Nome Fantasia</option>
+			<option value="cnpj">Cnpj</option>
 		</select>
 	</div>
 	<div class="form-group">
-		<input  class="form-control" type="text" id="busca" ng-model="ctrl.busca">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.valorBusca">
 	</div>
-	<button ng-click="ctrl.abrirPopUp()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+	<button ng-click="ctrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 </form>
 
 <table class="table table-hover" ng-show="ctrl.modoGrade">
@@ -123,14 +125,42 @@
 	<div class="modal-header">
 		<h3 class="modal-title" id="modal-title">Buscar Cidade</h3>
 	</div>
-	<div class="modal-body" id="modal-body">
-		<form>
-			<select class="form-cont"
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaEmpresaCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="nome">Nome</option>
+					<option value="codibge">Código IBGE</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaEmpresaCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaEmpresaCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>Unidade Federativa</strong></td>
+				<td><strong>Cód. IBGE</strong></td>
+			</tr>
+			<tr ng-repeat="cidadetb in pesquisaEmpresaCtrl.cidades">
+				<td ng-bind="cidadetb.id"></td>
+				<td ng-bind="cidadetb.nome"></td>
+				<td ng-bind="cidadetb.uf.descricao"></td>
+				<td ng-bind="cidadetb.codIBGE"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaEmpresaCtrl.totalItens" ng-model="pesquisaEmpresaCtrl.paginaAtual" max-size="pesquisaEmpresaCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaEmpresaCtrl.pageChanged()" next-text='Próximo'></ul>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" type="button" ng-click="modalCtrl.ok()">OK</button>
-		<button class="btn btn-warning" type="button" ng-click="modalCtrl.cancel()">Cancel</button>
+		<button class="btn btn-primary" type="button" ng-click="pesquisaEmpresaCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaEmpresaCtrl.cancel()">Cancel</button>
 	</div>
 </script>
 </div>

@@ -78,6 +78,7 @@ angular.module('docrotasApp').controller('ModalDemoCtrl', function ($uibModal, $
 angular.module('docrotasApp').controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
   var self = this;
   self.items = items;
+  
   self.selected = {
     item: self.items[0]
   };
