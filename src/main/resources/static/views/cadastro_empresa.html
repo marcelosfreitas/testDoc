@@ -1,0 +1,179 @@
+<div class="modal-demo">
+
+<h3>Cadastro Empresa</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.empresa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true" ></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa_id">ID</label>
+			<input type="text" class="form-control" id="empresa_id" ng-model="ctrl.empresa.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_razao">Razão Social</label>
+			<input type="text" class="form-control" id="empresa_razao" ng-model="ctrl.empresa.razao">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_cnpj">CNPJ</label>
+			<input type="text" class="form-control" id="empresa_cnpj" ng-model="ctrl.empresa.cnpj">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_fantasia">Fantasia</label>
+			<input type="text" class="form-control" id="empresa_fantasia" ng-model="ctrl.empresa.fantasia">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_ie">Inscrição Estadual</label>
+			<input type="text" class="form-control" id="empresa_ie" ng-model="ctrl.empresa.ie">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="empresa_logradouro">Logradouro</label>
+			<input type="text" class="form-control" id="empresa_logradouro" ng-model="ctrl.empresa.logradouro">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_nro">Número</label>
+			<input type="text" class="form-control" id="empresa_nro" ng-model="ctrl.empresa.nro">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa_complemento">Complemento</label>
+			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.complemento">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_bairro">Bairro</label>
+			<input type="text" class="form-control" id="empresa_bairro" ng-model="ctrl.empresa.bairro">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_cep">CEP</label>
+			<input type="text" class="form-control" id="empresa_cep" ng-model="ctrl.empresa.cep">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="empresa_cidade">Cidade</label>
+			<p class="input-group">
+				<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
+				<span class="input-group-btn">
+					<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+				</span>
+			</p>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_dt_criacao">Data criação</label>
+			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.empresa.dtCriacao" ng-disabled="true"/>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="empresa_dt_alteracao">Data alteração</label>
+			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.empresa.dtAlteracao" ng-disabled="true"/>
+		</div>
+	</div>
+</form>
+
+<form class="form-inline" ng-show="ctrl.modoGrade">
+	<div class="form-group">
+		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
+			<option value=""></option>
+			<option value="id">ID</option>
+			<option value="razao">Razão Social</option>
+			<option value="fantasia">Nome Fantasia</option>
+			<option value="cnpj">Cnpj</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.valorBusca">
+	</div>
+	<button ng-click="ctrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Razão</strong></td>
+	  <td><strong>CNPJ</strong></td>
+	  <td><strong>Inscrição Estadual</strong></td>
+	  <td><strong>Cidade</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="empresatb in ctrl.empresas">
+	  <td ng-bind="empresatb.id"></td>
+	  <td ng-bind="empresatb.razao"></td>
+	  <td ng-bind="empresatb.cnpj"></td>
+	  <td ng-bind="empresatb.ie"></td>
+	  <td ng-bind="empresatb.cidade.nome"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(empresatb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(empresatb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+<script type="text/ng-template" id="popUpPesquisaCidade.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buscar Cidade</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaCidadeCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="nome">Nome</option>
+					<option value="codibge">Código IBGE</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaCidadeCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaCidadeCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>Unidade Federativa</strong></td>
+				<td><strong>Cód. IBGE</strong></td>
+			</tr>
+			<tr ng-repeat="cidadetb in pesquisaCidadeCtrl.cidades" ng-click="pesquisaCidadeCtrl.selecionarCidade(cidadetb)">
+				<td ng-bind="cidadetb.id"></td>
+				<td ng-bind="cidadetb.nome"></td>
+				<td ng-bind="cidadetb.uf.descricao"></td>
+				<td ng-bind="cidadetb.codIBGE"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaCidadeCtrl.totalItens" ng-model="pesquisaCidadeCtrl.paginaAtual" max-size="pesquisaCidadeCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaCidadeCtrl.pageChanged()" next-text='Próximo'></ul>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="pesquisaCidadeCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaCidadeCtrl.cancel()">Cancel</button>
+	</div>
+</script>
+<script type="text/ng-template" id="popUpErro.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Erro</h3>
+	</div>
+	<h3>{{erroCtrl.mensagem}}</h3>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="erroCtrl.ok()">OK</button>
+	</div>
+</script>
+</div>
