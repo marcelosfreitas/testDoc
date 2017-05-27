@@ -47,7 +47,7 @@ public class UfController {
 	}
 	
 	@PostMapping(value = "/uf")
-	public Uf salvar(@RequestBody Uf uf) {
+	public Uf salvar(@RequestBody Uf uf) throws Exception {
 		return ufRepository.save(uf);
 	}
 	
