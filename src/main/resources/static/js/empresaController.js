@@ -75,7 +75,17 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
     self.editar = function (id) {
         self.habilitarModoFormulario();
         self.buscarPorId(id);
-    }
+    };
+
+    self.atualizar = function() {
+        if (self.modoGrade == true) {
+            self.buscarTodos(1);
+        } else {
+            if (empresa.id) {
+                self.buscarPorId(empresa.id);
+            }
+        }       
+    };
 
     self.salvar = function () {
         $http.post('empresa/', self.empresa)
@@ -109,11 +119,9 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
 
     self.items = ['item1', 'item2', 'item3'];
 
-    self.animationsEnabled = true;
-
     self.abrirPopUpPesquisaCidade = function () {
         var modalInstance = $uibModal.open({
-        animation: self.animationsEnabled,
+        animation: true,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         templateUrl: 'popUpPesquisaCidade.html',
