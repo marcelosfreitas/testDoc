@@ -1,7 +1,7 @@
-angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $rootScope, $log, $uibModal) {
+angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http, $rootScope, $log, $uibModal) {
     var self = this;
-    self.ufs = [];
-    self.uf = {};
+    self.usuarios = [];
+    self.usuario = {};
     self.filtro = {};
     var qtd = 15;
     self.modoGrade = true;
@@ -12,13 +12,6 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
     self.totalItens = 1;
     self.paginaAtual = 1;
     self.numPaginas = 1;
-
-    self.valuationDate = new Date();
-    self.valuationDatePickerIsOpen = false;
-  
-    self.valuationDatePickerOpen = function () {
-        this.valuationDatePickerIsOpen = true;
-    };
 
     self.pageChanged = function() {
          self.buscarTodos(self.paginaAtual);
@@ -40,9 +33,9 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
-        return $http.get('uf?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
+        return $http.get('usuario?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
             function (response) {
-                self.ufs = response.data.content;
+                self.usuarios = response.data.content;
                 self.paginaAtual = response.data.number + 1;
                 self.totalItens = response.data.totalElements;
                 self.numPaginas = response.data.totalPages;
@@ -52,9 +45,9 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
     };
 
     self.buscarPorId = function (id) {
-        return $http.get('uf?id=' + id + '&pagina=0&qtd=' + qtd).then(
+        return $http.get('usuario?id=' + id + '&pagina=0&qtd=' + qtd).then(
             function (response) {
-                self.uf = response.data.content[0];
+                self.usuario = response.data.content[0];
             }, function(errReponse) {
                 console.error('Erro');
             });
@@ -66,7 +59,7 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
     }
 
     self.salvar = function () {
-        $http.post('uf/', self.uf)
+        $http.post('usuario/', self.usuario)
             .then(function sucesso (response) {
                 self.buscarTodos(self.paginaAtual);
                 self.novo();
@@ -77,14 +70,14 @@ angular.module('docrotasApp').controller('UfCtrl', ['$http',function ($http, $ro
 
     self.novo = function () {
         self.habilitarModoFormulario();
-        self.uf = {};
+        self.usuario = {};
     };
 
     self.excluir = function (id) {
-        $http.delete('uf/' + id)
+        $http.delete('usuario/' + id)
             .then ( function (response) {
                 self.buscarTodos();
-                if (id === uf.id) {
+                if (id === usuario.id) {
                     self.novo();
                 }
             }, function (errResponse) {

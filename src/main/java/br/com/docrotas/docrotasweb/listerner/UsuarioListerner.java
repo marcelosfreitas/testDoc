@@ -10,13 +10,13 @@ import br.com.docrotas.docrotasweb.entity.Usuario;
 public class UsuarioListerner {
 
 	@PrePersist
-	public void prePersistUfEvent(Usuario usuario) {
+	public void prePersistUsuarioEvent(Usuario usuario) {
 		inseriDtCriacao(usuario);
 		atualizaDtAlteracao(usuario);
 	}
 	
 	@PreUpdate
-	public void preUpdateUfEvent(Usuario usuario){
+	public void preUpdateUsuarioEvent(Usuario usuario){
 		atualizaDtAlteracao(usuario);
 	}
 	
