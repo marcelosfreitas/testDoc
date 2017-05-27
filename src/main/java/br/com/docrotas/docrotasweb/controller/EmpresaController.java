@@ -50,7 +50,7 @@ public class EmpresaController {
 	}
 	
 	@PostMapping(value = "/empresa")
-	public Empresa salvar(@RequestBody Empresa empresa) {
+	public Empresa salvar(@RequestBody Empresa empresa) throws Exception {
 		return empresaRepository.save(empresa);
 	}
 	

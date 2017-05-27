@@ -58,6 +58,7 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                 self.numPaginas = response.data.totalPages;
             }, function (errResponse) {
                 console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
             });
     };
 
@@ -67,6 +68,7 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                 self.empresa = response.data.content[0];
             }, function(errReponse) {
                 console.error('Erro');
+                abrirPopUpErro(errReponse.data.message);
             });
     };
 
@@ -80,8 +82,9 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
             .then(function sucesso (response) {
                 self.buscarTodos(self.paginaAtual);
                 self.novo();
-            }, function(response) {
-                console.log(response);
+            }, function (errResponse) {
+                console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
             });
     };
 
@@ -98,8 +101,9 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                     self.novo();
                 }
             }, function (errResponse) {
-                console.error(errResponse);
-            })
+                console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
+            });
     };
     self.buscarTodos(1);
 
@@ -107,52 +111,52 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
 
     self.animationsEnabled = true;
 
-    self.abrirPopUpPesquisaCidade = function (size, parentSelector) {
-        var parentElem = parentSelector ? 
-        angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+    self.abrirPopUpPesquisaCidade = function () {
         var modalInstance = $uibModal.open({
         animation: self.animationsEnabled,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
-        templateUrl: 'popUpPesquisaEmpresa.html',
-        controller: 'PesquisaEmpresaCtrl',
-        controllerAs: 'pesquisaEmpresaCtrl',
+        templateUrl: 'popUpPesquisaCidade.html',
+        controller: 'PesquisaCidadeCtrl',
+        controllerAs: 'pesquisaCidadeCtrl',
         windowClass: 'popUpPesquisaEntidade',
-        appendTo: parentElem,
         resolve: {
             items: function () {
-            return self.items;
+                return self.items;
             }
         }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-        self.selected = selectedItem;
-    }, function () {
+        modalInstance.result.then(function (cidade) {
+            self.empresa.cidade = cidade;
+        }, function () {
         
         });
     };
 
-    self.openComponentModal = function () {
+    var abrirPopUpErro = function (msg) {
         var modalInstance = $uibModal.open({
         animation: self.animationsEnabled,
-        component: 'popUpPesquisaEmpresa',
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpErro.html',
+        controller: 'ErroCtrl',
+        controllerAs: 'erroCtrl',
         resolve: {
-            items: function () {
-            return self.items;
+            msg: function () {
+                return msg;
             }
         }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-        self.selected = selectedItem;
+        modalInstance.result.then(function () {
         }, function () {
-        $log.info('modal-component dismissed at: ' + new Date());
+        
         });
     };
 });
 
-angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibModalInstance, $http, items) {
+angular.module('docrotasApp').controller('PesquisaCidadeCtrl', function ($uibModalInstance, $http, items) {
     var self = this;
     
     self.campoSelecionado;
@@ -164,6 +168,8 @@ angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibMo
     self.paginaAtual = 1;
     self.numPaginas = 1;
 
+    self.cidadeSelecionada;
+
     self.pageChanged = function() {
          self.buscarTodos(self.paginaAtual);
     };
@@ -173,12 +179,17 @@ angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibMo
     };
 
     self.ok = function () {
-        $uibModalInstance.close(self.selected.item);
+        $uibModalInstance.close(self.cidadeSelecionada);
     };
 
     self.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
+    self.selecionarCidade = function (cidade) {
+        self.cidadeSelecionada = cidade;
+        self.ok();
+    }
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
@@ -201,36 +212,41 @@ angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibMo
                 self.numPaginas = response.data.totalPages;
             }, function (errResponse) {
                 console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
             });
     };
+
+    var abrirPopUpErro = function (msg) {
+        var modalInstance = $uibModal.open({
+        animation: self.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpErro.html',
+        controller: 'ErroCtrl',
+        controllerAs: 'erroCtrl',
+        resolve: {
+            msg: function () {
+                return msg;
+            }
+        }
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+        
+        });
+    };
 });
 
-// Please note that the close and dismiss bindings are from $uibModalInstance.
-
-angular.module('docrotasApp').component('popUpPesquisaEmpresa', {
-  templateUrl: 'views/popUpPesquisaEmpresa.html',
-  bindings: {
-    resolve: '<',
-    close: '&',
-    dismiss: '&'
-  },
-  controller: function () {
+angular.module('docrotasApp').controller('ErroCtrl', function ($uibModalInstance, $http, msg) {
     var self = this;
-
-    self.$onInit = function () {
-      self.items = self.resolve.items;
-      self.selected = {
-        item: self.items[0]
-      };
-    };
+    
+    self.mensagem = msg;
 
     self.ok = function () {
-      self.close({$value: self.selected.item});
+        $uibModalInstance.close();
     };
-
-    self.cancel = function () {
-      self.dismiss({$value: 'cancel'});
-    };
-  }
 });
+
+
 

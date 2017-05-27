@@ -65,18 +65,22 @@
 	</div>
 	<div class="row">
 		<div class="form-group col-md-4">
-			<label for="empresa.cidade">Cidade</label>
-			<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
-			<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+			<label for="empresa_cidade">Cidade</label>
+			<p class="input-group">
+				<input type="text" class="form-control" id="empresa_complemento" ng-model="ctrl.empresa.cidade.nome">
+				<span class="input-group-btn">
+					<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+				</span>
+			</p>
 		</div>
-		<!--<div class="form-group col-md-4">
+		<div class="form-group col-md-4">
 			<label for="empresa_dt_criacao">Data criação</label>
-			<input type="text" class="form-control" id="empresa_dt_criacao" ng-model="ctrl.empresa.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.empresa.dtCriacao" ng-disabled="true"/>
 		</div>
 		<div class="form-group col-md-4">
 			<label for="empresa_dt_alteracao">Data alteração</label>
-			<input type="text" class="form-control" id="empresa_dt_alteracao" ng-model="ctrl.empresa.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
-		</div>-->
+			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.empresa.dtAlteracao" ng-disabled="true"/>
+		</div>
 	</div>
 </form>
 
@@ -121,23 +125,23 @@
 	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
 		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
 </div>
-<script type="text/ng-template" id="popUpPesquisaEmpresa.html">
+<script type="text/ng-template" id="popUpPesquisaCidade.html">
 	<div class="modal-header">
 		<h3 class="modal-title" id="modal-title">Buscar Cidade</h3>
 	</div>
 	<div class="modal-body">
 		<form class="form-inline">
 			<div class="form-group">
-				<select name="tipoCampoBusca" ng-model="pesquisaEmpresaCtrl.campoSelecionado" class="form-control">
+				<select name="tipoCampoBusca" ng-model="pesquisaCidadeCtrl.campoSelecionado" class="form-control">
 					<option value=""></option>
 					<option value="nome">Nome</option>
 					<option value="codibge">Código IBGE</option>
 				</select>
 			</div>
 			<div class="form-group">
-				<input  class="form-control" type="text" id="busca" ng-model="pesquisaEmpresaCtrl.valorBusca">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaCidadeCtrl.valorBusca">
 			</div>
-			<button ng-click="pesquisaEmpresaCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+			<button ng-click="pesquisaCidadeCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 		</form>
 		<table class="table table-hover">
 			<tr>
@@ -146,7 +150,7 @@
 				<td><strong>Unidade Federativa</strong></td>
 				<td><strong>Cód. IBGE</strong></td>
 			</tr>
-			<tr ng-repeat="cidadetb in pesquisaEmpresaCtrl.cidades">
+			<tr ng-repeat="cidadetb in pesquisaCidadeCtrl.cidades" ng-click="pesquisaCidadeCtrl.selecionarCidade(cidadetb)">
 				<td ng-bind="cidadetb.id"></td>
 				<td ng-bind="cidadetb.nome"></td>
 				<td ng-bind="cidadetb.uf.descricao"></td>
@@ -155,12 +159,21 @@
 		</table>
 	</div>
 	<div align="center">
-		<ul uib-pagination total-items="pesquisaEmpresaCtrl.totalItens" ng-model="pesquisaEmpresaCtrl.paginaAtual" max-size="pesquisaEmpresaCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
-			previous-text='Anterior' ng-change="pesquisaEmpresaCtrl.pageChanged()" next-text='Próximo'></ul>
+		<ul uib-pagination total-items="pesquisaCidadeCtrl.totalItens" ng-model="pesquisaCidadeCtrl.paginaAtual" max-size="pesquisaCidadeCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaCidadeCtrl.pageChanged()" next-text='Próximo'></ul>
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-primary" type="button" ng-click="pesquisaEmpresaCtrl.ok()">OK</button>
-		<button class="btn btn-warning" type="button" ng-click="pesquisaEmpresaCtrl.cancel()">Cancel</button>
+		<button class="btn btn-primary" type="button" ng-click="pesquisaCidadeCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaCidadeCtrl.cancel()">Cancel</button>
+	</div>
+</script>
+<script type="text/ng-template" id="popUpErro.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Erro</h3>
+	</div>
+	<h3>{{erroCtrl.mensagem}}</h3>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="erroCtrl.ok()">OK</button>
 	</div>
 </script>
 </div>
