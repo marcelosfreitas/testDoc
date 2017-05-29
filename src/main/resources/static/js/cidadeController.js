@@ -1,4 +1,4 @@
-angular.module('docrotasApp').controller('CidadeCtrl', ['$http',function ($http, $rootScope, $log, $uibModal, $document) {
+angular.module('docrotasApp').controller('CidadeCtrl', function ($http, $rootScope, $log, $uibModal, $document) {
     var self = this;
     self.cidades = [];
     self.cidade = {};
@@ -12,6 +12,9 @@ angular.module('docrotasApp').controller('CidadeCtrl', ['$http',function ($http,
     self.totalItens = 1;
     self.paginaAtual = 1;
     self.numPaginas = 1;
+
+    self.campoSelecionado;
+    self.valorBusca;
 
     self.pageChanged = function() {
          self.buscarTodos(self.paginaAtual);
@@ -33,7 +36,19 @@ angular.module('docrotasApp').controller('CidadeCtrl', ['$http',function ($http,
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
-        return $http.get('cidade?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
+        var url = 'cidade?pagina=' + pagina + '&qtd=' + self.tamanhoMax;
+
+        if (self.campoSelecionado && self.valorBusca) {
+            if (self.campoSelecionado === "id") {
+                url += '&id=' + self.valorBusca;
+            } else  if (self.campoSelecionado === "nome") {
+                url += '&nome=' + self.valorBusca;
+            } else if (self.campoSelecionado === "codIGBE") {
+                url += '&codibge=' + self.valorBusca;
+            }
+        }
+
+        return $http.get(url).then(
             function (response) {
                 self.cidades = response.data.content;
                 self.paginaAtual = response.data.number + 1;
@@ -85,4 +100,152 @@ angular.module('docrotasApp').controller('CidadeCtrl', ['$http',function ($http,
             })
     };
     self.buscarTodos(1);
-}]);
+
+    self.atualizar = function() {
+        if (self.modoGrade == true) {
+            self.buscarTodos(1);
+        } else {
+            if (cidade.id) {
+                self.buscarPorId(cidade.id);
+            }
+        }       
+    };
+
+    self.abrirPopUpPesquisaUF = function () {
+        var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpPesquisaUf.html',
+        controller: 'PesquisaUfCtrl',
+        controllerAs: 'pesquisaUfCtrl',
+        resolve: {
+            items: function () {
+                return self.items;
+            }
+        }
+        });
+
+        modalInstance.result.then(function (uf) {
+            self.cidade.uf = uf;
+        }, function () {
+        
+        });
+    };
+
+    var abrirPopUpErro = function (msg) {
+        var modalInstance = $uibModal.open({
+        animation: self.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpErro.html',
+        controller: 'ErroCtrl',
+        controllerAs: 'erroCtrl',
+        resolve: {
+            msg: function () {
+                return msg;
+            }
+        }
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+        
+        });
+    };
+});
+
+angular.module('docrotasApp').controller('PesquisaUfCtrl', function ($uibModalInstance, $http, items) {
+    var self = this;
+    
+    self.campoSelecionado;
+    self.valorBusca;
+    self.ufs = [];
+
+    self.tamanhoMax = 5;
+    self.totalItens = 1;
+    self.paginaAtual = 1;
+    self.numPaginas = 1;
+
+    self.ufSelecionada;
+
+    self.pageChanged = function() {
+         self.buscarTodos(self.paginaAtual);
+    };
+
+    self.setPage = function (pageNo) {
+       self.paginaAtual = pageNo;
+    };
+
+    self.ok = function () {
+        $uibModalInstance.close(self.cidadeSelecionada);
+    };
+
+    self.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    self.selecionarUf = function (uf) {
+        self.ufSelecionada = uf;
+        self.ok();
+    }
+
+    self.buscarTodos = function (pageNo) {
+        var pagina = pageNo - 1;
+        var url = 'uf?pagina=' + pagina + '&qtd=' + self.tamanhoMax;
+
+        if (self.campoSelecionado && self.valorBusca) {
+            if (self.campoSelecionado === "id") {
+                 url += '&id=' + self.valorBusca;
+            } else if (self.campoSelecionado === "nome") {
+                 url += '&descricao=' + self.valorBusca;
+            } else if (self.campoSelecionado === "sigla") {
+                 url += '&sigla=' + self.valorBusca;
+            } else if (self.campoSelecionado === "codIBGE") {
+                 url += '&codibge=' + self.valorBusca;
+            }
+        }
+
+        return $http.get(url).then(
+            function (response) {
+                self.ufs = response.data.content;
+                self.paginaAtual = response.data.number + 1;
+                self.totalItens = response.data.totalElements;
+                self.numPaginas = response.data.totalPages;
+            }, function (errResponse) {
+                console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
+            });
+    };
+
+    var abrirPopUpErro = function (msg) {
+        var modalInstance = $uibModal.open({
+        animation: self.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpErro.html',
+        controller: 'ErroCtrl',
+        controllerAs: 'erroCtrl',
+        resolve: {
+            msg: function () {
+                return msg;
+            }
+        }
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+        
+        });
+    };
+});
+
+angular.module('docrotasApp').controller('ErroCtrl', function ($uibModalInstance, $http, msg) {
+    var self = this;
+    
+    self.mensagem = msg;
+
+    self.ok = function () {
+        $uibModalInstance.close();
+    };
+});
