@@ -85,7 +85,7 @@ angular.module('docrotasApp').controller('CidadeCtrl', function ($http, $rootSco
 
     self.novo = function () {
         self.habilitarModoFormulario();
-        self.uf = {};
+        self.cidade = {};
     };
 
     self.excluir = function (id) {
@@ -178,7 +178,7 @@ angular.module('docrotasApp').controller('PesquisaUfCtrl', function ($uibModalIn
     };
 
     self.ok = function () {
-        $uibModalInstance.close(self.cidadeSelecionada);
+        $uibModalInstance.close(self.ufSelecionada);
     };
 
     self.cancel = function () {
