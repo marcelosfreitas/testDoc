@@ -6,9 +6,8 @@
 	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
 	  	<button ng-click="ctrl.excluir(ctrl.usuario.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
-	  	<!--<button ng-click="ctrl.openModalFiltro()" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>-->
-  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
-		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
   </div>
 </div>
 <form ng-show="ctrl.modoFormulario">
@@ -35,13 +34,28 @@
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="usuario_dt_criacao">Data criação</label>
-			<input type="text" class="form-control" id="usuario_dt_criacao" ng-model="ctrl.usuario.dtCriacao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+			<input type="text" class="form-control" id="usuario_dt_criacao" ng-model="ctrl.usuario.dtCriacao" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-disabled="true">
 		</div>
 		<div class="form-group col-md-4">
 			<label for="usuario_dt_alteracao">Data alteração</label>
-			<input type="text" class="form-control" id="usuario_dt_alteracao" ng-model="ctrl.usuario.dtAlteracao | date:'dd/MM/yyyy HH:mm:ss'" ng-disabled="true">
+			<input type="text" class="form-control" id="usuario_dt_alteracao" ng-model="ctrl.usuario.dtAlteracao" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-disabled="true">
 		</div>
 	</div>
+</form>
+
+<form class="form-inline" ng-show="ctrl.modoGrade">
+	<div class="form-group">
+		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
+			<option value=""></option>
+			<option value="id">ID</option>
+			<option value="login">Login</option>
+			<option value="email">E-mail</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.valorBusca">
+	</div>
+	<button ng-click="ctrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
 </form>
 
 <table class="table table-hover" ng-show="ctrl.modoGrade">
@@ -65,3 +79,12 @@
 	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
 		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
 </div>
+<script type="text/ng-template" id="popUpErro.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Erro</h3>
+	</div>
+	<h3>{{erroCtrl.mensagem}}</h3>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="erroCtrl.ok()">OK</button>
+	</div>
+</script>
