@@ -1,0 +1,80 @@
+<h3>Cadastro Pessoa</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.pessoa.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="pessoa_id">ID</label>
+			<input type="text" class="form-control" id="pessoa_id" ng-model="ctrl.pessoa.id" ng-disabled="true">
+		</div>
+	</div>
+    <div class="row">
+		<div class="form-group col-md-8">
+			<label for="pessoa_razao">Razão Social/Nome</label>
+			<input type="text" class="form-control" id="pessoa_razao" ng-model="ctrl.pessoa.razao">
+		</div>
+        <div class="form-group col-md-4">
+			<label for="pessoa_cpfCnpj">CNPJ/CPF</label>
+			<input type="text" class="form-control" id="pessoa_cpfCnpj" ng-model="ctrl.pessoa.cpfCnpj">
+		</div>
+	</div>
+    <div class="row">
+		<div class="form-group col-md-8">
+			<label for="pessoa_fantasia">Fantasia/Apelido</label>
+			<input type="text" class="form-control" id="pessoa_fantasia" ng-model="ctrl.pessoa.fantasia">
+		</div>
+        <div class="form-group col-md-4">
+			<label for="pessoa_ie">IE/RG</label>
+			<input type="text" class="form-control" id="pessoa_ie" ng-model="ctrl.pessoa.ie">
+		</div>
+	</div>
+</form>
+
+<form class="form-inline" ng-show="ctrl.modoGrade">
+	<div class="form-group">
+		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
+			<option value=""></option>
+			<option value="id">ID</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.valorBusca">
+	</div>
+	<button ng-click="ctrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="pessoatb in ctrl.pessoas">
+	  <td ng-bind="pessoatb.id"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(pessoatb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(pessoatb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+<script type="text/ng-template" id="popUpErro.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Erro</h3>
+	</div>
+	<h3>{{erroCtrl.mensagem}}</h3>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="erroCtrl.ok()">OK</button>
+	</div>
+</script>

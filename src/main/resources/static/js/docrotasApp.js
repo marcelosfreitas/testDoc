@@ -17,6 +17,10 @@ app.config(['$routeProvider', function($routeProvider){
         templateUrl: 'views/cadastro_empresa.html',
         controller: 'EmpresaCtrl',
         controllerAs: 'ctrl'
+    }).when('/pessoa',{
+        templateUrl: 'views/cadastro_pessoa.html',
+        controller: 'PessoaCtrl',
+        controllerAs: 'ctrl'
     })
 }]);
 
