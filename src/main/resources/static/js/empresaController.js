@@ -57,7 +57,6 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                 self.totalItens = response.data.totalElements;
                 self.numPaginas = response.data.totalPages;
             }, function (errResponse) {
-                console.error('Erro');
                 abrirPopUpErro(errResponse.data.message);
             });
     };
@@ -67,7 +66,6 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
             function (response) {
                 self.empresa = response.data.content[0];
             }, function(errReponse) {
-                console.error('Erro');
                 abrirPopUpErro(errReponse.data.message);
             });
     };
@@ -93,7 +91,6 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                 self.buscarTodos(self.paginaAtual);
                 self.novo();
             }, function (errResponse) {
-                console.error('Erro');
                 abrirPopUpErro(errResponse.data.message);
             });
     };
@@ -111,7 +108,6 @@ angular.module('docrotasApp').controller('EmpresaCtrl', function ($http, $rootSc
                     self.novo();
                 }
             }, function (errResponse) {
-                console.error('Erro');
                 abrirPopUpErro(errResponse.data.message);
             });
     };

@@ -44,8 +44,9 @@ public class UsuarioController {
 	}
 	
 	@PostMapping(value = "/usuario")
-	public Usuario salvar(@RequestBody Usuario usuario){
-		return usuarioRepository.save(usuario);
+	public Usuario salvar(@RequestBody Usuario usuario) throws Exception{
+		throw new Exception("TESTANDO ERRO");
+//		return usuarioRepository.save(usuario);
 	}
 	
 	@DeleteMapping("/usuario/{id}")

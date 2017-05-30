@@ -1,4 +1,4 @@
-angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http, $rootScope, $log, $uibModal) {
+angular.module('docrotasApp').controller('UsuarioCtrl', function ($http, $rootScope, $log, $uibModal, $document) {
     var self = this;
     self.usuarios = [];
     self.usuario = {};
@@ -33,14 +33,26 @@ angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
-        return $http.get('usuario?pagina=' + pagina + '&qtd=' + self.tamanhoMax).then(
+        var url = 'usuario?pagina=' + pagina + '&qtd=' + self.tamanhoMax;
+
+        if (self.campoSelecionado && self.valorBusca) {
+            if (self.campoSelecionado === "id") {
+                url += '&id=' + self.valorBusca;
+            } else if (self.campoSelecionado === "login") {
+                url += '&login=' + self.valorBusca;
+            } else if (self.campoSelecionado === "email") {
+                url += '&email=' + self.valorBusca;
+            }
+        }
+
+        return $http.get(url).then(
             function (response) {
                 self.usuarios = response.data.content;
                 self.paginaAtual = response.data.number + 1;
                 self.totalItens = response.data.totalElements;
                 self.numPaginas = response.data.totalPages;
             }, function (errResponse) {
-                console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
             });
     };
 
@@ -49,7 +61,7 @@ angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http
             function (response) {
                 self.usuario = response.data.content[0];
             }, function(errReponse) {
-                console.error('Erro');
+                abrirPopUpErro(errResponse.data.message);
             });
     };
 
@@ -63,8 +75,8 @@ angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http
             .then(function sucesso (response) {
                 self.buscarTodos(self.paginaAtual);
                 self.novo();
-            }, function(response) {
-                console.log(response);
+            }, function(errResponse) {
+                abrirPopUpErro(errResponse.data.message);
             });
     };
 
@@ -81,8 +93,39 @@ angular.module('docrotasApp').controller('UsuarioCtrl', ['$http',function ($http
                     self.novo();
                 }
             }, function (errResponse) {
-                console.error(errResponse);
+                 abrirPopUpErro(errResponse.data.message);
             })
     };
     self.buscarTodos(1);
-}]);
+
+    var abrirPopUpErro = function (msg) {
+        var modalInstance = $uibModal.open({
+        animation: self.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpErro.html',
+        controller: 'ErroCtrl',
+        controllerAs: 'erroCtrl',
+        resolve: {
+            msg: function () {
+                return msg;
+            }
+        }
+        });
+
+        modalInstance.result.then(function () {
+        }, function () {
+        
+        });
+    };
+});
+
+angular.module('docrotasApp').controller('ErroCtrl', function ($uibModalInstance, $http, msg) {
+    var self = this;
+    
+    self.mensagem = msg;
+
+    self.ok = function () {
+        $uibModalInstance.close();
+    };
+});
