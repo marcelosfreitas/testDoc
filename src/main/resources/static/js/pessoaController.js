@@ -80,8 +80,19 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
 
     self.novo = function () {
         self.habilitarModoFormulario();
-        self.pessoa = {};
+        novaPessoa();
     };
+
+    var novaPessoa = function () {
+        self.pessoa = {endereco : {}};
+    };
+
+    var init = function () {
+        self.buscarTodos(1);
+        novaPessoa();
+    };
+
+    init();
 
     self.excluir = function (id) {
         $http.delete(path + '/' + id)
@@ -94,7 +105,29 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
                  abrirPopUpErro(errResponse.data.message);
             })
     };
-    self.buscarTodos(1);
+
+    self.abrirPopUpPesquisaCidade = function () {
+        var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'popUpPesquisaCidade.html',
+        controller: 'PesquisaCidadeCtrl',
+        controllerAs: 'pesquisaCidadeCtrl',
+        windowClass: 'popUpPesquisaEntidade',
+        resolve: {
+            items: function () {
+                return self.items;
+            }
+        }
+        });
+
+        modalInstance.result.then(function (cidade) {
+            self.pessoa.endereco.cidade = cidade;
+        }, function () {
+        
+        });
+    };
 
     var abrirPopUpErro = function (msg) {
         var modalInstance = $uibModal.open({
