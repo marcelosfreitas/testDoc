@@ -40,6 +40,12 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
         if (self.campoSelecionado && self.valorBusca) {
             if (self.campoSelecionado === "id") {
                 url += '&id=' + self.valorBusca;
+            } else if (self.campoSelecionado === "razao") {
+                url += '&razao=' + self.valorBusca;
+            } else if (self.campoSelecionado === "fantasia") {
+                url += '&fantasia=' + self.valorBusca;
+            } else if (self.campoSelecionado === "cpfCnpj") {
+                url += '&cpfCnpj=' + self.valorBusca;
             }
         }
 

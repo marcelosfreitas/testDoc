@@ -104,6 +104,9 @@
 		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
 			<option value=""></option>
 			<option value="id">ID</option>
+			<option value="razao">Razão Social\Nome</option>
+			<option value="fantasia">Nome Fantasia\Apelido</option>
+			<option value="cpfCnpj">CPF/CNPJ</option>
 		</select>
 	</div>
 	<div class="form-group">
@@ -115,10 +118,16 @@
 <table class="table table-hover" ng-show="ctrl.modoGrade">
   <tr>
 	  <td><strong>ID</strong></td>
+	  <td><strong>Razão Social\Nome</strong></td>
+	  <td><strong>Nome Fantasia\Apelido</strong></td>
+	  <td><strong>CPF\CNPJ</strong></td>
 	  <td></td>
   </tr>
   <tr ng-repeat="pessoatb in ctrl.pessoas">
 	  <td ng-bind="pessoatb.id"></td>
+	  <td ng-bind="pessoatb.razao"></td>
+	  <td ng-bind="pessoatb.fantasia"></td>
+	  <td ng-bind="pessoatb.cpfCnpj"></td>
 	  <td>
 	  	<button class="btn-floating blue" ng-click="ctrl.editar(pessoatb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
 	 	<button class="btn-floating blue" ng-click="ctrl.excluir(pessoatb.id)"><span class="glyphicon glyphicon-remove"></span></button>
