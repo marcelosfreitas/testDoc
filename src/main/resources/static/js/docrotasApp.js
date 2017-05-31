@@ -17,6 +17,10 @@ app.config(['$routeProvider', function($routeProvider){
         templateUrl: 'views/cadastro_empresa.html',
         controller: 'EmpresaCtrl',
         controllerAs: 'ctrl'
+    }).when('/veiculo',{
+        templateUrl: 'views/cadastro_veiculo.html',
+        controller: 'VeiculoCtrl',
+        controllerAs: 'ctrl'
     })
 }]);
 
