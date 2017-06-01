@@ -19,7 +19,7 @@ public class NFeMedidas implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private NFePK nfepk;
+	private NFeMedidasId nfeMedidasId;
 	
 	@Column(name = "descricao", length = 20, nullable = false)
 	private String descricao;
@@ -33,12 +33,12 @@ public class NFeMedidas implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 
-	public NFePK getNfepk() {
-		return nfepk;
+	public NFeMedidasId getNFeMedidasID() {
+		return nfeMedidasId;
 	}
 
-	public void setNfepk(NFePK nfepk) {
-		this.nfepk = nfepk;
+	public void setNFeMedidasID(NFeMedidasId nfeMedidasId) {
+		this.nfeMedidasId = nfeMedidasId;
 	}
 
 	public String getDescricao() {
@@ -75,7 +75,7 @@ public class NFeMedidas implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NFeMedidas [nfepk=" + nfepk + ", descricao=" + descricao + ", valor=" + valor + ", dtCriacao="
+		return "NFeMedidas [nfeMedidasId=" + nfeMedidasId + ", descricao=" + descricao + ", valor=" + valor + ", dtCriacao="
 				+ dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
 	}
 
@@ -83,7 +83,7 @@ public class NFeMedidas implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nfepk == null) ? 0 : nfepk.hashCode());
+		result = prime * result + ((nfeMedidasId == null) ? 0 : nfeMedidasId.hashCode());
 		return result;
 	}
 
@@ -96,10 +96,10 @@ public class NFeMedidas implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		NFeMedidas other = (NFeMedidas) obj;
-		if (nfepk == null) {
-			if (other.nfepk != null)
+		if (nfeMedidasId == null) {
+			if (other.nfeMedidasId != null)
 				return false;
-		} else if (!nfepk.equals(other.nfepk))
+		} else if (!nfeMedidasId.equals(other.nfeMedidasId))
 			return false;
 		return true;
 	}

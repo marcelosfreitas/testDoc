@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class NFePK implements Serializable{
+public class NFeMedidasId implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,7 @@ public class NFePK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NFePK other = (NFePK) obj;
+		NFeMedidasId other = (NFeMedidasId) obj;
 		if (codMedida == null) {
 			if (other.codMedida != null)
 				return false;

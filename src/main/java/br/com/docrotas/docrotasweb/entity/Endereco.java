@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,46 +15,45 @@ import br.com.docrotas.docrotasweb.listerner.EnderecoListerner;
 
 @Entity
 @Table(name = "endereco")
-@EntityListeners(value=EnderecoListerner.class)
+@EntityListeners(value = EnderecoListerner.class)
 public class Endereco implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+
+	@EmbeddedId
+	private EnderecoID enderecoId;
+
 	@Column(name = "logradouro", length = 60, nullable = false)
 	private String logradouro;
-	
+
 	@Column(name = "nro")
 	private Long nro;
-	
+
 	@Column(name = "complemento", length = 60, nullable = false)
 	private String complemento;
-	
+
 	@Column(name = "bairro", length = 40, nullable = false)
 	private String bairro;
-	
+
 	@Column(name = "cep", length = 8, nullable = false)
 	private String cep;
-	
+
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
-	
+
 	@ManyToOne
-	@JoinColumn(name="cidade_id")
+	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	public Long getId() {
-		return id;
+	public EnderecoID getEnderecoId() {
+		return enderecoId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEnderecoId(EnderecoID enderecoId) {
+		this.enderecoId = enderecoId;
 	}
 
 	public String getLogradouro() {
@@ -113,7 +110,7 @@ public class Endereco implements Serializable {
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
-	}	
+	}
 
 	public Cidade getCidade() {
 		return cidade;
@@ -127,7 +124,7 @@ public class Endereco implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((enderecoId == null) ? 0 : enderecoId.hashCode());
 		return result;
 	}
 
@@ -140,19 +137,19 @@ public class Endereco implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Endereco other = (Endereco) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (enderecoId == null) {
+			if (other.enderecoId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!enderecoId.equals(other.enderecoId))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento
-				+ ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao
-				+ ", cidade=" + cidade + "]";
-	}	
+		return "Endereco [enderecoID=" + enderecoId + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento="
+				+ complemento + ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao="
+				+ dtAlteracao + ", cidade=" + cidade + "]";
+	}
 
 }

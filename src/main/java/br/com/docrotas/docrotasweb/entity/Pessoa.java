@@ -50,10 +50,6 @@ public class Pessoa implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@OneToOne
-	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
-
 	public Long getId() {
 		return id;
 	}
@@ -126,14 +122,6 @@ public class Pessoa implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}	
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -163,7 +151,7 @@ public class Pessoa implements Serializable {
 	public String toString() {
 		return "Pessoa [id=" + id + ", razao=" + razao + ", fantasia=" + fantasia + ", cpfCnpj=" + cpfCnpj + ", ie="
 				+ ie + ", motorista=" + motorista + ", cliente=" + cliente + ", dtCriacao=" + dtCriacao
-				+ ", dtAlteracao=" + dtAlteracao + ", endereco=" + endereco + "]";
+				+ ", dtAlteracao=" + dtAlteracao + "]";
 	}
 	
 }

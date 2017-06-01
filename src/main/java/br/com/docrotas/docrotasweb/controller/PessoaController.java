@@ -34,7 +34,7 @@ public class PessoaController {
 									@RequestParam(value = "cidadeNome", required = false)String cidadeNome){
 		Pageable pageable = new PageRequest(pagina, qtd);
 		
-		Page<Pessoa> pagePessoas;
+		Page<Pessoa> pagePessoas = null;
 		if(id != null){
 			pagePessoas = pessoaRepository.findById(id, pageable);
 		}else if(cpfCnpj != null){
@@ -48,9 +48,9 @@ public class PessoaController {
 		}else if(cliente == true){
 			pagePessoas = pessoaRepository.findByClienteTrue(cliente, pageable);
 		}else if(cidadeId != null){
-			pagePessoas = pessoaRepository.findByEnderecoCidadeId(cidadeId, pageable);
+			//pagePessoas = pessoaRepository.findByEnderecoCidadeId(cidadeId, pageable);
 		}else if(cidadeNome != null){
-			pagePessoas = pessoaRepository.findByEnderecoCidadeNomeContaining(cidadeNome, pageable);
+			//pagePessoas = pessoaRepository.findByEnderecoCidadeNomeContaining(cidadeNome, pageable);
 		}else{
 			pagePessoas = pessoaRepository.findAll(pageable);
 		}
