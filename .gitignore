@@ -151,3 +151,5 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/maven
 
+
+src/main/resources/der/der_docrotas\.mwb
