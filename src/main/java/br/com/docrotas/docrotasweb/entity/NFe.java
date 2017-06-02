@@ -9,7 +9,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.docrotas.docrotasweb.listerner.NFeListerner;
@@ -108,7 +107,7 @@ public class NFe implements Serializable{
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
-	}
+	}	
 
 	@Override
 	public String toString() {
