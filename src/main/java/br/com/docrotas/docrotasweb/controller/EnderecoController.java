@@ -26,7 +26,8 @@ public class EnderecoController {
 									 @RequestParam(value = "tipo", required = false) Long tipo) throws Exception{
 		Pageable pageable = new PageRequest(pagina, qtd);
 		
-		Page<Endereco> pageEnderecos = enderecoRepository.findByEnderecoIdPessoaId(pessoaID, pageable);
+//		Page<Endereco> pageEnderecos = enderecoRepository.findByEnderecoIdPessoaId(pessoaID, pageable);
+		Page<Endereco> pageEnderecos = enderecoRepository.findAll(pageable);
 		
 		return pageEnderecos;
 	}

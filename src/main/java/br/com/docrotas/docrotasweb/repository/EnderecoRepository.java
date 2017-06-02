@@ -12,6 +12,6 @@ import br.com.docrotas.docrotasweb.entity.EnderecoID;
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, EnderecoID>, JpaSpecificationExecutor<Endereco> {
 	
-	public Page<Endereco> findByEnderecoIdPessoaId(Long id, Pageable pageable);
+//	public Page<Endereco> findByEnderecoIdPessoaId(Long id, Pageable pageable);
 	
 }

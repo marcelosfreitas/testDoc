@@ -7,21 +7,36 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.EnderecoListerner;
 
 @Entity
 @Table(name = "endereco")
 @EntityListeners(value = EnderecoListerner.class)
+@IdClass(EnderecoID.class)
 public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private EnderecoID enderecoId;
+	@Id
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tipo", insertable = false, updatable = false)
+	private TipoEndereco tipoEndereco;
+
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "pessoa_id", insertable = false, updatable = false)
+	@JsonIgnore
+	private Pessoa pessoa;
 
 	@Column(name = "logradouro", length = 60, nullable = false)
 	private String logradouro;
@@ -48,12 +63,20 @@ public class Endereco implements Serializable {
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	public EnderecoID getEnderecoId() {
-		return enderecoId;
+	public TipoEndereco getTipoEndereco() {
+		return tipoEndereco;
 	}
 
-	public void setEnderecoId(EnderecoID enderecoId) {
-		this.enderecoId = enderecoId;
+	public void setTipoEndereco(TipoEndereco tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	public String getLogradouro() {
@@ -124,7 +147,8 @@ public class Endereco implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((enderecoId == null) ? 0 : enderecoId.hashCode());
+		result = prime * result + ((pessoa == null) ? 0 : pessoa.hashCode());
+		result = prime * result + ((tipoEndereco == null) ? 0 : tipoEndereco.hashCode());
 		return result;
 	}
 
@@ -137,19 +161,19 @@ public class Endereco implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Endereco other = (Endereco) obj;
-		if (enderecoId == null) {
-			if (other.enderecoId != null)
+		if (pessoa == null) {
+			if (other.pessoa != null)
 				return false;
-		} else if (!enderecoId.equals(other.enderecoId))
+		} else if (!pessoa.equals(other.pessoa))
+			return false;
+		if (tipoEndereco != other.tipoEndereco)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Endereco [enderecoID=" + enderecoId + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento="
-				+ complemento + ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao="
-				+ dtAlteracao + ", cidade=" + cidade + "]";
+		return "Endereco [tipoEndereco=" + tipoEndereco + ", pessoa=" + pessoa + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + ", cidade=" + cidade + "]";
 	}
 
 }

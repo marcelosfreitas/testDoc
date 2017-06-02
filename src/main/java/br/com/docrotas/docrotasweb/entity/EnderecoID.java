@@ -9,17 +9,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Embeddable
 public class EnderecoID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "tipo")
 	private TipoEndereco tipoEndereco;
 
-	@ManyToOne
-	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 
 	public TipoEndereco getTipoEndereco() {
