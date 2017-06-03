@@ -58,15 +58,15 @@ public class Veiculo implements Serializable {
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_rodado", nullable = false)
-	private Rodado rodado;
+	private TipoRodado rodado;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_carroceria", nullable = false)
-	private Carroceria carroceria;
+	private TipoCarroceria carroceria;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_proprietario", nullable = false)
-	private Proprietario proprietario;
+	private TipoProprietario proprietario;
 	
 	@ManyToOne
 	@JoinColumn(name = "uf_id")
@@ -156,27 +156,27 @@ public class Veiculo implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}
 
-	public Rodado getRodado() {
+	public TipoRodado getRodado() {
 		return rodado;
 	}
 
-	public void setRodado(Rodado rodado) {
+	public void setRodado(TipoRodado rodado) {
 		this.rodado = rodado;
 	}
 
-	public Carroceria getCarroceria() {
+	public TipoCarroceria getCarroceria() {
 		return carroceria;
 	}
 
-	public void setCarroceria(Carroceria carroceria) {
+	public void setCarroceria(TipoCarroceria carroceria) {
 		this.carroceria = carroceria;
 	}
 
-	public Proprietario getProprietario() {
+	public TipoProprietario getProprietario() {
 		return proprietario;
 	}
 
-	public void setProprietario(Proprietario proprietario) {
+	public void setProprietario(TipoProprietario proprietario) {
 		this.proprietario = proprietario;
 	}
 

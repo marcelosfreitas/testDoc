@@ -1,6 +1,8 @@
 package br.com.docrotas.docrotasweb.entity;
 
-public enum Rodado {
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum TipoRodado {
 	Truck("01"), 
 	Toco("02"), 
 	Cavalo_Mecanico("03"),
@@ -9,8 +11,13 @@ public enum Rodado {
 	Outros("06");
 	
 	private String codigo;
+	
+	@JsonValue
+	public int toValue() {
+		return ordinal();
+	}	
 
-	Rodado(String codigo){
+	TipoRodado(String codigo){
 		this.codigo = codigo;
 	}
 	

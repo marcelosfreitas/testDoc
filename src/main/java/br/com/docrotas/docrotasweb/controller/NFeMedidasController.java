@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.NFeMedidas;
+import br.com.docrotas.docrotasweb.entity.TipoMedidas;
 import br.com.docrotas.docrotasweb.repository.NFeRepository;
 import br.com.docrotas.docrotasweb.repository.NfeMedidasRepository;
 
@@ -26,22 +28,16 @@ public class NFeMedidasController {
 	@GetMapping("/nfemedidas")
 	public Page<NFeMedidas> buscarTodos(@RequestParam(value = "pagina", required = true)int pagina,
 									    @RequestParam(value = "qtd", required = true)int qtd,
-							   			@RequestParam(value = "idMedida", required = false)Long idMedida,
-							   			@RequestParam(value = "idNFe", required = false)Long idNfe){
+							   			@RequestParam(value = "idMedida", required = false)Integer idMedida,
+							   			@RequestParam(value = "idNFe", required = true)Long idNfe) throws Exception{
 		Pageable pageable = new PageRequest(pagina, qtd);
 		
 		Page<NFeMedidas> pageNFeMedidas;
 		
-		if(idMedida != null && idNfe != null){
-			NFeMedidas nfeMedidas = new NFeMedidas();
-			nfeMedidas.getNfepk().setCodMedida(idMedida);
-			nfeMedidas.getNfepk().setNfe(nfeRepository.findById(idNfe));
-			
-			pageNFeMedidas = nfemedidasRepository.findByNfepk(nfeMedidas, pageable);
-		}else if(idNfe != null){
-			pageNFeMedidas = nfemedidasRepository.findByNfepkNfeId(idNfe, pageable);
+		if(idMedida != null){
+			pageNFeMedidas = nfemedidasRepository.findByTipoMedidasAndNfeId(TipoMedidas.getTipoMedidas(idMedida), idNfe, pageable);
 		}else{
-			pageNFeMedidas = nfemedidasRepository.findAll(pageable);
+			pageNFeMedidas = nfemedidasRepository.findByNfeId(idNfe, pageable);
 		}
 		
 		return pageNFeMedidas;
@@ -52,11 +48,11 @@ public class NFeMedidasController {
 		return nfemedidasRepository.save(nfemedidas);
 	}
 	
-	@DeleteMapping(value = "/nfemedidas{idMedida, idNfe}")
+	/*@DeleteMapping(value = "/nfemedidas{idMedida, idNfe}")
 	public void excluir(@PathVariable Long idMedida, @PathVariable Long idNfe){
 		NFeMedidas nfemedidas = new NFeMedidas();
 		nfemedidas.getNfepk().setCodMedida(idMedida);
 		nfemedidas.getNfepk().setNfe(nfeRepository.findById(idNfe));
 		nfemedidasRepository.delete(nfemedidas);
-	}
+	}*/
 }

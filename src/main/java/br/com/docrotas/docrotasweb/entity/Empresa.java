@@ -64,14 +64,14 @@ public class Empresa implements Serializable {
 	
 	@Enumerated(EnumType.ORDINAL)	
 	@Column(name = "ambiente_cte")
-	private AmbienteEmissao ambienteCte;
+	private TipoAmbienteEmissao ambienteCte;
 	
 	@Column(name = "emite_mdfe", precision = 1)
 	private Boolean emiteMdfe;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "ambiente_mdfe")
-	private AmbienteEmissao ambienteMdfe;
+	private TipoAmbienteEmissao ambienteMdfe;
 
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
@@ -176,11 +176,11 @@ public class Empresa implements Serializable {
 		this.emiteCte = emiteCte;
 	}
 
-	public AmbienteEmissao getAmbienteCte() {
+	public TipoAmbienteEmissao getAmbienteCte() {
 		return ambienteCte;
 	}
 
-	public void setAmbienteCte(AmbienteEmissao ambienteCte) {
+	public void setAmbienteCte(TipoAmbienteEmissao ambienteCte) {
 		this.ambienteCte = ambienteCte;
 	}
 
@@ -192,11 +192,11 @@ public class Empresa implements Serializable {
 		this.emiteMdfe = emiteMdfe;
 	}
 
-	public AmbienteEmissao getAmbienteMdfe() {
+	public TipoAmbienteEmissao getAmbienteMdfe() {
 		return ambienteMdfe;
 	}
 
-	public void setAmbienteMdfe(AmbienteEmissao ambienteMdfe) {
+	public void setAmbienteMdfe(TipoAmbienteEmissao ambienteMdfe) {
 		this.ambienteMdfe = ambienteMdfe;
 	}
 

@@ -2,50 +2,36 @@ package br.com.docrotas.docrotasweb.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-@Embeddable
-public class NFePK implements Serializable{
+public class NFeMedidasId implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "cod_medida", nullable = false)
-	private Long codMedida;
-	
-	@ManyToOne
-	@JoinColumn(name = "nfe_id")	
-	private NFe nfe;
+	private TipoMedidas tipoMedidas;
+		
+	private Long nfe;
 
-	public Long getCodMedida() {
-		return codMedida;
+	public TipoMedidas getCodMedida() {
+		return tipoMedidas;
 	}
 
-	public void setCodMedida(Long codMedida) {
-		this.codMedida = codMedida;
+	public void setCodMedida(TipoMedidas tipoMedidas) {
+		this.tipoMedidas = tipoMedidas;
 	}
 
-	public NFe getNfe() {
+	public Long getNfe() {
 		return nfe;
 	}
 
-	public void setNfe(NFe nfe) {
+	public void setNfe(Long nfe) {
 		this.nfe = nfe;
-	}
-
-	@Override
-	public String toString() {
-		return "NFePK [codMedida=" + codMedida + ", nfe=" + nfe + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((codMedida == null) ? 0 : codMedida.hashCode());
 		result = prime * result + ((nfe == null) ? 0 : nfe.hashCode());
+		result = prime * result + ((tipoMedidas == null) ? 0 : tipoMedidas.hashCode());
 		return result;
 	}
 
@@ -57,18 +43,21 @@ public class NFePK implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NFePK other = (NFePK) obj;
-		if (codMedida == null) {
-			if (other.codMedida != null)
-				return false;
-		} else if (!codMedida.equals(other.codMedida))
-			return false;
+		NFeMedidasId other = (NFeMedidasId) obj;
 		if (nfe == null) {
 			if (other.nfe != null)
 				return false;
 		} else if (!nfe.equals(other.nfe))
 			return false;
+		if (tipoMedidas != other.tipoMedidas)
+			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "NFeMedidasId [tipoMedidas=" + tipoMedidas + ", nfe=" + nfe + "]";
+	}
+
 
 }
