@@ -34,10 +34,10 @@ public class NFeMedidasController {
 		
 		if(idMedida != null && idNfe != null){
 			NFeMedidas nfeMedidas = new NFeMedidas();
-			nfeMedidas.getNfepk().setCodMedida(idMedida);
-			nfeMedidas.getNfepk().setNfe(nfeRepository.findById(idNfe));
+			nfeMedidas.getNfepk().setCodMedida(idMedida); 
+		    nfeMedidas.getNfepk().setNfe(nfeRepository.findById(idNfe)); 
 			
-			pageNFeMedidas = nfemedidasRepository.findByNfepk(nfeMedidas, pageable);
+		    pageNFeMedidas = nfemedidasRepository.findByNfepk(nfeMedidas, pageable); 
 		}else if(idNfe != null){
 			pageNFeMedidas = nfemedidasRepository.findByNfepkNfeId(idNfe, pageable);
 		}else{
@@ -55,8 +55,8 @@ public class NFeMedidasController {
 	@DeleteMapping(value = "/nfemedidas{idMedida, idNfe}")
 	public void excluir(@PathVariable Long idMedida, @PathVariable Long idNfe){
 		NFeMedidas nfemedidas = new NFeMedidas();
-		nfemedidas.getNfepk().setCodMedida(idMedida);
-		nfemedidas.getNfepk().setNfe(nfeRepository.findById(idNfe));
+	    nfemedidas.getNfepk().setCodMedida(idMedida); 
+	    nfemedidas.getNfepk().setNfe(nfeRepository.findById(idNfe)); 
 		nfemedidasRepository.delete(nfemedidas);
 	}
 }

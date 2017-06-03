@@ -33,12 +33,12 @@ public class NFeMedidas implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 
-	public NFePK getNfepk() {
-		return nfepk;
+	public NFePK getNfepk() { 
+	    return nfepk;
 	}
 
-	public void setNfepk(NFePK nfepk) {
-		this.nfepk = nfepk;
+	public void setNfepk(NFePK nfepk) { 
+	    this.nfepk = nfepk;
 	}
 
 	public String getDescricao() {
@@ -96,10 +96,10 @@ public class NFeMedidas implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		NFeMedidas other = (NFeMedidas) obj;
-		if (nfepk == null) {
-			if (other.nfepk != null)
+		if (nfepk == null) { 
+		      if (other.nfepk != null)
 				return false;
-		} else if (!nfepk.equals(other.nfepk))
+		} else if (!nfepk.equals(other.nfepk)) 
 			return false;
 		return true;
 	}

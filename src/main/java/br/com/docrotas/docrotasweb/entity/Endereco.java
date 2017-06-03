@@ -3,12 +3,14 @@ package br.com.docrotas.docrotasweb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,46 +19,61 @@ import br.com.docrotas.docrotasweb.listerner.EnderecoListerner;
 
 @Entity
 @Table(name = "endereco")
-@EntityListeners(value=EnderecoListerner.class)
+@EntityListeners(value = EnderecoListerner.class)
+@IdClass(EnderecoID.class)
 public class Endereco implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tipo", insertable = false, updatable = false)
+	private TipoEndereco tipoEndereco;
+
+	@Id
+	@ManyToOne(cascade=CascadeType.DETACH)
+	@JoinColumn(name = "pessoa_id", insertable = false, updatable = false)
+	private Pessoa pessoa;
+
 	@Column(name = "logradouro", length = 60, nullable = false)
 	private String logradouro;
-	
+
 	@Column(name = "nro")
 	private Long nro;
-	
+
 	@Column(name = "complemento", length = 60, nullable = false)
 	private String complemento;
-	
+
 	@Column(name = "bairro", length = 40, nullable = false)
 	private String bairro;
-	
+
 	@Column(name = "cep", length = 8, nullable = false)
 	private String cep;
-	
+
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
-	
-	@ManyToOne
-	@JoinColumn(name="cidade_id")
+
+	@ManyToOne(cascade=CascadeType.DETACH)
+	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	public Long getId() {
-		return id;
+	public TipoEndereco getTipoEndereco() {
+		return tipoEndereco;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setTipoEndereco(TipoEndereco tipoEndereco) {
+		this.tipoEndereco = tipoEndereco;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	public String getLogradouro() {
@@ -113,7 +130,7 @@ public class Endereco implements Serializable {
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
-	}	
+	}
 
 	public Cidade getCidade() {
 		return cidade;
@@ -127,7 +144,8 @@ public class Endereco implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((pessoa == null) ? 0 : pessoa.hashCode());
+		result = prime * result + ((tipoEndereco == null) ? 0 : tipoEndereco.hashCode());
 		return result;
 	}
 
@@ -140,19 +158,19 @@ public class Endereco implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Endereco other = (Endereco) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (pessoa == null) {
+			if (other.pessoa != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!pessoa.equals(other.pessoa))
+			return false;
+		if (tipoEndereco != other.tipoEndereco)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento
-				+ ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao
-				+ ", cidade=" + cidade + "]";
-	}	
+		return "Endereco [tipoEndereco=" + tipoEndereco + ", pessoa=" + pessoa + ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro + ", cep=" + cep + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + ", cidade=" + cidade + "]";
+	}
 
 }

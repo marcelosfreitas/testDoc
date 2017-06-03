@@ -1,5 +1,9 @@
 package br.com.docrotas.docrotasweb.entity;
 
 public enum Proprietario {
-	TAC_Agregado, TAC_Independente, Outros
+
+	TAC_AGREGADO, 
+	TAC_INDEPENDENTE, 
+	OUTROS;
+
 }

@@ -11,7 +11,7 @@ import br.com.docrotas.docrotasweb.entity.NFeMedidas;
 @Repository
 public interface NfeMedidasRepository extends JpaRepository<NFeMedidas, Long>, JpaSpecificationExecutor<NFeMedidas>{
 	
-	public Page<NFeMedidas> findByNfepk(NFeMedidas id, Pageable pageable);
+	public Page<NFeMedidas> findByNfepk(NFeMedidas id, Pageable pageable); 
 	
 	public Page<NFeMedidas> findByNfepkNfeId(Long nfeId, Pageable pageable);
 
