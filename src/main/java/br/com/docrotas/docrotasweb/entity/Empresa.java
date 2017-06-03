@@ -64,14 +64,14 @@ public class Empresa implements Serializable {
 	
 	@Enumerated(EnumType.ORDINAL)	
 	@Column(name = "ambiente_cte")
-	private TipoAmbienteEmissao ambienteCte;
+	private TipoAmbienteEmissao tipoAmbienteCte;
 	
 	@Column(name = "emite_mdfe", precision = 1)
 	private Boolean emiteMdfe;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "ambiente_mdfe")
-	private TipoAmbienteEmissao ambienteMdfe;
+	private TipoAmbienteEmissao tipoAmbienteMdfe;
 
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
@@ -176,28 +176,12 @@ public class Empresa implements Serializable {
 		this.emiteCte = emiteCte;
 	}
 
-	public TipoAmbienteEmissao getAmbienteCte() {
-		return ambienteCte;
-	}
-
-	public void setAmbienteCte(TipoAmbienteEmissao ambienteCte) {
-		this.ambienteCte = ambienteCte;
-	}
-
 	public Boolean getEmiteMdfe() {
 		return emiteMdfe;
 	}
 
 	public void setEmiteMdfe(Boolean emiteMdfe) {
 		this.emiteMdfe = emiteMdfe;
-	}
-
-	public TipoAmbienteEmissao getAmbienteMdfe() {
-		return ambienteMdfe;
-	}
-
-	public void setAmbienteMdfe(TipoAmbienteEmissao ambienteMdfe) {
-		this.ambienteMdfe = ambienteMdfe;
 	}
 
 	public Date getDtCriacao() {
@@ -214,6 +198,31 @@ public class Empresa implements Serializable {
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", ie=" + ie + ", razao=" + razao + ", fantasia=" + fantasia
+				+ ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro
+				+ ", cep=" + cep + ", cidade=" + cidade + ", emiteCte=" + emiteCte + ", tipoAmbienteCte="
+				+ tipoAmbienteCte + ", emiteMdfe=" + emiteMdfe + ", tipoAmbienteMdfe=" + tipoAmbienteMdfe
+				+ ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
+	}
+
+	public TipoAmbienteEmissao getTipoAmbienteCte() {
+		return tipoAmbienteCte;
+	}
+
+	public void setTipoAmbienteCte(TipoAmbienteEmissao tipoAmbienteCte) {
+		this.tipoAmbienteCte = tipoAmbienteCte;
+	}
+
+	public TipoAmbienteEmissao getTipoAmbienteMdfe() {
+		return tipoAmbienteMdfe;
+	}
+
+	public void setTipoAmbienteMdfe(TipoAmbienteEmissao tipoAmbienteMdfe) {
+		this.tipoAmbienteMdfe = tipoAmbienteMdfe;
 	}
 
 	@Override
@@ -240,14 +249,5 @@ public class Empresa implements Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", ie=" + ie + ", razao=" + razao + ", fantasia=" + fantasia
-				+ ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro
-				+ ", cep=" + cep + ", cidade=" + cidade + ", emiteCte=" + emiteCte + ", ambienteCte=" + ambienteCte
-				+ ", emiteMdfe=" + emiteMdfe + ", ambienteMdfe=" + ambienteMdfe + ", dtCriacao=" + dtCriacao
-				+ ", dtAlteracao=" + dtAlteracao + "]";
-	}	
 	
 }

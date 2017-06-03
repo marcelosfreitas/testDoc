@@ -6,10 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.com.docrotas.docrotasweb.listerner.NFeMedidasListerner;
@@ -23,10 +25,11 @@ public class NFeMedidas implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Enumerated(EnumType.ORDINAL)
 	private TipoMedidas tipoMedidas;
 	
 	@Id
-	@ManyToMany
+	@ManyToOne
 	@JoinColumn(name = "nfe_id")
 	private NFe nfe;
 	
