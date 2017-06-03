@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.repository.CTeRepository;
+import br.com.docrotas.docrotasweb.service.cte.CTeService;
 
 @RestController
 public class CTeController {
@@ -45,6 +46,12 @@ public class CTeController {
 	@PostMapping(value = "/cte")
 	public CTe salvar(@RequestBody CTe cte){
 		return cteRepository.save(cte);
+	}
+	
+	@PostMapping(value = "/cte/buscarAutorizacao/{id}")
+	public void buscarAutorizacao(@PathVariable Long id){
+		CTeService cteService = new CTeService();
+		cteService.buscarAutorizacao(id);
 	}
 	
 	@DeleteMapping("/cte/{id}")
