@@ -11,29 +11,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.docrotas.docrotasweb.entity.Endereco;
+import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 import br.com.docrotas.docrotasweb.repository.EnderecoRepository;
+import br.com.docrotas.docrotasweb.repository.PessoaRepository;
 
 @RestController
 public class EnderecoController {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired 
+	private PessoaRepository pessoaRepository;
 	
 	@GetMapping("/endereco")
-	public Page<Endereco> buscarTodas(@RequestParam(value = "pagina", required = true) int pagina,
+	public Page<Endereco> buscar(@RequestParam(value = "pagina", required = true) int pagina,
 								     @RequestParam(value = "qtd", required = true) int qtd,
-								     @RequestParam(value = "pessoaID", required = true) Long pessoaID,
-									 @RequestParam(value = "tipo", required = false) Long tipo) throws Exception{
+								     @RequestParam(value = "pessoaId", required = true) Long pessoaID,
+									 @RequestParam(value = "tipoEndereco", required = false) Integer tipoEndereco) throws Exception{
 		Pageable pageable = new PageRequest(pagina, qtd);
+
+		Page<Endereco> pageEnderecos = null;
 		
-//		Page<Endereco> pageEnderecos = enderecoRepository.findByEnderecoIdPessoaId(pessoaID, pageable);
-		Page<Endereco> pageEnderecos = enderecoRepository.findAll(pageable);
+		if (tipoEndereco != null) {
+			pageEnderecos = enderecoRepository.findByPessoaIdAndTipoEndereco(pessoaID, TipoEndereco.geTipoEndereco(tipoEndereco), pageable);
+		} else {
+			pageEnderecos = enderecoRepository.findByPessoaId(pessoaID, pageable);
+		}
 		
 		return pageEnderecos;
 	}
 	
 	@PostMapping(value = "/endereco")
 	public Endereco salvar(@RequestBody Endereco endereco) throws Exception {
+		endereco.setPessoa(pessoaRepository.findOne(endereco.getPessoa().getId()));
 		return enderecoRepository.save(endereco);
 	}
 	

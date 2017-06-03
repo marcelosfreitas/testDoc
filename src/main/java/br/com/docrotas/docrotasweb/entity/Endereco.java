@@ -3,8 +3,8 @@ package br.com.docrotas.docrotasweb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -14,8 +14,6 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.EnderecoListerner;
 
@@ -33,9 +31,8 @@ public class Endereco implements Serializable {
 	private TipoEndereco tipoEndereco;
 
 	@Id
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.DETACH)
 	@JoinColumn(name = "pessoa_id", insertable = false, updatable = false)
-	@JsonIgnore
 	private Pessoa pessoa;
 
 	@Column(name = "logradouro", length = 60, nullable = false)
@@ -59,7 +56,7 @@ public class Endereco implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.DETACH)
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 

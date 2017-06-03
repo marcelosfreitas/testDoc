@@ -2,20 +2,13 @@ package br.com.docrotas.docrotasweb.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 public class EnderecoID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private TipoEndereco tipoEndereco;
 
-	private Pessoa pessoa;
+	private Long pessoa;
 
 	public TipoEndereco getTipoEndereco() {
 		return tipoEndereco;
@@ -25,11 +18,11 @@ public class EnderecoID implements Serializable {
 		this.tipoEndereco = tipoEndereco;
 	}
 
-	public Pessoa getPessoa() {
+	public Long getPessoa() {
 		return pessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
+	public void setPessoa(Long pessoa) {
 		this.pessoa = pessoa;
 	}
 

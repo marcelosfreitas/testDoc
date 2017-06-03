@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import br.com.docrotas.docrotasweb.entity.Endereco;
 import br.com.docrotas.docrotasweb.entity.EnderecoID;
+import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, EnderecoID>, JpaSpecificationExecutor<Endereco> {
-	
-//	public Page<Endereco> findByEnderecoIdPessoaId(Long id, Pageable pageable);
+		
+	public Page<Endereco> findByPessoaId(Long id, Pageable pageable);
+
+	public Page<Endereco> findByPessoaIdAndTipoEndereco(Long pessoaID, TipoEndereco tipoEndereco, Pageable pageable);
 	
 }

@@ -2,10 +2,12 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
     var self = this;
     var path = "pessoa";
     var qtd = 15;
+    var enderecoPrincipal = 0;
 
     self.pessoas = [];
     self.pessoa = {};
     self.filtro = {};
+    self.endereco = {};
 
     self.modoGrade = true;
     self.modoFormulario = false;
@@ -32,6 +34,25 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
         self.modoGrade = false;
         self.modoFormulario = true;
     }
+
+    var buscarEndereco = function  () {
+        if (self.pessoa) {
+            if (self.pessoa.id) {
+                var url = 'endereco?pagina=0&qtd=15&pessoaId=' + self.pessoa.id + '&tipoEndereco=' + enderecoPrincipal;
+
+                return $http.get(url).then(
+                    function (response) {
+                        if (response.data.content[0]) {
+                            self.endereco = response.data.content[0];
+                        }
+                    }, function (errResponse) {
+                        abrirPopUpErro(errResponse.data.message);
+                    });
+            }
+        }
+
+        
+    };
 
     self.buscarTodos = function (pageNo) {
         var pagina = pageNo - 1;
@@ -64,6 +85,7 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
         return $http.get(path + '?id=' + id + '&pagina=0&qtd=' + qtd).then(
             function (response) {
                 self.pessoa = response.data.content[0];
+                buscarEndereco();
             }, function(errReponse) {
                 abrirPopUpErro(errResponse.data.message);
             });
@@ -75,10 +97,19 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
     }
 
     self.salvar = function () {
-        $http.post(path + '/', self.pessoa)
+         $http.post(path + '/', self.pessoa)
             .then(function sucesso (response) {
-                self.buscarTodos(self.paginaAtual);
-                self.novo();
+                self.pessoa = response.data;
+                self.endereco.pessoa = self.pessoa;
+
+                $http.post('endereco/', self.endereco)
+                    .then(function sucesso (response) {
+                        self.buscarTodos(self.paginaAtual);
+                        self.novo();
+                    }, function(errResponse) {
+                        abrirPopUpErro(errResponse.data.message);
+                    });
+
             }, function(errResponse) {
                 abrirPopUpErro(errResponse.data.message);
             });
@@ -90,8 +121,14 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
     };
 
     var novaPessoa = function () {
-        self.pessoa = {endereco : {}};
+        self.pessoa = {};
+        novoEndereco();
     };
+
+    var novoEndereco = function () {
+        self.endereco = {};
+        self.endereco.tipoEndereco = enderecoPrincipal;
+    }
 
     var init = function () {
         self.buscarTodos(1);
@@ -129,7 +166,7 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
         });
 
         modalInstance.result.then(function (cidade) {
-            self.pessoa.endereco.cidade = cidade;
+            self.endereco.cidade = cidade;
         }, function () {
         
         });

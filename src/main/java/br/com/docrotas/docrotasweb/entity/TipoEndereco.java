@@ -12,5 +12,15 @@ public enum TipoEndereco {
 	public int toValue() {
 		return ordinal();
 	}
+	
+	public static TipoEndereco geTipoEndereco(int value) throws Exception {
+		for (TipoEndereco tipoEndereco : TipoEndereco.values()) {
+			if (value == tipoEndereco.ordinal()) {
+				return tipoEndereco;
+			}
+		}
+		
+		throw new Exception("Não foi possível identificar um Tipo de Endereço com valor = " + String.valueOf(value));
+	}
 
 }

@@ -52,41 +52,6 @@
 				</label>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-8">
-			<label for="pessoa_endereco_logradouro">Logradouro</label>
-			<input type="text" class="form-control" id="pessoa_endereco_logradouro" ng-model="ctrl.pessoa.endereco.logradouro">
-		</div>
-        <div class="form-group col-md-4">
-			<label for="pessoa_endereco_nro">Número</label>
-			<input type="text" class="form-control" id="pessoa_endereco_nro" ng-model="ctrl.pessoa.endereco.nro">
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-4">
-			<label for="pessoa_endereco_complemento">Complemento</label>
-			<input type="text" class="form-control" id="pessoa_endereco_complemento" ng-model="ctrl.pessoa.endereco.complemento">
-		</div>
-        <div class="form-group col-md-4">
-			<label for="pessoa_endereco_bairro">Bairro</label>
-			<input type="text" class="form-control" id="pessoa_endereco_bairro" ng-model="ctrl.pessoa.endereco.bairro">
-		</div>
-		<div class="form-group col-md-4">
-			<label for="pessoa_endereco_cep">CEP</label>
-			<input type="text" class="form-control" id="pessoa_endereco_cep" ng-model="ctrl.pessoa.endereco.cep">
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-4">
-			<label for="pessoa_endereco_cidade">Cidade</label>
-				<p class="input-group">
-					<input type="text" class="form-control" id="pessoa_endereco_cidade" ng-model="ctrl.pessoa.endereco.cidade.nome">
-					<span class="input-group-btn">
-						<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
-					</span>
-				</p>
-		</div>
 		<div class="form-group col-md-4">
 			<label for="pessoa_dt_criacao">Data criação</label>
 			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.pessoa.dtCriacao" ng-disabled="true"/>
@@ -94,6 +59,41 @@
 		<div class="form-group col-md-4">
 			<label for="pessoa_endereco_alteracao">Data alteração</label>
 			<input text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.pessoa.dtAlteracao" ng-disabled="true"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="pessoa_endereco_logradouro">Logradouro</label>
+			<input type="text" class="form-control" id="pessoa_endereco_logradouro" ng-model="ctrl.endereco.logradouro">
+		</div>
+        <div class="form-group col-md-4">
+			<label for="pessoa_endereco_nro">Número</label>
+			<input type="text" class="form-control" id="pessoa_endereco_nro" ng-model="ctrl.endereco.nro">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="pessoa_endereco_complemento">Complemento</label>
+			<input type="text" class="form-control" id="pessoa_endereco_complemento" ng-model="ctrl.endereco.complemento">
+		</div>
+        <div class="form-group col-md-4">
+			<label for="pessoa_endereco_bairro">Bairro</label>
+			<input type="text" class="form-control" id="pessoa_endereco_bairro" ng-model="ctrl.endereco.bairro">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="pessoa_endereco_cep">CEP</label>
+			<input type="text" class="form-control" id="pessoa_endereco_cep" ng-model="ctrl.endereco.cep">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="pessoa_endereco_cidade">Cidade</label>
+				<p class="input-group">
+					<input type="text" class="form-control" id="pessoa_endereco_cidade" ng-model="ctrl.endereco.cidade.nome">
+					<span class="input-group-btn">
+						<button ng-click="ctrl.abrirPopUpPesquisaCidade()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+					</span>
+				</p>
 		</div>
 	</div>
 	
