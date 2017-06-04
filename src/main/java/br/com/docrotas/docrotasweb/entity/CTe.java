@@ -37,9 +37,6 @@ public class CTe implements Serializable{
 	@Column(name = "numero")
 	private Long numero;
 	
-	@Column(name = "cfop")
-	private Integer cfop;
-	
 	@Column(name = "dt_emissao")
 	private Date dtEmissao;
 
@@ -112,6 +109,10 @@ public class CTe implements Serializable{
 		joinColumns = {@JoinColumn(name = "cte_id")},
 		inverseJoinColumns = {@JoinColumn(name = "nfe_id")})
 	private List<NFe> NFes;
+	
+	@ManyToOne
+	@JoinColumn(name = "cfop")
+	private Cfop cfop;
 
 	public Long getId() {
 		return id;
@@ -137,11 +138,11 @@ public class CTe implements Serializable{
 		this.numero = numero;
 	}
 
-	public Integer getCfop() {
+	public Cfop getCfop() {
 		return cfop;
 	}
 
-	public void setCfop(Integer cfop) {
+	public void setCfop(Cfop cfop) {
 		this.cfop = cfop;
 	}
 
