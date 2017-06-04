@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.NFeMedidas;
 import br.com.docrotas.docrotasweb.entity.TipoMedidas;
-import br.com.docrotas.docrotasweb.repository.NFeRepository;
 import br.com.docrotas.docrotasweb.repository.NfeMedidasRepository;
 
 @RestController
@@ -23,7 +21,6 @@ public class NFeMedidasController {
 	
 	@Autowired
 	private NfeMedidasRepository nfemedidasRepository;
-	private NFeRepository nfeRepository;
 	
 	@GetMapping("/nfemedidas")
 	public Page<NFeMedidas> buscarTodos(@RequestParam(value = "pagina", required = true)int pagina,
@@ -48,11 +45,8 @@ public class NFeMedidasController {
 		return nfemedidasRepository.save(nfemedidas);
 	}
 	
-	/*@DeleteMapping(value = "/nfemedidas{idMedida, idNfe}")
+	@DeleteMapping(value = "/nfemedidas{idMedida, idNfe}")
 	public void excluir(@PathVariable Long idMedida, @PathVariable Long idNfe){
-		NFeMedidas nfemedidas = new NFeMedidas();
-	    nfemedidas.getNfepk().setCodMedida(idMedida); 
-	    nfemedidas.getNfepk().setNfe(nfeRepository.findById(idNfe)); 
-		nfemedidasRepository.delete(nfemedidas);
-	}*/
+		nfemedidasRepository.delete(nfemedidasRepository.findByTipoMedidasAndNfeId(idMedida, idNfe));
+	}
 }
