@@ -21,7 +21,11 @@ app.config(['$routeProvider', function($routeProvider){
         templateUrl: 'views/cadastro_pessoa.html',
         controller: 'PessoaCtrl',
         controllerAs: 'ctrl'
-    })
+    }).when('/veiculo',{
+        templateUrl: 'views/cadastro_veiculo.html',
+        controller: 'VeiculoCtrl',
+        controllerAs: 'ctrl'
+    });
 }]);
 
 angular.module('docrotasApp').controller('ModalDemoCtrl', function ($uibModal, $log, $document) {
