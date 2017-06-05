@@ -17,9 +17,9 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>, JpaSpecif
 	
 	public Page<Pessoa> findByFantasia(String fantasia, Pageable pageable);
 	
-	public Page<Pessoa> findByEnderecoCidadeId(Long id, Pageable pageable);
-	
-	public Page<Pessoa> findByEnderecoCidadeNomeContaining(String nome, Pageable pageable);
+//	public Page<Pessoa> findByEnderecoCidadeId(Long id, Pageable pageable);
+//	
+//	public Page<Pessoa> findByEnderecoCidadeNomeContaining(String nome, Pageable pageable);
 	
 	public Page<Pessoa> findByMotoristaTrue(boolean motorista, Pageable pageable);
 	

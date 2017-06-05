@@ -58,15 +58,15 @@ public class Veiculo implements Serializable {
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_rodado", nullable = false)
-	private Rodado rodado;
+	private TipoRodado tipoRodado;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_carroceria", nullable = false)
-	private Carroceria carroceria;
+	private TipoCarroceria tipoCarroceria;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tipo_proprietario", nullable = false)
-	private Proprietario proprietario;
+	private TipoProprietario tipoProprietario;
 	
 	@ManyToOne
 	@JoinColumn(name = "uf_id")
@@ -156,28 +156,28 @@ public class Veiculo implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}
 
-	public Rodado getRodado() {
-		return rodado;
+	public TipoRodado getTipoRodado() {
+		return tipoRodado;
 	}
 
-	public void setRodado(Rodado rodado) {
-		this.rodado = rodado;
+	public void setTipoRodado(TipoRodado tipoRodado) {
+		this.tipoRodado = tipoRodado;
 	}
 
-	public Carroceria getCarroceria() {
-		return carroceria;
+	public TipoCarroceria getTipoCarroceria() {
+		return tipoCarroceria;
 	}
 
-	public void setCarroceria(Carroceria carroceria) {
-		this.carroceria = carroceria;
+	public void setTipoCarroceria(TipoCarroceria tipoCarroceria) {
+		this.tipoCarroceria = tipoCarroceria;
 	}
 
-	public Proprietario getProprietario() {
-		return proprietario;
+	public TipoProprietario getTipoProprietario() {
+		return tipoProprietario;
 	}
 
-	public void setProprietario(Proprietario proprietario) {
-		this.proprietario = proprietario;
+	public void setTipoProprietario(TipoProprietario tipoProprietario) {
+		this.tipoProprietario = tipoProprietario;
 	}
 
 	public Uf getUf() {
@@ -225,8 +225,7 @@ public class Veiculo implements Serializable {
 	public String toString() {
 		return "Veiculo [id=" + id + ", codFrota=" + codFrota + ", placa=" + placa + ", renavam=" + renavam + ", rntrc="
 				+ rntrc + ", tara=" + tara + ", capKg=" + capKg + ", capCub=" + capCub + ", dtCriacao=" + dtCriacao
-				+ ", dtAlteracao=" + dtAlteracao + ", rodado=" + rodado + ", carroceria=" + carroceria
-				+ ", proprietario=" + proprietario + ", uf=" + uf + ", pessoa=" + pessoa + "]";
+				+ ", dtAlteracao=" + dtAlteracao + ", tipoRodado=" + tipoRodado + ", tipoCarroceria=" + tipoCarroceria
+				+ ", tipoProprietario=" + tipoProprietario + ", uf=" + uf + ", pessoa=" + pessoa + "]";
 	}
-	
 }

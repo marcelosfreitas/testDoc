@@ -2,16 +2,20 @@ package br.com.docrotas.docrotasweb.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.PessoaListerner;
 
@@ -50,10 +54,10 @@ public class Pessoa implements Serializable {
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@OneToOne
-	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
-
+	@JsonIgnore
+	@OneToMany(mappedBy="pessoa", fetch=FetchType.LAZY)
+	private List<Endereco> enderecos;
+	
 	public Long getId() {
 		return id;
 	}
@@ -126,12 +130,12 @@ public class Pessoa implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}	
 
-	public Endereco getEndereco() {
-		return endereco;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	@Override
@@ -163,7 +167,7 @@ public class Pessoa implements Serializable {
 	public String toString() {
 		return "Pessoa [id=" + id + ", razao=" + razao + ", fantasia=" + fantasia + ", cpfCnpj=" + cpfCnpj + ", ie="
 				+ ie + ", motorista=" + motorista + ", cliente=" + cliente + ", dtCriacao=" + dtCriacao
-				+ ", dtAlteracao=" + dtAlteracao + ", endereco=" + endereco + "]";
+				+ ", dtAlteracao=" + dtAlteracao + "]";
 	}
 	
 }

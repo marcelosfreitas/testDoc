@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import br.com.docrotas.docrotasweb.entity.Endereco;
+import br.com.docrotas.docrotasweb.entity.EnderecoID;
+import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 
 @Repository
-public interface EnderecoRepository extends JpaRepository<Endereco, Long>, JpaSpecificationExecutor<Endereco> {
+public interface EnderecoRepository extends JpaRepository<Endereco, EnderecoID>, JpaSpecificationExecutor<Endereco> {
+		
+	public Page<Endereco> findByPessoaId(Long id, Pageable pageable);
 
-	public Page<Endereco> findById(Long id, Pageable pageable);
+	public Page<Endereco> findByPessoaIdAndTipoEndereco(Long pessoaID, TipoEndereco tipoEndereco, Pageable pageable);
 	
 }
