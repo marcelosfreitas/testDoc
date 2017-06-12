@@ -3,21 +3,21 @@ package br.com.docrotas.docrotasweb.entity;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TipoAmbienteEmissao {
-	HOMOLOGACAO(2), 
-	PRODUCAO(1);
+	PRODUCAO("1"),
+	HOMOLOGACAO("2");
 	
-	private int codigo;	
+	private String codigo;	
 	
 	@JsonValue
 	public int toValue() {
 		return ordinal();
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	private TipoAmbienteEmissao(int codigo) {
+	private TipoAmbienteEmissao(String codigo) {
 		this.codigo = codigo;
 	}
 		

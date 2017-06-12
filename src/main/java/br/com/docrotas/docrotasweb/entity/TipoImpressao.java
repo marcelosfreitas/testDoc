@@ -2,11 +2,10 @@ package br.com.docrotas.docrotasweb.entity;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TipoProprietario {
-	TAC_Agregado("0"), 
-	TAC_Independente("1"), 
-	Outros("2");
-	
+public enum TipoImpressao {
+	RETRATO("1"),
+	PAISAGEM("2");
+
 	private String codigo;
 	
 	@JsonValue
@@ -18,8 +17,8 @@ public enum TipoProprietario {
 		return codigo;
 	}
 
-	private TipoProprietario(String codigo) {
+	private TipoImpressao(String codigo) {
 		this.codigo = codigo;
 	}
-		
+	
 }
