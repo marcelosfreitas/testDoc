@@ -49,9 +49,9 @@ public class CTeController {
 	}
 	
 	@PostMapping(value = "/cte/buscarAutorizacao/{id}")
-	public void buscarAutorizacao(@PathVariable Long id){
+	public void buscarAutorizacao(@PathVariable Long id) throws Exception{
 		CTeService cteService = new CTeService();
-		cteService.buscarAutorizacao(id);
+		cteService.buscarAutorizacao(cteRepository.findById(id));
 	}
 	
 	@DeleteMapping("/cte/{id}")

@@ -72,13 +72,16 @@ public class Empresa implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "ambiente_mdfe")
 	private TipoAmbienteEmissao tipoAmbienteMdfe;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tipo_impressao")
+	private TipoImpressao tipoImpressao;
 
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
-
 
 	public Long getId() {
 		return id;
@@ -200,15 +203,6 @@ public class Empresa implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}
 
-	@Override
-	public String toString() {
-		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", ie=" + ie + ", razao=" + razao + ", fantasia=" + fantasia
-				+ ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro
-				+ ", cep=" + cep + ", cidade=" + cidade + ", emiteCte=" + emiteCte + ", tipoAmbienteCte="
-				+ tipoAmbienteCte + ", emiteMdfe=" + emiteMdfe + ", tipoAmbienteMdfe=" + tipoAmbienteMdfe
-				+ ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
-	}
-
 	public TipoAmbienteEmissao getTipoAmbienteCte() {
 		return tipoAmbienteCte;
 	}
@@ -223,6 +217,14 @@ public class Empresa implements Serializable {
 
 	public void setTipoAmbienteMdfe(TipoAmbienteEmissao tipoAmbienteMdfe) {
 		this.tipoAmbienteMdfe = tipoAmbienteMdfe;
+	}
+
+	public TipoImpressao getTipoImpressao() {
+		return tipoImpressao;
+	}
+
+	public void setTipoImpressao(TipoImpressao tipoImpressao) {
+		this.tipoImpressao = tipoImpressao;
 	}
 
 	@Override
@@ -248,6 +250,16 @@ public class Empresa implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", ie=" + ie + ", razao=" + razao + ", fantasia=" + fantasia
+				+ ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro
+				+ ", cep=" + cep + ", cidade=" + cidade + ", emiteCte=" + emiteCte + ", tipoAmbienteCte="
+				+ tipoAmbienteCte + ", emiteMdfe=" + emiteMdfe + ", tipoAmbienteMdfe=" + tipoAmbienteMdfe
+				+ ", tipoImpressao=" + tipoImpressao + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao
+				+ "]";
 	}
 	
 }
