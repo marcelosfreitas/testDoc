@@ -19,7 +19,7 @@ public class VeiculoListerner {
 	public void preUpdateVeiculoEvent(Veiculo veiculo){
 		atualizaDtAlteracao(veiculo);
 	}
-	
+
 	private void atualizaDtAlteracao(Veiculo veiculo) {
 		veiculo.setDtAlteracao(new Date());
 	}

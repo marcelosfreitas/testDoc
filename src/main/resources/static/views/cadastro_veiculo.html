@@ -1,0 +1,231 @@
+<div class="modal-demo">
+
+<h3>Cadastro Veículo</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.veiculo.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="veiculo_cod_id">ID</label>
+			<input type="text" class="form-control" id="veiculo_id" ng-model="ctrl.veiculo.id" ng-disabled="true">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="veiculo_cod_frota">Código Frota</label>
+			<input type="text" class="form-control" id="veiculo_cod_frota" ng-model="ctrl.veiculo.codFrota">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_placa">Placa</label>
+			<input type="text" class="form-control" id="veiculo_placa" ng-model="ctrl.veiculo.placa">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_renavam">Renavam</label>
+			<input type="text" class="form-control" id="veiculo_renavam" ng-model="ctrl.veiculo.renavam">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_rntrc">RNTRC</label>
+			<input type="text" class="form-control" id="veiculo_rntrc" ng-model="ctrl.veiculo.rntrc">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_tara">Tara</label>
+			<input type="text" class="form-control" id="veiculo_tara" ng-model="ctrl.veiculo.tara">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_capKG">Capacidade (KG)</label>
+			<input type="text" class="form-control" id="veiculo_capKG" ng-model="ctrl.veiculo.capKg">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_capM3">Capacidade (m3)</label>
+			<input type="text" class="form-control" id="veiculo_capM3" ng-model="ctrl.veiculo.capCub">
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_tipo_rodado">Tipo rodado</label>
+			<select id="veiculo_tipo_rodado" ng-model="ctrl.veiculo.tipoRodado" ng-options="rodado.id as rodado.descricao for rodado in ctrl.tipoRodadoOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_tipo_carroceria">Tipo carroceria</label>
+			<select id="veiculo_tipo_carroceria" ng-model="ctrl.veiculo.tipoCarroceria" ng-options="carroceria.id as carroceria.descricao for carroceria in ctrl.tipoCarroceriaOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_tipo_proprietario">Tipo proprietário</label>
+			<select id="veiculo_tipo_proprietario" ng-model="ctrl.veiculo.tipoProprietario" ng-options="tipoProprietario.id as tipoProprietario.descricao for tipoProprietario in ctrl.tipoProprietarioOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_pessoa">Proprietário</label>
+			<p class="input-group">
+				<input type="text" class="form-control" id="veiculo_pessoa" ng-model="ctrl.veiculo.pessoa.razao">
+				<span class="input-group-btn">
+					<button ng-click="ctrl.abrirPopUpPesquisaPessoa()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+				</span>
+			</p>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_uf">Unidade Federativa</label>
+			<p class="input-group">
+				<input type="text" class="form-control" id="veiculo_uf" ng-model="ctrl.veiculo.uf.descricao">
+				<span class="input-group-btn">
+					<button ng-click="ctrl.abrirPopUpPesquisaUF()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+				</span>
+			</p>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_dt_criacao">Data criação</label>
+			<input id="veiculo_dt_criacao" text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.veiculo.dtCriacao" ng-disabled="true"/>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="veiculo_dt_alteracao">Data alteração</label>
+			<input type="text" class="form-control" id="veiculo_dt_alteracao" ng-model="ctrl.veiculo.dtAlteracao" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-disabled="true">
+		</div>
+	</div>
+</form>
+
+<form class="form-inline" ng-show="ctrl.modoGrade">
+	<div class="form-group">
+		<select name="tipoCampoBusca" ng-model="ctrl.campoSelecionado"  class="form-control">
+			<option value=""></option>
+			<option value="id">ID</option>
+			<option value="codFrota">Código Frota</option>
+			<option value="placa">Placa</option>
+			<option value="renavam">Renavam</option>
+			<option value="rntrc">RNTRC</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<input  class="form-control" type="text" id="busca" ng-model="ctrl.valorBusca">
+	</div>
+	<button ng-click="ctrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+</form>
+
+<table class="table table-hover" ng-show="ctrl.modoGrade">
+  <tr>
+	  <td><strong>ID</strong></td>
+	  <td><strong>Código Frota</strong></td>
+	  <td><strong>Placa</strong></td>
+	  <td><strong>Renavam</strong></td>
+	  <td><strong>RNTRC</strong></td>
+	  <td></td>
+  </tr>
+  <tr ng-repeat="veiculotb in ctrl.veiculos">
+	  <td ng-bind="veiculotb.id"></td>
+	  <td ng-bind="veiculotb.codFrota"></td>
+	  <td ng-bind="veiculotb.placa"></td>
+	  <td ng-bind="veiculotb.renavam"></td>
+	  <td ng-bind="veiculotb.rntrc"></td>
+	  <td>
+	  	<button class="btn-floating blue" ng-click="ctrl.editar(veiculotb.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+	 	<button class="btn-floating blue" ng-click="ctrl.excluir(veiculotb.id)"><span class="glyphicon glyphicon-remove"></span></button>
+	  </td>
+  </tr>
+</table>
+<div align="center">
+	<ul uib-pagination total-items="ctrl.totalItens" ng-model="ctrl.paginaAtual" max-size="ctrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+		previous-text='Anterior' ng-change="ctrl.pageChanged()" next-text='Próximo' ng-show="ctrl.modoGrade"></ul>
+</div>
+<script type="text/ng-template" id="popUpPesquisaPessoa.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buscar Pessoa</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaPessoaCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="id">ID</option>
+					<option value="razao">Razão Social\Nome</option>
+					<option value="fantasia">Nome Fantasia\Apelido</option>
+					<option value="cpfCnpj">CPF/CNPJ</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaPessoaCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaPessoaCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>Sigla</strong></td>
+				<td><strong>Cód. IBGE</strong></td>
+			</tr>
+			<tr ng-repeat="pessoatb in pesquisaPessoaCtrl.pessoas" ng-click="pesquisaPessoaCtrl.selecionarPessoa(pessoatb)">
+				<td ng-bind="pessoatb.id"></td>
+				<td ng-bind="pessoatb.razao"></td>
+				<td ng-bind="pessoatb.fantasia"></td>
+				<td ng-bind="pessoatb.cpfCnpj"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaPessoaCtrl.totalItens" ng-model="pesquisaPessoaCtrl.paginaAtual" max-size="pesquisaPessoaCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaPessoaCtrl.pageChanged()" next-text='Próximo'></ul>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="pesquisaPessoaCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaPessoaCtrl.cancel()">Cancel</button>
+	</div>
+</script>
+<script type="text/ng-template" id="popUpPesquisaUf.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buscar Unidade Federativa</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaUfCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="id">ID</option>
+					<option value="nome">Nome</option>
+					<option value="sigla">Sigla</option>
+					<option value="codIBGE">Código IBGE</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaUfCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaUfCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>Sigla</strong></td>
+				<td><strong>Cód. IBGE</strong></td>
+			</tr>
+			<tr ng-repeat="uftb in pesquisaUfCtrl.ufs" ng-click="pesquisaUfCtrl.selecionarUf(uftb)">
+				<td ng-bind="uftb.id"></td>
+				<td ng-bind="uftb.descricao"></td>
+				<td ng-bind="uftb.sigla"></td>
+				<td ng-bind="uftb.codIBGE"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaUfCtrl.totalItens" ng-model="pesquisaUfCtrl.paginaAtual" max-size="pesquisaUfCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaUfCtrl.pageChanged()" next-text='Próximo'></ul>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="pesquisaUfCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaUfCtrl.cancel()">Cancel</button>
+	</div>
+</script>
+<script type="text/ng-template" id="popUpErro.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Erro</h3>
+	</div>
+	<h3>{{erroCtrl.mensagem}}</h3>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="erroCtrl.ok()">OK</button>
+	</div>
+</script>
+</div>
