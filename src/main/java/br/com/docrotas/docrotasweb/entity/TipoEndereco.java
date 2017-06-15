@@ -13,7 +13,7 @@ public enum TipoEndereco {
 		return ordinal();
 	}
 	
-	public static TipoEndereco geTipoEndereco(int value) throws Exception {
+	public static TipoEndereco getTipoEndereco(int value) throws Exception {
 		for (TipoEndereco tipoEndereco : TipoEndereco.values()) {
 			if (value == tipoEndereco.ordinal()) {
 				return tipoEndereco;

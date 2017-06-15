@@ -26,6 +26,7 @@ public class NFeMedidas implements Serializable {
 	
 	@Id
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "cod_medida")
 	private TipoMedidas tipoMedidas;
 	
 	@Id

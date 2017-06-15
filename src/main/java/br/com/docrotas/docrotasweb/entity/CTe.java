@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,14 +48,21 @@ public class CTe implements Serializable{
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_emissao")
-	private Integer tpEmissao;
+	private TipoEmissao tpEmissao;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_ambiente")
-	private Integer tpAmbiente;
+	private TipoAmbienteEmissao tpAmbiente;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_servico")
-	private Integer tpServico;
+	private TipoServico tpServico;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tp_cte")
+	private TipoCTe tpCte;
 	
 	@Column(name = "frete_total")
 	private Double freteTotal;
@@ -113,6 +122,10 @@ public class CTe implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "cfop")
 	private Cfop cfop;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "cst_codigo")
+	private TipoCST cst;
 
 	public Long getId() {
 		return id;
@@ -170,27 +183,27 @@ public class CTe implements Serializable{
 		this.dtAlteracao = dtAlteracao;
 	}
 
-	public Integer getTpEmissao() {
+	public TipoEmissao getTpEmissao() {
 		return tpEmissao;
 	}
 
-	public void setTpEmissao(Integer tpEmissao) {
+	public void setTpEmissao(TipoEmissao tpEmissao) {
 		this.tpEmissao = tpEmissao;
 	}
 
-	public Integer getTpAmbiente() {
+	public TipoAmbienteEmissao getTpAmbiente() {
 		return tpAmbiente;
 	}
 
-	public void setTpAmbiente(Integer tpAmbiente) {
+	public void setTpAmbiente(TipoAmbienteEmissao tpAmbiente) {
 		this.tpAmbiente = tpAmbiente;
 	}
 
-	public Integer getTpServico() {
+	public TipoServico getTpServico() {
 		return tpServico;
 	}
 
-	public void setTpServico(Integer tpServico) {
+	public void setTpServico(TipoServico tpServico) {
 		this.tpServico = tpServico;
 	}
 
@@ -312,6 +325,22 @@ public class CTe implements Serializable{
 
 	public void setNFes(List<NFe> nFes) {
 		NFes = nFes;
+	}	
+
+	public TipoCST getCst() {
+		return cst;
+	}
+
+	public void setCst(TipoCST cst) {
+		this.cst = cst;
+	}	
+
+	public TipoCTe getTpCte() {
+		return tpCte;
+	}
+
+	public void setTpCte(TipoCTe tpCte) {
+		this.tpCte = tpCte;
 	}
 
 	@Override
@@ -341,14 +370,14 @@ public class CTe implements Serializable{
 
 	@Override
 	public String toString() {
-		return "CTe [id=" + id + ", serie=" + serie + ", numero=" + numero + ", cfop=" + cfop + ", dtEmissao="
-				+ dtEmissao + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + ", tpEmissao=" + tpEmissao
-				+ ", tpAmbiente=" + tpAmbiente + ", tpServico=" + tpServico + ", freteTotal=" + freteTotal
-				+ ", baseCalculo=" + baseCalculo + ", icms=" + icms + ", aliquota=" + aliquota + ", vlrMercadoria="
-				+ vlrMercadoria + ", produto=" + produto + ", chave=" + chave + ", situacao=" + situacao + ", empresa="
-				+ empresa + ", cidadeColeta=" + cidadeColeta + ", cidadeEntrega=" + cidadeEntrega + ", pessoaRemetente="
+		return "CTe [id=" + id + ", serie=" + serie + ", numero=" + numero + ", dtEmissao=" + dtEmissao + ", dtCriacao="
+				+ dtCriacao + ", dtAlteracao=" + dtAlteracao + ", tpEmissao=" + tpEmissao + ", tpAmbiente=" + tpAmbiente
+				+ ", tpServico=" + tpServico + ", tpCte=" + tpCte + ", freteTotal=" + freteTotal + ", baseCalculo="
+				+ baseCalculo + ", icms=" + icms + ", aliquota=" + aliquota + ", vlrMercadoria=" + vlrMercadoria
+				+ ", produto=" + produto + ", chave=" + chave + ", situacao=" + situacao + ", empresa=" + empresa
+				+ ", cidadeColeta=" + cidadeColeta + ", cidadeEntrega=" + cidadeEntrega + ", pessoaRemetente="
 				+ pessoaRemetente + ", pessoaDestinatario=" + pessoaDestinatario + ", pessoaTomador=" + pessoaTomador
-				+ ", NFes=" + NFes + "]";
+				+ ", NFes=" + NFes + ", cfop=" + cfop + ", cst=" + cst + "]";
 	}
 	
 }

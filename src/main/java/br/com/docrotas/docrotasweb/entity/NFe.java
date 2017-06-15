@@ -2,14 +2,21 @@ package br.com.docrotas.docrotasweb.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.NFeListerner;
 
@@ -44,6 +51,28 @@ public class NFe implements Serializable{
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="nfe", fetch=FetchType.EAGER)
+	private List<NFeMedidas> nfeMedidas;
+	
+	public Map<TipoMedidas, Double> totalMedidas(){
+		Map<TipoMedidas, Double> totalMedidas = new HashMap<TipoMedidas, Double>();
+		
+		for (NFeMedidas nfeMedidas : getNfeMedidas()) {
+			Double valor = totalMedidas.get(nfeMedidas.getTipoMedidas());
+
+			if (valor == null) {
+				valor = Double.valueOf(0);
+			}
+
+			valor = valor + nfeMedidas.getValor();
+			totalMedidas.put(nfeMedidas.getTipoMedidas(), valor);
+			
+		}
+		
+		return totalMedidas;
+	}
 
 	public Long getId() {
 		return id;
@@ -107,7 +136,15 @@ public class NFe implements Serializable{
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
-	}	
+	}		
+	
+	public List<NFeMedidas> getNfeMedidas() {
+		return nfeMedidas;
+	}
+
+	public void setNfeMedidas(List<NFeMedidas> nfeMedidas) {
+		this.nfeMedidas = nfeMedidas;
+	}
 
 	@Override
 	public String toString() {
