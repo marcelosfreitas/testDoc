@@ -1,0 +1,40 @@
+<div class="modal-demo">
+
+<h3>CT-e</h3>
+
+<div class="row">
+	<div align="center">
+		<button ng-click="ctrl.novo()" class="btn btn-default"><span class="glyphicon glyphicon-plus barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.atualizar()" class="btn btn-default"><span class="glyphicon glyphicon-refresh barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.salvar()" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-ok barraFerramenta" aria-hidden="true"></span></button>
+	  	<button ng-click="ctrl.excluir(ctrl.veiculo.id)" ng-disabled="ctrl.modoGrade" class="btn btn-default"><span class="glyphicon glyphicon-remove barraFerramenta" aria-hidden="true"></span></button>
+  		<button ng-click="ctrl.habilitarModoGrade()" class="btn btn-default" ng-show="ctrl.modoFormulario"><span class="glyphicon glyphicon-list-alt barraFerramenta" aria-hidden="true"></span></button>
+		<button ng-click="ctrl.habilitarModoFormulario()" class="btn btn-default" ng-show="ctrl.modoGrade"><span class="glyphicon glyphicon-menu-hamburger barraFerramenta" aria-hidden="true"></span></button>
+  </div>
+</div>
+<form ng-show="ctrl.modoFormulario">
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="cte_id">ID</label>
+			<input type="text" class="form-control" id="cte_id" ng-model="cte.id" ng-disabled="true">
+		</div>
+	</div>
+    <div class=row>
+        <div class=form-group col-md-4>
+            <label for="cte_numero">Número</label>
+            <input type="text" class="form-control" id="cte_numero" ng-model="cte.numero">
+        </div>
+        <div class=form-group col-md-4>
+            <label for="cte_serie">Série</label>
+            <input type="text" class="form-control" id="cte_serie" ng-model="cte.serie">
+        </div>
+        <div class="form-group col-md-4">
+			<label for="cte_dt_emissao">Data emissão</label>
+			<input id="cte_dt_emissao" text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.cte.dtEmissao" ng-disabled="true"/>
+		</div>
+        <div class="form-group col-md-4">
+			<label for="cte_dt_criacao">Data criação</label>
+			<input id="cte_dt_criacao" text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.cte.dtCriacao" ng-disabled="true"/>
+		</div>
+    </div>
+</form>

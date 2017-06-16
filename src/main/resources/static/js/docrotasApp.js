@@ -25,6 +25,10 @@ app.config(['$routeProvider', function($routeProvider){
         templateUrl: 'views/cadastro_veiculo.html',
         controller: 'VeiculoCtrl',
         controllerAs: 'ctrl'
+    }).when('/cte',{
+        templateUrl: 'views/cte.html',
+        controller: 'CteCtrl',
+        controllerAs: 'ctrl'
     });
 }]);
 
