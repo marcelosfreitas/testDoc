@@ -19,6 +19,9 @@ public class CTeService {
 		
 		System.out.println(xmlString);
 		
+		CTeComunicaoService2 cTeComunicaoService = new CTeComunicaoService2();
+		
+		cTeComunicaoService.recepicionarLote(xmlString);
 	}
 
 }

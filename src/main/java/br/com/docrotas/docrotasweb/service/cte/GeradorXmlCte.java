@@ -21,7 +21,7 @@ public class GeradorXmlCte {
 		
 		Element infCte = new Element("infCte");
 		infCte.addContent(getElementIde(cte));
-		infCte.addContent(getElementCompl(cte));
+//		infCte.addContent(getElementCompl(cte));
 		
 		documentCte = new Document();
 		documentCte.setRootElement(infCte);
@@ -74,7 +74,7 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementTpEmis);
 		
 		Element elementCDV = new Element("cDV");
-		elementCDV.addContent(cte.getChave().substring(43, 1));
+		elementCDV.addContent(cte.getChave().substring(43, 44));
 		elementIde.addContent(elementCDV);
 		
 		//--Ambiente 2-homologação (1-produção)
