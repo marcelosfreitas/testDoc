@@ -80,6 +80,7 @@ public class CTeComunicaoService2 {
 		{
 		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+
 		/*
 		* limpo propriedades
 		*/
@@ -105,11 +106,33 @@ public class CTeComunicaoService2 {
 		header.addHeader("Content-Type", "application/soap+xml");
 		/* monta a mensagem SOAP */
 		MessageFactory factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-		SOAPMessage message = factory.createMessage(header, new ByteArrayInputStream(xml.getBytes()) );
+		
+		StringBuilder stb = new StringBuilder();
+		stb.append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">");
+		stb.append("<soap12:Header>");
+		stb.append("<cteCabecMsg xmlns=\"http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao\">");
+		stb.append("<cUF>31</cUF>");
+		stb.append("<versaoDados>string</versaoDados>");
+		stb.append("</cteCabecMsg>");
+		stb.append("</soap12:Header>");
+		stb.append("<soap12:Body>");
+		stb.append("<cteDadosMsg xmlns=\"http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao\">");
+		stb.append(xml);
+		stb.append("</cteDadosMsg>");
+		stb.append("</soap12:Body>");
+		stb.append("</soap12:Envelope>");
+				
+		
+		SOAPMessage message = factory.createMessage(header, new ByteArrayInputStream(stb.toString().getBytes()));
 		/* instancia uma conexao SOAP */
 		SOAPConnection conSoap = SOAPConnectionFactory.newInstance().createConnection();
+		
+		message.writeTo(System.out);
+		
 		/* Envia a mensagem SOAP ao WebService */
 		SOAPMessage resWs = conSoap.call(message, url);
+		
+		resWs.getSOAPBody().toString();
 		/* Mostra a mensagem de retorno */
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		resWs.writeTo(out);
