@@ -57,7 +57,7 @@ public class NFe implements Serializable{
 	@OneToMany(mappedBy="nfe", cascade=CascadeType.ALL)
 	private List<NFeMedidas> nfeMedidas;
 	
-	/*public Map<TipoMedidas, Double> totalMedidas(){
+	public Map<TipoMedidas, Double> totalMedidas(){
 		Map<TipoMedidas, Double> totalMedidas = new HashMap<TipoMedidas, Double>();
 		
 		for (NFeMedidas nfeMedidas : getNfeMedidas()) {
@@ -73,7 +73,7 @@ public class NFe implements Serializable{
 		}
 		
 		return totalMedidas;
-	}*/
+	}
 
 	public Long getId() {
 		return id;

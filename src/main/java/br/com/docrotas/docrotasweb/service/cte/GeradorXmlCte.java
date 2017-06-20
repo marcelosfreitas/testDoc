@@ -427,7 +427,7 @@ public class GeradorXmlCte {
 		
 		Map<TipoMedidas, Double> totalMedidasCTe = new HashMap<TipoMedidas, Double>();
 		
-		/*for (NFe nfe : cte.getNFes()) {
+		for (NFe nfe : cte.getNfes()) {
 			for (TipoMedidas tipo : nfe.totalMedidas().keySet()) {
 				Double valorNFe = nfe.totalMedidas().get(tipo);
 
@@ -441,7 +441,7 @@ public class GeradorXmlCte {
 
 				totalMedidasCTe.put(tipo, valorCTe);
 			}
-		}*/
+		}
 		
 		for (TipoMedidas tipo : totalMedidasCTe.keySet()) {
 			System.out.println("Tipo: " + tipo.toString() + " - " + totalMedidasCTe.get(tipo).toString());
