@@ -113,19 +113,19 @@ public class CTe implements Serializable{
 	@JoinColumn(name = "tomador_pessoa_id")
 	private Pessoa pessoaTomador;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "nfe_cte", 
 		joinColumns = {@JoinColumn(name = "cte_id")},
 		inverseJoinColumns = {@JoinColumn(name = "nfe_id")})
-	private List<NFe> NFes;
+	private List<NFe> nfes;
 	
-	@ManyToOne
-	@JoinColumn(name = "cfop")
-	private Cfop cfop;
+	/*@ManyToOne
+	@JoinColumn(name = "cfop_id")
+	private Cfop cfop;*/
 	
-	@Enumerated(EnumType.ORDINAL)
+	/*@Enumerated(EnumType.ORDINAL)
 	@Column(name = "cst_codigo")
-	private TipoCST cst;
+	private TipoCST cst;*/
 
 	public Long getId() {
 		return id;
@@ -151,13 +151,13 @@ public class CTe implements Serializable{
 		this.numero = numero;
 	}
 
-	public Cfop getCfop() {
+	/*public Cfop getCfop() {
 		return cfop;
 	}
 
 	public void setCfop(Cfop cfop) {
 		this.cfop = cfop;
-	}
+	}*/
 
 	public Date getDtEmissao() {
 		return dtEmissao;
@@ -319,21 +319,23 @@ public class CTe implements Serializable{
 		this.pessoaTomador = pessoaTomador;
 	}
 
-	public List<NFe> getNFes() {
-		return NFes;
-	}
 
-	public void setNFes(List<NFe> nFes) {
-		NFes = nFes;
-	}	
 
-	public TipoCST getCst() {
+	/*public TipoCST getCst() {
 		return cst;
 	}
 
 	public void setCst(TipoCST cst) {
 		this.cst = cst;
-	}	
+	}*/	
+
+	public List<NFe> getNfes() {
+		return nfes;
+	}
+
+	public void setNfes(List<NFe> nfes) {
+		this.nfes = nfes;
+	}
 
 	public TipoCTe getTpCte() {
 		return tpCte;
@@ -377,7 +379,7 @@ public class CTe implements Serializable{
 				+ ", produto=" + produto + ", chave=" + chave + ", situacao=" + situacao + ", empresa=" + empresa
 				+ ", cidadeColeta=" + cidadeColeta + ", cidadeEntrega=" + cidadeEntrega + ", pessoaRemetente="
 				+ pessoaRemetente + ", pessoaDestinatario=" + pessoaDestinatario + ", pessoaTomador=" + pessoaTomador
-				+ ", NFes=" + NFes + ", cfop=" + cfop + ", cst=" + cst + "]";
+				+ ", NFes=" + nfes + "]";
 	}
 	
 }

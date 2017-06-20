@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -13,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -52,11 +54,10 @@ public class NFe implements Serializable{
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="nfe", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="nfe", cascade=CascadeType.ALL)
 	private List<NFeMedidas> nfeMedidas;
 	
-	public Map<TipoMedidas, Double> totalMedidas(){
+	/*public Map<TipoMedidas, Double> totalMedidas(){
 		Map<TipoMedidas, Double> totalMedidas = new HashMap<TipoMedidas, Double>();
 		
 		for (NFeMedidas nfeMedidas : getNfeMedidas()) {
@@ -72,7 +73,7 @@ public class NFe implements Serializable{
 		}
 		
 		return totalMedidas;
-	}
+	}*/
 
 	public Long getId() {
 		return id;

@@ -11,8 +11,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.NFeMedidasListerner;
 
@@ -29,6 +33,7 @@ public class NFeMedidas implements Serializable {
 	@Column(name = "cod_medida")
 	private TipoMedidas tipoMedidas;
 	
+	@JsonIgnore
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "nfe_id")

@@ -10,9 +10,7 @@ import org.jdom2.Element;
 import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.entity.Empresa;
 import br.com.docrotas.docrotasweb.entity.NFe;
-import br.com.docrotas.docrotasweb.entity.NFeMedidas;
 import br.com.docrotas.docrotasweb.entity.Pessoa;
-import br.com.docrotas.docrotasweb.entity.TipoCST;
 import br.com.docrotas.docrotasweb.entity.TipoMedidas;
 import br.com.docrotas.docrotasweb.entity.TipoPessoaCTe;
 import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
@@ -53,13 +51,13 @@ public class GeradorXmlCte {
 		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getId()),8,"0"));
 		elementIde.addContent(elementCct);
 		
-		Element elementCfop = new Element("CFOP");
+		/*Element elementCfop = new Element("CFOP");
 		elementCfop.addContent(String.valueOf(cte.getCfop().getCodigo()));
 		elementIde.addContent(elementCfop);
 		
 		Element elementNatOp = new Element("natOp");
 		elementNatOp.addContent(String.valueOf(cte.getCfop().getDescricao()));
-		elementIde.addContent(elementNatOp);
+		elementIde.addContent(elementNatOp);*/
 		
 		Element elementMod = new Element("mod");
 		elementMod.addContent("57");
@@ -87,7 +85,7 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementTpEmis);
 		
 		Element elementCDV = new Element("cDV");
-		elementCDV.addContent(cte.getChave().substring(42));
+		elementCDV.addContent(cte.getChave().substring(43,44));
 		elementIde.addContent(elementCDV);
 		
 		//--Ambiente 2-homologação (1-produção)
@@ -389,6 +387,7 @@ public class GeradorXmlCte {
 		
 		Element elementIcms00 = new Element("ICMS00");
 		
+		//conforme CST do CTe
 		Element elementCst = new Element("CST");
 		elementCst.addContent("00");
 		elementIcms00.addContent(elementCst);
@@ -428,7 +427,7 @@ public class GeradorXmlCte {
 		
 		Map<TipoMedidas, Double> totalMedidasCTe = new HashMap<TipoMedidas, Double>();
 		
-		for (NFe nfe : cte.getNFes()) {		
+		/*for (NFe nfe : cte.getNFes()) {
 			for (TipoMedidas tipo : nfe.totalMedidas().keySet()) {
 				Double valorNFe = nfe.totalMedidas().get(tipo);
 
@@ -442,7 +441,7 @@ public class GeradorXmlCte {
 
 				totalMedidasCTe.put(tipo, valorCTe);
 			}
-		}
+		}*/
 		
 		for (TipoMedidas tipo : totalMedidasCTe.keySet()) {
 			System.out.println("Tipo: " + tipo.toString() + " - " + totalMedidasCTe.get(tipo).toString());
