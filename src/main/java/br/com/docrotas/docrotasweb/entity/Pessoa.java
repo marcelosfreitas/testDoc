@@ -57,6 +57,16 @@ public class Pessoa implements Serializable {
 	@OneToMany(mappedBy="pessoa", fetch=FetchType.LAZY)
 	private List<Endereco> enderecos;
 	
+	@JsonIgnore
+	public Endereco getEnderecoPrincipal(){
+		for (Endereco endereco : enderecos) {
+			if(endereco.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)){
+				return endereco;
+			}
+		}
+		return null;
+	}
+	
 	public Long getId() {
 		return id;
 	}
