@@ -54,7 +54,6 @@ public class NFe implements Serializable{
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@OneToMany(mappedBy="nfe", cascade=CascadeType.ALL)
 	private List<NFeMedidas> nfeMedidas;
 	
 	public Map<TipoMedidas, Double> totalMedidas(){
