@@ -10,9 +10,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.docrotas.docrotasweb.listerner.NFeMedidasListerner;
 
@@ -26,11 +27,12 @@ public class NFeMedidas implements Serializable {
 	
 	@Id
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "cod_medida")
 	private TipoMedidas tipoMedidas;
 	
+	@JsonIgnore
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "nfe_id")
 	private NFe nfe;
 	
 	@Column(name = "descricao", length = 20, nullable = false)

@@ -33,7 +33,7 @@ public class EnderecoController {
 		Page<Endereco> pageEnderecos = null;
 		
 		if (tipoEndereco != null) {
-			pageEnderecos = enderecoRepository.findByPessoaIdAndTipoEndereco(pessoaID, TipoEndereco.geTipoEndereco(tipoEndereco), pageable);
+			pageEnderecos = enderecoRepository.findByPessoaIdAndTipoEndereco(pessoaID, TipoEndereco.getTipoEndereco(tipoEndereco), pageable);
 		} else {
 			pageEnderecos = enderecoRepository.findByPessoaId(pessoaID, pageable);
 		}
