@@ -55,6 +55,9 @@ public class Empresa implements Serializable {
 	@Column(name = "cep", length = 8, nullable = false)
 	private String cep;
 	
+	@Column(name = "rntrc", length = 8, nullable = false)
+	private String rntrc;
+	
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
@@ -162,6 +165,14 @@ public class Empresa implements Serializable {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+	
+	public String getRntrc() {
+		return rntrc;
+	}
+
+	public void setRntrc(String rntrc) {
+		this.rntrc = rntrc;
+	}
 
 	public Cidade getCidade() {
 		return cidade;
@@ -256,10 +267,10 @@ public class Empresa implements Serializable {
 	public String toString() {
 		return "Empresa [id=" + id + ", cnpj=" + cnpj + ", ie=" + ie + ", razao=" + razao + ", fantasia=" + fantasia
 				+ ", logradouro=" + logradouro + ", nro=" + nro + ", complemento=" + complemento + ", bairro=" + bairro
-				+ ", cep=" + cep + ", cidade=" + cidade + ", emiteCte=" + emiteCte + ", tipoAmbienteCte="
-				+ tipoAmbienteCte + ", emiteMdfe=" + emiteMdfe + ", tipoAmbienteMdfe=" + tipoAmbienteMdfe
-				+ ", tipoImpressao=" + tipoImpressao + ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao
-				+ "]";
+				+ ", cep=" + cep + ", rntrc=" + rntrc + ", cidade=" + cidade + ", emiteCte=" + emiteCte
+				+ ", tipoAmbienteCte=" + tipoAmbienteCte + ", emiteMdfe=" + emiteMdfe + ", tipoAmbienteMdfe="
+				+ tipoAmbienteMdfe + ", tipoImpressao=" + tipoImpressao + ", dtCriacao=" + dtCriacao + ", dtAlteracao="
+				+ dtAlteracao + "]";
 	}
 	
 }

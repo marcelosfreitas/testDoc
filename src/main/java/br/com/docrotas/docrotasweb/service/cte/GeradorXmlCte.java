@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -11,6 +12,7 @@ import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.entity.Empresa;
 import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.Pessoa;
+import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 import br.com.docrotas.docrotasweb.entity.TipoMedidas;
 import br.com.docrotas.docrotasweb.entity.TipoPessoaCTe;
 import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
@@ -51,13 +53,13 @@ public class GeradorXmlCte {
 		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getId()),8,"0"));
 		elementIde.addContent(elementCct);
 		
-		/*Element elementCfop = new Element("CFOP");
+		Element elementCfop = new Element("CFOP");
 		elementCfop.addContent(String.valueOf(cte.getCfop().getCodigo()));
 		elementIde.addContent(elementCfop);
 		
 		Element elementNatOp = new Element("natOp");
 		elementNatOp.addContent(String.valueOf(cte.getCfop().getDescricao()));
-		elementIde.addContent(elementNatOp);*/
+		elementIde.addContent(elementNatOp);
 		
 		Element elementMod = new Element("mod");
 		elementMod.addContent("57");
@@ -305,40 +307,39 @@ public class GeradorXmlCte {
 			elementEnder = new Element("enderDest");
 		}
 		
-		//--Verificar como resolver multiplos enderecos -- por enquanto "principal"
-		if(pessoa.getEnderecos().size() > 0){
+		if(pessoa.getEnderecoPrincipal().getTipoEndereco().equals(TipoEndereco.PRINCIPAL)){
 			Element elementXlgr = new Element("xLgr");
-			elementXlgr.addContent(pessoa.getEnderecos().get(0).getLogradouro());
+			elementXlgr.addContent(pessoa.getEnderecoPrincipal().getLogradouro());
 			elementEnder.addContent(elementXlgr);
 			
 			Element elementNro = new Element("nro");
-			elementNro.addContent(String.valueOf(pessoa.getEnderecos().get(0).getNro()));
+			elementNro.addContent(String.valueOf(pessoa.getEnderecoPrincipal().getNro()));
 			elementEnder.addContent(elementNro);
 			
-			if(pessoa.getEnderecos().get(0).getComplemento() != null){
+			if(pessoa.getEnderecoPrincipal().getComplemento() != null){
 				Element elementXcpl = new Element("xCpl");
-				elementXcpl.addContent(pessoa.getEnderecos().get(0).getComplemento());
+				elementXcpl.addContent(pessoa.getEnderecoPrincipal().getComplemento());
 				elementEnder.addContent(elementXcpl);
 			}
 			
 			Element elementXbairro = new Element("xBairro");
-			elementXbairro.addContent(pessoa.getEnderecos().get(0).getBairro());
+			elementXbairro.addContent(pessoa.getEnderecoPrincipal().getBairro());
 			elementEnder.addContent(elementXbairro);
 			
 			Element elementCmun = new Element("cMun");
-			elementCmun.addContent(String.valueOf(pessoa.getEnderecos().get(0).getCidade().getCodIBGE()));
+			elementCmun.addContent(String.valueOf(pessoa.getEnderecoPrincipal().getCidade().getCodIBGE()));
 			elementEnder.addContent(elementCmun);
 			
 			Element elementXmun = new Element("xMun");
-			elementXmun.addContent(pessoa.getEnderecos().get(0).getCidade().getNome());
+			elementXmun.addContent(pessoa.getEnderecoPrincipal().getCidade().getNome());
 			elementEnder.addContent(elementXmun);
 			
 			Element elementCep = new Element("CEP");
-			elementCep.addContent(pessoa.getEnderecos().get(0).getCep());
+			elementCep.addContent(pessoa.getEnderecoPrincipal().getCep());
 			elementEnder.addContent(elementCep);
 			
 			Element elementUf = new Element("UF");
-			elementUf.addContent(pessoa.getEnderecos().get(0).getCidade().getUf().getSigla());
+			elementUf.addContent(pessoa.getEnderecoPrincipal().getCidade().getUf().getSigla());
 			elementEnder.addContent(elementUf);
 			
 			//tabela código país BACEN
@@ -423,14 +424,12 @@ public class GeradorXmlCte {
 		elementProPred.addContent(cte.getProduto());
 		elementInfCarga.addContent(elementProPred);
 		
-		Element elementInfQ = new Element("infQ");
 		
 		Map<TipoMedidas, Double> totalMedidasCTe = new HashMap<TipoMedidas, Double>();
 		
 		for (NFe nfe : cte.getNfes()) {
 			for (TipoMedidas tipo : nfe.totalMedidas().keySet()) {
 				Double valorNFe = nfe.totalMedidas().get(tipo);
-
 				Double valorCTe = totalMedidasCTe.get(tipo);
 				
 				if (valorCTe == null) {
@@ -438,14 +437,56 @@ public class GeradorXmlCte {
 				}
 
 				valorCTe = valorCTe + valorNFe;
-
 				totalMedidasCTe.put(tipo, valorCTe);
 			}
 		}
 		
 		for (TipoMedidas tipo : totalMedidasCTe.keySet()) {
-			System.out.println("Tipo: " + tipo.toString() + " - " + totalMedidasCTe.get(tipo).toString());
+			Element elementInfQ = new Element("infQ");
+			
+			Element elementCunid = new Element("cUnid");
+			elementCunid.addContent(tipo.getCodigo());
+			elementInfQ.addContent(elementCunid);
+			
+			Element elementTpMed = new Element("tpMed");
+			elementTpMed.addContent(tipo.toString());
+			elementInfQ.addContent(elementTpMed);
+			
+			Element elementQcarga = new Element("qCarga");
+			elementQcarga.addContent(DocumentoEletronicoUtils.formatDouble(totalMedidasCTe.get(tipo).doubleValue(),4));
+			elementInfQ.addContent(elementQcarga);
+			
+			elementInfCarga.addContent(elementInfQ);
+			//System.out.println("Tipo: " + tipo.toString() + " - " + totalMedidasCTe.get(tipo).toString());
 		}
+		elementInfCteNorm.addContent(elementInfCarga);
+		
+		Element elementInfdoc = new Element("infDoc");
+		for (NFe nfe : cte.getNfes()) {
+			//-- Verificar outros documentos
+			Element elementInfnfe = new Element("infNFe");			
+			Element elementChave = new Element("chave");
+			elementChave.addContent(nfe.getChave());
+			elementInfnfe.addContent(elementChave);
+			elementInfdoc.addContent(elementInfnfe);
+		}
+		elementInfCteNorm.addContent(elementInfdoc);
+		
+		
+		Element elementInfmodal = new Element("infModal");
+		Attribute atributeVersao = new Attribute("versaoModal", "3.00");
+		elementInfmodal.setAttribute(atributeVersao);
+		
+		//Modal Rodovíario
+		Element elementRodo = new Element("rodo");
+		
+		Element elementRntrc = new Element("RNTRC");
+		elementRntrc.addContent(cte.getEmpresa().getRntrc());
+		elementRodo.addContent(elementRntrc);
+		
+		elementInfmodal.addContent(elementRodo);
+		
+		elementInfCteNorm.addContent(elementInfmodal);
 		
 		return elementInfCteNorm;
 	}	
