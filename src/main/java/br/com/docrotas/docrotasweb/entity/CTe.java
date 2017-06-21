@@ -119,9 +119,9 @@ public class CTe implements Serializable{
 		inverseJoinColumns = {@JoinColumn(name = "nfe_id")})
 	private List<NFe> nfes;
 	
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name = "cfop_id")
-	private Cfop cfop;*/
+	private Cfop cfop;
 	
 	/*@Enumerated(EnumType.ORDINAL)
 	@Column(name = "cst_codigo")
@@ -151,13 +151,13 @@ public class CTe implements Serializable{
 		this.numero = numero;
 	}
 
-	/*public Cfop getCfop() {
+	public Cfop getCfop() {
 		return cfop;
 	}
 
 	public void setCfop(Cfop cfop) {
 		this.cfop = cfop;
-	}*/
+	}
 
 	public Date getDtEmissao() {
 		return dtEmissao;
@@ -318,8 +318,6 @@ public class CTe implements Serializable{
 	public void setPessoaTomador(Pessoa pessoaTomador) {
 		this.pessoaTomador = pessoaTomador;
 	}
-
-
 
 	/*public TipoCST getCst() {
 		return cst;

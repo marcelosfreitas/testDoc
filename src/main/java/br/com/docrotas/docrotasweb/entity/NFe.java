@@ -18,8 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.docrotas.docrotasweb.listerner.NFeListerner;
 
 @Entity
@@ -54,7 +52,8 @@ public class NFe implements Serializable{
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-	@OneToMany(mappedBy="nfe", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name="nfe_id")
 	private List<NFeMedidas> nfeMedidas;
 	
 	public Map<TipoMedidas, Double> totalMedidas(){
@@ -71,7 +70,6 @@ public class NFe implements Serializable{
 			totalMedidas.put(nfeMedidas.getTipoMedidas(), valor);
 			
 		}
-		
 		return totalMedidas;
 	}
 

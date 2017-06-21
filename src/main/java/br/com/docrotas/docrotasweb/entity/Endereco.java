@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.docrotas.docrotasweb.listerner.EnderecoListerner;
 
 @Entity
@@ -30,9 +32,9 @@ public class Endereco implements Serializable {
 	@Column(name = "tipo", insertable = false, updatable = false)
 	private TipoEndereco tipoEndereco;
 
+	@JsonIgnore
 	@Id
-	@ManyToOne(cascade=CascadeType.DETACH)
-	@JoinColumn(name = "pessoa_id", insertable = false, updatable = false)
+	@ManyToOne
 	private Pessoa pessoa;
 
 	@Column(name = "logradouro", length = 60, nullable = false)
