@@ -40,5 +40,25 @@
 			<label for="cte_dt_alteracao">Data alteração</label>
 			<input id="cte_dt_alteracao" text="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy hh:mm" ng-model="ctrl.cte.dtAlteracao" ng-disabled="true"/>
 		</div>
+		<div class="form-group col-md-4">
+			<label for="cte_tipo_emissao">Tipo emissão</label>
+			<select id="cte_tipo_emissao" ng-model="ctrl.cte.tpEmissao" ng-options="tpEmissao.id as tpEmissao.descricao for tpEmissao in ctrl.tpEmissaoOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cte_ambiente">Ambiente</label>
+			<select id="cte_ambiente" ng-model="ctrl.cte.tpAmbiente" ng-options="ambiente.id as ambiente.descricao for ambiente in ctrl.tpAmbienteOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cte_servico">Serviço</label>
+			<select id="cte_servico" ng-model="ctrl.cte.tpServico" ng-options="servico.id as servico.descricao for servico in ctrl.tpServicoOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="cte_tpCTe">Tipo CT-e</label>
+			<select id="cte_tpCTe" ng-model="ctrl.cte.tpCte" ng-options="tpCte.id as tpCte.descricao for tpCte in ctrl.tpCTeOptions" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-4">
+            <label for="cte_vlr_frete">Valor frete</label>
+            <input type="text" class="form-control" id="cte_vlr_frete" ng-model="cte.freteTotal">
+        </div>
     </div>
 </form>
