@@ -86,8 +86,9 @@ public class CTe implements Serializable{
 	@Column(name = "chave")
 	private String chave;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "situacao")
-	private Integer situacao;
+	private SituacaoCte situacao;
 	
 	@ManyToOne
 	@JoinColumn(name = "empresa_id")
@@ -263,11 +264,11 @@ public class CTe implements Serializable{
 		this.chave = chave;
 	}
 
-	public Integer getSituacao() {
+	public SituacaoCte getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(Integer situacao) {
+	public void setSituacao(SituacaoCte situacao) {
 		this.situacao = situacao;
 	}
 

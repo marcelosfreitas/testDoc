@@ -21,6 +21,8 @@ public class CTeController {
 
 	@Autowired
 	private CTeRepository cteRepository;
+	@Autowired
+	private CTeService cteService;
 	
 	@GetMapping("/cte")
 	public Page<CTe> buscarTodos(@RequestParam(value = "pagina", required = true)int pagina,
@@ -50,8 +52,7 @@ public class CTeController {
 	
 	@PostMapping(value = "/cte/buscarAutorizacao/{id}")
 	public void buscarAutorizacao(@PathVariable Long id) throws Exception{
-		CTeService cteService = new CTeService();
-		cteService.buscarAutorizacao(cteRepository.findById(id));
+		cteService.buscarAutorizacao(id);
 	}
 	
 	@DeleteMapping("/cte/{id}")

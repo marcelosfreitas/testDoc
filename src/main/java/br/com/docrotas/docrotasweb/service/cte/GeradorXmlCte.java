@@ -1,17 +1,17 @@
 package br.com.docrotas.docrotasweb.service.cte;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-
-import com.fasterxml.jackson.core.sym.Name;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.entity.Empresa;
@@ -23,6 +23,8 @@ import br.com.docrotas.docrotasweb.entity.TipoPessoaCTe;
 import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
 
 public class GeradorXmlCte {
+	
+	private static final Logger log = Logger.getLogger(GeradorXmlCte.class);
 	
 	private static final SimpleDateFormat YYYY = new SimpleDateFormat("yyyy");
 	private static final String MODELO_DOCUMENTO_CTE = "57";
@@ -46,6 +48,8 @@ public class GeradorXmlCte {
 		
 		documentCte = new Document();
 		documentCte.setRootElement(elementCTe);
+		
+		log.debug(new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
 		
 		return documentCte;
 	}
@@ -134,7 +138,7 @@ public class GeradorXmlCte {
 		Element elementMod = new Element("mod");
 		elementMod.addContent(MODELO_DOCUMENTO_CTE);
 		elementIde.addContent(elementMod);
-		
+
 		Element elementSerie = new Element("serie");
 		elementSerie.addContent(String.valueOf(cte.getSerie()));
 		elementIde.addContent(elementSerie);
@@ -142,15 +146,15 @@ public class GeradorXmlCte {
 		Element elementNCT = new Element("nCT");
 		elementNCT.addContent(String.valueOf(cte.getNumero()));
 		elementIde.addContent(elementNCT);
-		
+
 		Element elementDhEmi = new Element("dhEmi");
 		elementDhEmi.addContent(DocumentoEletronicoUtils.formatDate(cte.getDtEmissao()));
 		elementIde.addContent(elementDhEmi);
-		
+
 		Element elementTpImp = new Element("tpImp");
 		elementTpImp.addContent(cte.getEmpresa().getTipoImpressao().getCodigo());
 		elementIde.addContent(elementTpImp);
-		
+
 		//por enquanto "1-normal" (4-EPEC SVC/5-Contingencia FSDA/7-SVC_RS/8-SVC_SP)
 		Element elementTpEmis = new Element("tpEmis");
 		elementTpEmis.addContent(cte.getTpEmissao().getCodigo());
@@ -159,16 +163,16 @@ public class GeradorXmlCte {
 		Element elementCDV = new Element("cDV");
 		elementCDV.addContent(cte.getChave().substring(43,44));
 		elementIde.addContent(elementCDV);
-		
+
 		//--Ambiente 2-homologação (1-produção)
 		Element elementTpAmb = new Element("tpAmb");
 		elementTpAmb.addContent(cte.getTpAmbiente().getCodigo());
 		elementIde.addContent(elementTpAmb);
-		
+
 		Element elementTpCte = new Element("tpCTe");
 		elementTpCte.addContent(cte.getTpCte().getCodigo());
 		elementIde.addContent(elementTpCte);
-		
+
 		//Emitido por aplicativo do contribuinte 
 		Element elementProcEmi = new Element("procEmi");
 		elementProcEmi.addContent("0");
@@ -177,39 +181,39 @@ public class GeradorXmlCte {
 		Element elementVerProc = new Element("verProc");
 		elementVerProc.addContent(VERSAO_APLICACAO);
 		elementIde.addContent(elementVerProc);
-		
+
 		Element elementCMunEnv = new Element("cMunEnv");
 		elementCMunEnv.addContent(String.valueOf(cte.getEmpresa().getCidade().getCodIBGE()));
 		elementIde.addContent(elementCMunEnv);
-		
+
 		Element elementXMunEnv = new Element("xMunEnv");
 		elementXMunEnv.addContent(cte.getEmpresa().getCidade().getNome());
 		elementIde.addContent(elementXMunEnv);
-		
+
 		Element elementUfEnv = new Element("UFEnv");
 		elementUfEnv.addContent(cte.getEmpresa().getCidade().getUf().getSigla());
 		elementIde.addContent(elementUfEnv);
-		
+
 		Element elementModal = new Element("modal");
 		elementModal.addContent(MODAL_RODOVIARIO);
 		elementIde.addContent(elementModal);
-		
+
 		Element elementTpServ = new Element("tpServ");
 		elementTpServ.addContent(cte.getTpServico().getCodigo());
 		elementIde.addContent(elementTpServ);
-		
+
 		Element elementCMunIni = new Element("cMunIni");
 		elementCMunIni.addContent(String.valueOf(cte.getCidadeColeta().getCodIBGE()));
 		elementIde.addContent(elementCMunIni);
-		
+
 		Element elementXMunIni = new Element("xMunIni");
 		elementXMunIni.addContent(cte.getCidadeColeta().getNome());
 		elementIde.addContent(elementXMunIni);
-		
+
 		Element elementUfIni = new Element("UFIni");
 		elementUfIni.addContent(cte.getCidadeColeta().getUf().getSigla());
 		elementIde.addContent(elementUfIni);
-		
+
 		Element elementCMunFim = new Element("cMunFim");
 		elementCMunFim.addContent(String.valueOf(cte.getCidadeEntrega().getCodIBGE()));
 		elementIde.addContent(elementCMunFim);

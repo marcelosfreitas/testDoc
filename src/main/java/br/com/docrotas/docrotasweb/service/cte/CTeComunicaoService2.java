@@ -91,7 +91,7 @@ public class CTeComunicaoService2 {
 		* dados do certificado do cliente
 		*/
 		System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
-		System.setProperty("javax.net.ssl.keyStore", "D:/certificado.pfx");
+		System.setProperty("javax.net.ssl.keyStore", "C:/certificado.pfx");
 		System.setProperty("javax.net.ssl.keyStorePassword", "12345678");
 		/*
 		* dados do certificado do servidor
