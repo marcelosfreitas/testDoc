@@ -170,7 +170,7 @@ public class AssinarXMLsCertfificadoA1 {
             ArrayList<Transform> transformList, PrivateKey privateKey,  
             KeyInfo ki, Document document, int indexNFe) throws Exception {  
   
-        NodeList elements = document.getElementsByTagName("infCTe");  
+        NodeList elements = document.getElementsByTagName("infCte");  
         org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(indexNFe);  
         String id = el.getAttribute("Id"); 
         el.setIdAttribute("Id", true);

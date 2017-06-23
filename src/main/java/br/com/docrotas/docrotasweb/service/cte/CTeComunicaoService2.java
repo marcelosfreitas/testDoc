@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
@@ -30,6 +31,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.apache.axis.AxisEngine;
 import org.apache.axis.client.Call;
@@ -90,13 +95,20 @@ public class CTeComunicaoService2 {
 		AssinarXMLsCertfificadoA1 assinarXMLsCertfificadoA1 = new AssinarXMLsCertfificadoA1();
 		xml = assinarXMLsCertfificadoA1.assinaEnviCTe(xml, PATH_CERTIFICADO, SENHA_CERTIFICADO);
 		xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","");
+
+		Source schemaFile = new StreamSource("C:\\Users\\lauro.chicorski\\Desktop\\PL_CTe_300\\PL_CTe_300\\enviCTe_v3.00.xsd");
+		Source xmlFile = new StreamSource(xml);
+		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Schema schema = schemaFactory.newSchema(schemaFile);
+		Validator validator = schema.newValidator();
+		validator.validate(new StreamSource(new StringReader(xml)));
 		
 		StringBuilder stb = new StringBuilder();
 		stb.append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">");
 		stb.append("<soap12:Header>");
 		stb.append("<cteCabecMsg xmlns=\"http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao\">");
 		stb.append("<cUF>31</cUF>");
-		stb.append("<versaoDados>string</versaoDados>");
+		stb.append("<versaoDados>3.00</versaoDados>");
 		stb.append("</cteCabecMsg>");
 		stb.append("</soap12:Header>");
 		stb.append("<soap12:Body>");
@@ -105,7 +117,6 @@ public class CTeComunicaoService2 {
 		stb.append("</cteDadosMsg>");
 		stb.append("</soap12:Body>");
 		stb.append("</soap12:Envelope>");
-				
 		
 		SOAPMessage message = factory.createMessage(header, new ByteArrayInputStream(stb.toString().getBytes()));
 		/* instancia uma conexao SOAP */

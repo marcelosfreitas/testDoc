@@ -30,7 +30,7 @@ public class GeradorXmlCte {
 	private static final String MODELO_DOCUMENTO_CTE = "57";
 	private static final String VERSAO_APLICACAO = "1.00";
 	private static final String MODAL_RODOVIARIO = "01";
-	private static final String VERSAO = "2.00";
+	private static final String VERSAO = "3.00";
 	private static final Namespace NAMESPACE = Namespace.getNamespace("http://www.portalfiscal.inf.br/cte");
 	
 	public Document getDocumentXML(CTe cte) throws Exception{
@@ -74,7 +74,7 @@ public class GeradorXmlCte {
 		stbChave.append(MODELO_DOCUMENTO_CTE);
 		stbChave.append(StringUtils.leftPad(cte.getSerie().toString(), 3, '0'));
 		stbChave.append(StringUtils.leftPad(cte.getNumero().toString(), 9, '0'));
-		stbChave.append(StringUtils.leftPad(cte.getTpEmissao().getCodigo(), 2, '0'));
+		stbChave.append(cte.getTpEmissao().getCodigo());
 		stbChave.append(StringUtils.leftPad(getNumeroAleatorio(), 8, '0'));
 		stbChave.append(String.valueOf(getDigitoVerificador(stbChave.toString())));
 		
@@ -107,13 +107,13 @@ public class GeradorXmlCte {
 	private Element getElementInfCTe(CTe cte) {
 		String identificacao = "CTe" + cte.getChave();
 		
-		Element infCTe = new Element("infCTe");
+		Element infCTe = new Element("infCte");
 
 		infCTe.setAttribute("Id", identificacao);
 		infCTe.setAttribute("versao", VERSAO);
 
 		infCTe.addContent(getElementIde(cte));
-		infCTe.addContent(getElementCompl(cte));
+		//infCTe.addContent(getElementCompl(cte));
 		infCTe.addContent(getElementEmit(cte.getEmpresa()));
 		infCTe.addContent(getElementPessoa(TipoPessoaCTe.REMETENTE, cte.getPessoaRemetente()));
 		infCTe.addContent(getElementPessoa(TipoPessoaCTe.DESTINATARIO, cte.getPessoaDestinatario()));
@@ -318,7 +318,7 @@ public class GeradorXmlCte {
 		elementNro.addContent(String.valueOf(empresa.getNro()));
 		elementEnderEmit.addContent(elementNro);
 		
-		if(empresa.getComplemento() != null){
+		if(StringUtils.isNotEmpty(empresa.getComplemento())){
 			Element elementXcpl = new Element("xCpl");
 			elementXcpl.addContent(empresa.getComplemento());
 			elementEnderEmit.addContent(elementXcpl);
@@ -373,14 +373,14 @@ public class GeradorXmlCte {
 		elementXnome.addContent(pessoa.getRazao());
 		elementPessoa.addContent(elementXnome);
 		
-		if(pessoa.getFantasia() != null){
+		if(TipoPessoaCTe.REMETENTE.equals(tipoPessoaCTe) && pessoa.getFantasia() != null){
 			Element elementXfant = new Element("xFant");
 			elementXfant.addContent(pessoa.getFantasia());
 			elementPessoa.addContent(elementXfant);
 		}
 		
 		Element elementEnder;
-		if(tipoPessoaCTe.toString().equals("rem")){
+		if(tipoPessoaCTe.equals(TipoPessoaCTe.REMETENTE)){
 			elementEnder = new Element("enderReme");
 		}else{
 			elementEnder = new Element("enderDest");
