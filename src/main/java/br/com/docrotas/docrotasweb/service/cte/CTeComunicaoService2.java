@@ -46,9 +46,9 @@ import org.xml.sax.InputSource;
 public class CTeComunicaoService2 {
 	
 	private URL url = new URL("https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao");
-	private static final String PATH_CERTIFICADO = "D:/certificado.pfx";
+	private static final String PATH_CERTIFICADO = "C:/certificado.pfx";
 	private static final String SENHA_CERTIFICADO = "12345678";
-	private static final String PATH_ARQ_CARCETS = "D:/cacerts";
+	private static final String PATH_ARQ_CARCETS = "C:/cacerts";
 
 	
 	public CTeComunicaoService2() throws IOException {
@@ -58,6 +58,7 @@ public class CTeComunicaoService2 {
 	public void recepicionarLote(String xml) throws Exception {
 		try
 		{
+
 		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 
@@ -87,7 +88,8 @@ public class CTeComunicaoService2 {
 		MessageFactory factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
 		
 		AssinarXMLsCertfificadoA1 assinarXMLsCertfificadoA1 = new AssinarXMLsCertfificadoA1();
-		xml = assinarXMLsCertfificadoA1.assinaEnviCTe(xml);
+		xml = assinarXMLsCertfificadoA1.assinaEnviCTe(xml, PATH_CERTIFICADO, SENHA_CERTIFICADO);
+		xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","");
 		
 		StringBuilder stb = new StringBuilder();
 		stb.append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">");

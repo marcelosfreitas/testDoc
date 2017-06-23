@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;  
 import java.io.InputStream;  
 import java.io.InputStreamReader;  
+import java.io.StringReader;
 import java.security.InvalidAlgorithmParameterException;  
 import java.security.KeyStore;  
 import java.security.NoSuchAlgorithmException;  
@@ -17,6 +18,9 @@ import java.util.Collections;
 import java.util.Enumeration;  
 import java.util.List;  
   
+
+
+
 import javax.xml.crypto.dsig.CanonicalizationMethod;  
 import javax.xml.crypto.dsig.DigestMethod;  
 import javax.xml.crypto.dsig.Reference;  
@@ -39,8 +43,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;  
 import javax.xml.transform.stream.StreamResult;  
   
+
+
+
 import org.w3c.dom.Document;  
 import org.w3c.dom.NodeList;  
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;  
   
 public class AssinarXMLsCertfificadoA1 {  
@@ -48,10 +56,7 @@ public class AssinarXMLsCertfificadoA1 {
     private static final String INFCANC = "infCanc";  
     private static final String NFE = "NFe";
     private static final String CTE = "CTe";
-    
-	private static final String PATH_CERTIFICADO = "D:/certificado.pfx";
-	private static final String SENHA_CERTIFICADO = "12345678";
-  
+
     private PrivateKey privateKey;  
     private KeyInfo keyInfo;  
   
@@ -122,11 +127,11 @@ public class AssinarXMLsCertfificadoA1 {
         return outputXML(document);  
     }
     
-    public String assinaEnviCTe(String xml) throws Exception {  
+    public String assinaEnviCTe(String xml, String pathCertificado, String senha) throws Exception {  
         Document document = documentFactory(xml);  
         XMLSignatureFactory signatureFactory = XMLSignatureFactory.getInstance("DOM");  
         ArrayList<Transform> transformList = signatureFactory(signatureFactory);  
-        loadCertificates(PATH_CERTIFICADO, SENHA_CERTIFICADO, signatureFactory);  
+        loadCertificates(pathCertificado, senha, signatureFactory);  
   
         for (int i = 0; i < document.getDocumentElement().getElementsByTagName(CTE).getLength(); i++) {  
             assinarNFe(signatureFactory, transformList, privateKey, keyInfo, document, i);  
@@ -165,9 +170,10 @@ public class AssinarXMLsCertfificadoA1 {
             ArrayList<Transform> transformList, PrivateKey privateKey,  
             KeyInfo ki, Document document, int indexNFe) throws Exception {  
   
-        NodeList elements = document.getElementsByTagName("infNFe");  
+        NodeList elements = document.getElementsByTagName("infCTe");  
         org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(indexNFe);  
-        String id = el.getAttribute("Id");  
+        String id = el.getAttribute("Id"); 
+        el.setIdAttribute("Id", true);
   
         Reference ref = fac.newReference("#" + id,  
                 fac.newDigestMethod(DigestMethod.SHA1, null), transformList,  
@@ -181,8 +187,7 @@ public class AssinarXMLsCertfificadoA1 {
   
         XMLSignature signature = fac.newXMLSignature(si, ki);  
   
-        DOMSignContext dsc = new DOMSignContext(privateKey,   
-                document.getDocumentElement().getElementsByTagName(NFE).item(indexNFe));  
+        DOMSignContext dsc = new DOMSignContext(privateKey, document.getElementsByTagName(CTE).item(indexNFe));  
         signature.sign(dsc);  
     }  
   
@@ -237,8 +242,7 @@ public class AssinarXMLsCertfificadoA1 {
             IOException, ParserConfigurationException {  
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
         factory.setNamespaceAware(true);  
-        Document document = factory.newDocumentBuilder().parse(  
-                new ByteArrayInputStream(xml.getBytes()));  
+        Document document = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));  
         return document;  
     }  
   
