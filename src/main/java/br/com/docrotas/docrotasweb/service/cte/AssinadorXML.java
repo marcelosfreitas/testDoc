@@ -1,7 +1,6 @@
 package br.com.docrotas.docrotasweb.service.cte;
 
 import java.io.BufferedReader;  
-import java.io.ByteArrayInputStream;  
 import java.io.ByteArrayOutputStream;  
 import java.io.FileInputStream;  
 import java.io.IOException;  
@@ -17,9 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;  
 import java.util.Enumeration;  
 import java.util.List;  
-  
-
-
 
 import javax.xml.crypto.dsig.CanonicalizationMethod;  
 import javax.xml.crypto.dsig.DigestMethod;  
@@ -42,135 +38,37 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;  
 import javax.xml.transform.dom.DOMSource;  
 import javax.xml.transform.stream.StreamResult;  
-  
 
-
-
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;  
 import org.w3c.dom.NodeList;  
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;  
   
-public class AssinarXMLsCertfificadoA1 {  
-    private static final String INFINUT = "infInut";  
-    private static final String INFCANC = "infCanc";  
-    private static final String NFE = "NFe";
+public class AssinadorXML {  
+	
+	private static final Logger log = Logger.getLogger(AssinadorXML.class);
+
     private static final String CTE = "CTe";
+    private static final String INFCTE = "infCte";  
 
     private PrivateKey privateKey;  
     private KeyInfo keyInfo;  
-  
-    public static void main(String[] args) {  
-        try {  
-            String caminhoDoCertificadoDoCliente = "C:/JavaC/NF-e/certificadoDoCliente.pfx";  
-            String senhaDoCertificadoDoCliente = "1234";  
-            AssinarXMLsCertfificadoA1 assinarXMLsCertfificadoA1 = new AssinarXMLsCertfificadoA1();  
-  
-            /** 
-             * Assinando o XML de Lote da NF-e 
-             * fileEnviNFe = Caminho do Arquivo XML (EnviNFe) gerado; 
-             */  
-            info("");  
-            String fileEnviNFe = "C:/JavaC/NF-e/xmlEnviNFe.xml";  
-            String xmlEnviNFe = lerXML(fileEnviNFe);  
-            String xmlEnviNFeAssinado = assinarXMLsCertfificadoA1.assinaEnviNFe(  
-                    xmlEnviNFe, caminhoDoCertificadoDoCliente, senhaDoCertificadoDoCliente);  
-            info("XML EnviNFe Assinado: " + xmlEnviNFeAssinado);  
-  
-            /** 
-             * Assinando o XML de Cancelamento da NF-e 
-             * fileCancNFe = Caminho do Arquivo XML (CancNFe) gerado; 
-             */  
-            info("");  
-            String fileCancNFe = "C:/JavaC/NF-e/xmlCancNFe.xml";  
-            String xmlCancNFe = lerXML(fileCancNFe);  
-            String xmlCancNFeAssinado = assinarXMLsCertfificadoA1.assinaCancNFe(  
-                    xmlCancNFe, caminhoDoCertificadoDoCliente, senhaDoCertificadoDoCliente);  
-            info("XML CancNFe Assinado: " + xmlCancNFeAssinado);  
-  
-            /** 
-             * Assinando o XML de Inutilizacao da NF-e 
-             * fileInutNFe = Caminho do Arquivo XML (InutNFe) gerado; 
-             */  
-            info("");  
-            String fileInutNFe = "C:/JavaC/NF-e/xmlInutNFe.xml";  
-            String xmlInutNFe = lerXML(fileInutNFe);  
-            String xmlInutNFeAssinado = assinarXMLsCertfificadoA1.assinaInutNFe(  
-                    xmlInutNFe, caminhoDoCertificadoDoCliente, senhaDoCertificadoDoCliente);  
-            info("XML InutNFe Assinado: " + xmlInutNFeAssinado);  
-  
-        } catch (Exception e) {  
-            error("| " + e.toString());  
-        }  
-    }  
-  
-    /** 
-     * Assinatura do XML de Envio de Lote da NF-e utilizando Certificado 
-     * Digital A1. 
-     * @param xml 
-     * @param certificado 
-     * @param senha 
-     * @return 
-     * @throws Exception 
-     */  
-    public String assinaEnviNFe(String xml, String certificado, String senha)  
-            throws Exception {  
-        Document document = documentFactory(xml);  
-        XMLSignatureFactory signatureFactory = XMLSignatureFactory.getInstance("DOM");  
-        ArrayList<Transform> transformList = signatureFactory(signatureFactory);  
-        loadCertificates(certificado, senha, signatureFactory);  
-  
-        for (int i = 0; i < document.getDocumentElement().getElementsByTagName(NFE).getLength(); i++) {  
-            assinarNFe(signatureFactory, transformList, privateKey, keyInfo, document, i);  
-        }  
-  
-        return outputXML(document);  
-    }
-    
-    public String assinaEnviCTe(String xml, String pathCertificado, String senha) throws Exception {  
+
+    public String assinaEnviCTe(String xml, String pathCertificado, String senha, String nomeTagPai, String nomeTagAssinada) throws Exception {  
         Document document = documentFactory(xml);  
         XMLSignatureFactory signatureFactory = XMLSignatureFactory.getInstance("DOM");  
         ArrayList<Transform> transformList = signatureFactory(signatureFactory);  
         loadCertificates(pathCertificado, senha, signatureFactory);  
-  
+
         for (int i = 0; i < document.getDocumentElement().getElementsByTagName(CTE).getLength(); i++) {  
-            assinarNFe(signatureFactory, transformList, privateKey, keyInfo, document, i);  
+            assinarElement(signatureFactory, transformList, privateKey, keyInfo, document, i, CTE, INFCTE);  
         }  
-  
         return outputXML(document);  
     }
   
-    /** 
-     * Assintaruda do XML de Cancelamento da NF-e utilizando Certificado 
-     * Digital A1. 
-     * @param xml 
-     * @param certificado 
-     * @param senha 
-     * @return 
-     * @throws Exception 
-     */  
-    public String assinaCancNFe(String xml, String certificado, String senha) throws Exception {  
-        return assinaCancelametoInutilizacao(xml, certificado, senha, INFCANC);  
-    }  
-  
-    /** 
-     * Assinatura do XML de Inutilizacao de sequenciais da NF-e utilizando 
-     * Certificado Digital A1. 
-     * @param xml 
-     * @param certificado 
-     * @param senha 
-     * @return 
-     * @throws Exception 
-     */  
-    public String assinaInutNFe(String xml, String certificado, String senha) throws Exception {  
-        return assinaCancelametoInutilizacao(xml, certificado, senha, INFINUT);  
-    }  
-  
-    private void assinarNFe(XMLSignatureFactory fac,  
-            ArrayList<Transform> transformList, PrivateKey privateKey,  
-            KeyInfo ki, Document document, int indexNFe) throws Exception {  
-  
-        NodeList elements = document.getElementsByTagName("infCte");  
+    private void assinarElement(XMLSignatureFactory fac, ArrayList<Transform> transformList, PrivateKey privateKey, KeyInfo ki, Document document, int indexNFe, String nomeTagPai, String nomeTagAssinada) throws Exception {  
+        NodeList elements = document.getElementsByTagName(nomeTagAssinada);  
         org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(indexNFe);  
         String id = el.getAttribute("Id"); 
         el.setIdAttribute("Id", true);
@@ -187,42 +85,10 @@ public class AssinarXMLsCertfificadoA1 {
   
         XMLSignature signature = fac.newXMLSignature(si, ki);  
   
-        DOMSignContext dsc = new DOMSignContext(privateKey, document.getElementsByTagName(CTE).item(indexNFe));  
+        DOMSignContext dsc = new DOMSignContext(privateKey, document.getElementsByTagName(nomeTagPai).item(indexNFe));  
         signature.sign(dsc);  
     }  
-  
-    private String assinaCancelametoInutilizacao(String xml,  
-            String certificado, String senha, String tagCancInut)  
-            throws Exception {  
-        Document document = documentFactory(xml);  
-  
-        XMLSignatureFactory signatureFactory = XMLSignatureFactory  
-                .getInstance("DOM");  
-        ArrayList<Transform> transformList = signatureFactory(signatureFactory);  
-        loadCertificates(certificado, senha, signatureFactory);  
-  
-        NodeList elements = document.getElementsByTagName(tagCancInut);  
-        org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);  
-        String id = el.getAttribute("Id");  
-  
-        Reference ref = signatureFactory.newReference("#" + id,  
-                signatureFactory.newDigestMethod(DigestMethod.SHA1, null),  
-                transformList, null, null);  
-  
-        SignedInfo si = signatureFactory.newSignedInfo(signatureFactory  
-                .newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE,  
-                        (C14NMethodParameterSpec) null), signatureFactory  
-                .newSignatureMethod(SignatureMethod.RSA_SHA1, null),  
-                Collections.singletonList(ref));  
-  
-        XMLSignature signature = signatureFactory.newXMLSignature(si, keyInfo);  
-  
-        DOMSignContext dsc = new DOMSignContext(privateKey, document.getFirstChild());  
-        signature.sign(dsc);  
-  
-        return outputXML(document);  
-    }  
-  
+
     private ArrayList<Transform> signatureFactory(  
             XMLSignatureFactory signatureFactory)  
             throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {  
@@ -270,7 +136,7 @@ public class AssinarXMLsCertfificadoA1 {
         }  
   
         X509Certificate cert = (X509Certificate) pkEntry.getCertificate();  
-        info("SubjectDN: " + cert.getSubjectDN().toString());  
+        log.info("SubjectDN: " + cert.getSubjectDN().toString());  
   
         KeyInfoFactory keyInfoFactory = signatureFactory.getKeyInfoFactory();  
         List<X509Certificate> x509Content = new ArrayList<X509Certificate>();  
@@ -291,38 +157,5 @@ public class AssinarXMLsCertfificadoA1 {
             xml = xml.replaceAll(" standalone=\"no\"", "");  
         }  
         return xml;  
-    }  
-  
-    private static String lerXML(String fileXML) throws IOException {  
-        String linha = "";  
-        StringBuilder xml = new StringBuilder();  
-  
-        BufferedReader in = new BufferedReader(new InputStreamReader(  
-                new FileInputStream(fileXML)));  
-        while ((linha = in.readLine()) != null) {  
-            xml.append(linha);  
-        }  
-        in.close();  
-  
-        return xml.toString();  
-    }  
-  
-    /** 
-     * Log ERROR. 
-     *  
-     * @param error 
-     */  
-    private static void error(String error) {  
-        System.out.println("| ERROR: " + error);  
-    }  
-  
-    /** 
-     * Log INFO. 
-     *  
-     * @param info 
-     */  
-    private static void info(String info) {  
-        System.out.println("| INFO: " + info);  
-    }  
-  
+    }    
 }
