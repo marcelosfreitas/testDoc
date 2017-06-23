@@ -40,17 +40,25 @@ public class GeradorXmlCte {
 			throw new Exception("Cte não informado.");
 		}
 		
-		atualizarChaveAcesso(cte);
-
+		if (!cte.temChaveAcesso()) {
+			atualizarChaveAcesso(cte);
+		}
+		Element enviCTe = new Element("enviCTe");
+		enviCTe.setAttribute("versao", VERSAO);
+		Element idLote = new Element("idLote");
+		idLote.addContent("11111");
 		Element elementCTe = new Element("CTe");
 		elementCTe.addContent(getElementInfCTe(cte));
-		elementCTe.setNamespace(NAMESPACE);
+//		elementCTe.setNamespace(NAMESPACE);
 		
+		enviCTe.addContent(idLote);
+		enviCTe.addContent(elementCTe);
+
 		documentCte = new Document();
-		documentCte.setRootElement(elementCTe);
-		
-		log.debug(new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
-		
+		documentCte.setRootElement(enviCTe);
+
+		log.info("XML CT-e sem assinatura: " + new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
+
 		return documentCte;
 	}
 

@@ -20,6 +20,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.docrotas.docrotasweb.listerner.CTeListerner;
 
 @Entity
@@ -127,6 +131,12 @@ public class CTe implements Serializable{
 	/*@Enumerated(EnumType.ORDINAL)
 	@Column(name = "cst_codigo")
 	private TipoCST cst;*/
+	
+	@JsonIgnore
+	public boolean temChaveAcesso() {
+		return StringUtils.isNotEmpty(getChave());
+	}
+	
 
 	public Long getId() {
 		return id;

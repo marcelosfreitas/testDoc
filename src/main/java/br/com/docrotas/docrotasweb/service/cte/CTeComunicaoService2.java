@@ -46,33 +46,13 @@ import org.xml.sax.InputSource;
 public class CTeComunicaoService2 {
 	
 	private URL url = new URL("https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao");
-//	private Service service;
-//	private String operationName = "cteRetRecepcao";
-//	private String soapActionURI = "cteRecepcaoLoteResult";
-//	private String namespace = "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao";
-//	private String inputCabMsg = "cteCabecMsg";
-//	private byte[] wsddBytes;
-//	private String xmlElementRetName = "cteRecepcaoLoteResult";
+	private static final String PATH_CERTIFICADO = "D:/certificado.pfx";
+	private static final String SENHA_CERTIFICADO = "12345678";
+	private static final String PATH_ARQ_CARCETS = "D:/cacerts";
+
 	
 	public CTeComunicaoService2() throws IOException {
-//		InputStream input = null;
-//
-//		try {
-//			input = this.getClass().getResourceAsStream("/br/com/docrotas/docrotasweb/service/cte/client-config.wsdd");
-//
-//			if (input == null) {
-//				throw new RuntimeException(String.format("Arquivo de configuração '%s' não encontrato client-config.wsdd"));
-//			}
-//
-//			byte[] b = new byte[2048];
-//			int lidos = input.read(b);
-//			wsddBytes = Arrays.copyOf(b, lidos);
-//		} finally {
-//			input.close();
-//		}
-//		FileProvider fileProvider = new FileProvider(new ByteArrayInputStream(wsddBytes));
-//		
-//		this.service = new Service(fileProvider);
+
 	}
 	
 	public void recepicionarLote(String xml) throws Exception {
@@ -91,21 +71,23 @@ public class CTeComunicaoService2 {
 		* dados do certificado do cliente
 		*/
 		System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
-		System.setProperty("javax.net.ssl.keyStore", "C:/certificado.pfx");
-		System.setProperty("javax.net.ssl.keyStorePassword", "12345678");
+		System.setProperty("javax.net.ssl.keyStore", PATH_CERTIFICADO);
+		System.setProperty("javax.net.ssl.keyStorePassword", SENHA_CERTIFICADO);
 		/*
 		* dados do certificado do servidor
 		*/
 		System.setProperty("javax.net.ssl.trustStoreType", "JKS");
-		System.setProperty("javax.net.ssl.trustStore", "D:/cacerts");
+		System.setProperty("javax.net.ssl.trustStore", PATH_ARQ_CARCETS);
 		System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
-		/* Url do WebService */
-		URL url = new URL("https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao");
+
 		/* tipo de mensagem: SOAP */
 		MimeHeaders header = new MimeHeaders();
 		header.addHeader("Content-Type", "application/soap+xml");
 		/* monta a mensagem SOAP */
 		MessageFactory factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
+		
+		AssinarXMLsCertfificadoA1 assinarXMLsCertfificadoA1 = new AssinarXMLsCertfificadoA1();
+		xml = assinarXMLsCertfificadoA1.assinaEnviCTe(xml);
 		
 		StringBuilder stb = new StringBuilder();
 		stb.append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">");

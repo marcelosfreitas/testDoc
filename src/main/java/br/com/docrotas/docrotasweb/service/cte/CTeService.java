@@ -33,7 +33,10 @@ public class CTeService {
 		XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
 		
 		String xmlString = xmlOutputter.outputString(geradorXmlCte.getDocumentXML(cte));
-				
+		
+		xmlString = xmlString.replaceAll("<CTe>", "<CTe xmlns=\"http://www.portalfiscal.inf.br/cte\" >");
+		xmlString = xmlString.replaceAll("<enviCTe ", "<enviCTe xmlns=\"http://www.portalfiscal.inf.br/cte\" ");
+		xmlString = xmlString.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n","");
 		CTeComunicaoService2 cTeComunicaoService = new CTeComunicaoService2();
 		
 		cTeComunicaoService.recepicionarLote(xmlString);
