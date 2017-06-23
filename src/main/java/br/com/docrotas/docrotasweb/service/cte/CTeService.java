@@ -14,6 +14,10 @@ import br.com.docrotas.docrotasweb.repository.CTeRepository;
 @Service
 public class CTeService {
 	
+	private String pathCertificado = "C:/certificado.pfx";
+	private String senhaCertificado = "12345678";
+	private String pathCacerts = "C:/cacerts";
+	
 	@Autowired
 	private CTeRepository cteRepository;
 	
@@ -37,7 +41,8 @@ public class CTeService {
 		xmlString = xmlString.replaceAll("<CTe>", "<CTe xmlns=\"http://www.portalfiscal.inf.br/cte\" >");
 		xmlString = xmlString.replaceAll("<enviCTe ", "<enviCTe xmlns=\"http://www.portalfiscal.inf.br/cte\" ");
 		xmlString = xmlString.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n","");
-		CTeComunicaoService2 cTeComunicaoService = new CTeComunicaoService2();
+
+		CTeComunicaoService cTeComunicaoService = new CTeComunicaoService(pathCertificado,senhaCertificado,pathCacerts);
 		
 		cTeComunicaoService.recepicionarLote(xmlString);
 		
