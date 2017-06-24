@@ -38,8 +38,6 @@ public abstract class ComunicacaoSefazService {
 	
 	public String comunicar(String xml) throws SOAPException, IOException {
 		setSystemProperties();
-		
-		String retorno = null;
 
 		/* tipo de mensagem: SOAP */
 		MimeHeaders header = new MimeHeaders();
@@ -61,7 +59,7 @@ public abstract class ComunicacaoSefazService {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		resWs.writeTo(out);
 		
-		return retorno;
+		return out.toString();
 	}
 	
 	public void setSystemProperties() {

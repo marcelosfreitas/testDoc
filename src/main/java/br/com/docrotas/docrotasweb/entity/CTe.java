@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -92,7 +93,7 @@ public class CTe implements Serializable{
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "situacao")
-	private SituacaoCte situacao;
+	private SituacaoDocumento situacao;
 	
 	@ManyToOne
 	@JoinColumn(name = "empresa_id")
@@ -132,12 +133,24 @@ public class CTe implements Serializable{
 	@Column(name = "cst_codigo")
 	private TipoCST cst;*/
 	
+	@Column(name = "prot_lote")
+	private String protocoloLote;
+	
+	@Column(name = "dt_prot_lote")
+	private Date dtProtocoloLote;
+	
+	@Column(name = "prot_autorizacao")
+	private String protocoloAutorizacao;
+	
+	@Column(name = "dt_prot_autorizacao")
+	private Date dtProtocoloAutorizacao;
+	
 	@JsonIgnore
+	@Transient
 	public boolean temChaveAcesso() {
 		return StringUtils.isNotEmpty(getChave());
 	}
 	
-
 	public Long getId() {
 		return id;
 	}
@@ -274,11 +287,11 @@ public class CTe implements Serializable{
 		this.chave = chave;
 	}
 
-	public SituacaoCte getSituacao() {
+	public SituacaoDocumento getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(SituacaoCte situacao) {
+	public void setSituacao(SituacaoDocumento situacao) {
 		this.situacao = situacao;
 	}
 
@@ -354,6 +367,38 @@ public class CTe implements Serializable{
 		this.tpCte = tpCte;
 	}
 
+	public String getProtocoloLote() {
+		return protocoloLote;
+	}
+
+	public void setProtocoloLote(String protocoloLote) {
+		this.protocoloLote = protocoloLote;
+	}
+
+	public Date getDtProtocoloLote() {
+		return dtProtocoloLote;
+	}
+
+	public void setDtProtocoloLote(Date dtProtocoloLote) {
+		this.dtProtocoloLote = dtProtocoloLote;
+	}
+
+	public String getProtocoloAutorizacao() {
+		return protocoloAutorizacao;
+	}
+
+	public void setProtocoloAutorizacao(String protocoloAutorizacao) {
+		this.protocoloAutorizacao = protocoloAutorizacao;
+	}
+
+	public Date getDtProtocoloAutorizacao() {
+		return dtProtocoloAutorizacao;
+	}
+
+	public void setDtProtocoloAutorizacao(Date dtProtocoloAutorizacao) {
+		this.dtProtocoloAutorizacao = dtProtocoloAutorizacao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -388,7 +433,9 @@ public class CTe implements Serializable{
 				+ ", produto=" + produto + ", chave=" + chave + ", situacao=" + situacao + ", empresa=" + empresa
 				+ ", cidadeColeta=" + cidadeColeta + ", cidadeEntrega=" + cidadeEntrega + ", pessoaRemetente="
 				+ pessoaRemetente + ", pessoaDestinatario=" + pessoaDestinatario + ", pessoaTomador=" + pessoaTomador
-				+ ", NFes=" + nfes + "]";
+				+ ", nfes=" + nfes + ", cfop=" + cfop + ", protocoloLote=" + protocoloLote + ", dtProtocoloLote="
+				+ dtProtocoloLote + ", protocoloAutorizacao=" + protocoloAutorizacao + ", dtProtocoloAutorizacao="
+				+ dtProtocoloAutorizacao + "]";
 	}
 	
 }

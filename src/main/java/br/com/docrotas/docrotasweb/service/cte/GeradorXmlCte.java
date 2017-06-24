@@ -17,6 +17,7 @@ import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.entity.Empresa;
 import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.Pessoa;
+import br.com.docrotas.docrotasweb.entity.TipoAmbienteEmissao;
 import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 import br.com.docrotas.docrotasweb.entity.TipoMedidas;
 import br.com.docrotas.docrotasweb.entity.TipoPessoaCTe;
@@ -26,12 +27,12 @@ public class GeradorXmlCte {
 	
 	private static final Logger log = Logger.getLogger(GeradorXmlCte.class);
 	
-	private static final SimpleDateFormat YYYY = new SimpleDateFormat("yyyy");
+	private static final SimpleDateFormat yyMM = new SimpleDateFormat("yyMM");
 	private static final String MODELO_DOCUMENTO_CTE = "57";
-	private static final String VERSAO_APLICACAO = "1.00";
+	private static final String VERSAO_APLICACAO = "DOCROTAS";
 	private static final String MODAL_RODOVIARIO = "01";
 	private static final String VERSAO = "3.00";
-	private static final Namespace NAMESPACE = Namespace.getNamespace("http://www.portalfiscal.inf.br/cte");
+	private static final String NOME_HOMOLOGACAO = "CT-E EMITIDO EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
 	
 	public Document getDocumentXML(CTe cte) throws Exception{
 		Document documentCte = null;
@@ -49,7 +50,6 @@ public class GeradorXmlCte {
 		idLote.addContent("11111");
 		Element elementCTe = new Element("CTe");
 		elementCTe.addContent(getElementInfCTe(cte));
-//		elementCTe.setNamespace(NAMESPACE);
 		
 		enviCTe.addContent(idLote);
 		enviCTe.addContent(elementCTe);
@@ -57,9 +57,35 @@ public class GeradorXmlCte {
 		documentCte = new Document();
 		documentCte.setRootElement(enviCTe);
 
-		log.info("XML CT-e sem assinatura: " + new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
+		log.info("XML Lote CT-e sem assinatura: " + new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
 
 		return documentCte;
+	}
+	
+	public Document getConsReciCTe(String numRecibo, TipoAmbienteEmissao ambiente) {
+		Document document = null;
+
+		Element consReciCTe = new Element("consReciCTe");
+		consReciCTe.setAttribute("versao", VERSAO);
+
+//		Element versao = new Element("versao");
+//		versao.addContent(VERSAO);
+//		consReciCTe.addContent(versao);
+
+		Element tpAmb = new Element("tpAmb");
+		tpAmb.addContent(ambiente.getCodigo());
+		consReciCTe.addContent(tpAmb);
+
+		Element nRec = new Element("nRec");
+		nRec.addContent(numRecibo);
+		consReciCTe.addContent(nRec);
+		
+		document = new Document();
+		document.setRootElement(consReciCTe);
+		
+		log.info("XML Consulta Processamento de Lote de CT-e: " + new XMLOutputter(Format.getPrettyFormat()).outputString(document));
+
+		return document;
 	}
 
 	private void atualizarChaveAcesso(CTe cte) {
@@ -69,13 +95,13 @@ public class GeradorXmlCte {
 	private String gerarChaveAcesso(CTe cte) {
 		StringBuilder stbChave = new StringBuilder();
 		stbChave.append(cte.getEmpresa().getCidade().getUf().getCodIBGE().toString());
-		stbChave.append(YYYY.format(cte.getDtEmissao()));
+		stbChave.append(yyMM.format(cte.getDtEmissao()));
 		stbChave.append(cte.getEmpresa().getCnpj());
 		stbChave.append(MODELO_DOCUMENTO_CTE);
 		stbChave.append(StringUtils.leftPad(cte.getSerie().toString(), 3, '0'));
 		stbChave.append(StringUtils.leftPad(cte.getNumero().toString(), 9, '0'));
 		stbChave.append(cte.getTpEmissao().getCodigo());
-		stbChave.append(StringUtils.leftPad(getNumeroAleatorio(), 8, '0'));
+		stbChave.append(StringUtils.leftPad(cte.getNumero().toString(), 8, '0'));
 		stbChave.append(String.valueOf(getDigitoVerificador(stbChave.toString())));
 		
 		return stbChave.toString();
@@ -91,14 +117,21 @@ public class GeradorXmlCte {
 		int total = 0;
 		int peso = 2;
 
-		for (int i= 0; i < chave.length(); i++){
-			total += (chave.charAt((chave.length() - 1) - i) - '0') * peso;
-			peso++;
-
-			if (peso == 10) {
+		for (int i = chave.length() - 1; i >= 0; i--){
+			int valor = 0;
+			
+			if (peso > 9) {
 				peso = 2;
 			}
+			
+			int digito = Integer.parseInt(String.valueOf(chave.charAt(i)));
+			valor = digito * peso;
+			
+			total = total + valor;
+
+			peso++;
 		}
+
 		int resto = total % 11;
 
 		return (resto == 0 || resto == 1) ? 0 : (11 - resto);
@@ -115,8 +148,8 @@ public class GeradorXmlCte {
 		infCTe.addContent(getElementIde(cte));
 		//infCTe.addContent(getElementCompl(cte));
 		infCTe.addContent(getElementEmit(cte.getEmpresa()));
-		infCTe.addContent(getElementPessoa(TipoPessoaCTe.REMETENTE, cte.getPessoaRemetente()));
-		infCTe.addContent(getElementPessoa(TipoPessoaCTe.DESTINATARIO, cte.getPessoaDestinatario()));
+		infCTe.addContent(getElementPessoa(TipoPessoaCTe.REMETENTE, cte.getPessoaRemetente(), cte.getTpAmbiente()));
+		infCTe.addContent(getElementPessoa(TipoPessoaCTe.DESTINATARIO, cte.getPessoaDestinatario(), cte.getTpAmbiente()));
 		infCTe.addContent(getElementVprest(cte));
 		infCTe.addContent(getElementImp(cte));
 		infCTe.addContent(getElementInfCteNorm(cte));
@@ -132,7 +165,7 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementCuf);
 		
 		Element elementCct = new Element("cCT");
-		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getId()),8,"0"));
+		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getNumero()),8,"0"));
 		elementIde.addContent(elementCct);
 		
 		Element elementCfop = new Element("CFOP");
@@ -349,7 +382,7 @@ public class GeradorXmlCte {
 		return elementEmit;
 	}	
 	
-	private Element getElementPessoa(TipoPessoaCTe tipoPessoaCTe, Pessoa pessoa) {
+	private Element getElementPessoa(TipoPessoaCTe tipoPessoaCTe, Pessoa pessoa, TipoAmbienteEmissao tipoAmbienteEmissao) {
 		
 		Element elementPessoa;
 	
@@ -370,7 +403,12 @@ public class GeradorXmlCte {
 		}
 		
 		Element elementXnome = new Element("xNome");
-		elementXnome.addContent(pessoa.getRazao());
+		
+		if (TipoAmbienteEmissao.HOMOLOGACAO.equals(tipoAmbienteEmissao)) {
+			elementXnome.addContent(NOME_HOMOLOGACAO);
+		} else {
+			elementXnome.addContent(pessoa.getRazao());
+		}
 		elementPessoa.addContent(elementXnome);
 		
 		if(TipoPessoaCTe.REMETENTE.equals(tipoPessoaCTe) && pessoa.getFantasia() != null){

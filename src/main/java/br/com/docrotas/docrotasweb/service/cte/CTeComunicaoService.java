@@ -75,8 +75,8 @@ public class CTeComunicaoService {
 			/* monta a mensagem SOAP */
 			MessageFactory factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
 			
-			AssinadorXML assinarXMLsCertfificadoA1 = new AssinadorXML();
-			xml = assinarXMLsCertfificadoA1.assinaEnviCTe(xml, pathCertificado, senhaCertificado, CTE, INFCTE);
+			AssinadorXMLCTe assinarXMLsCertfificadoA1 = new AssinadorXMLCTe();
+			xml = assinarXMLsCertfificadoA1.assinar(xml, pathCertificado, senhaCertificado, CTE, INFCTE);
 			xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","");
 	
 			Source schemaFile = new StreamSource("C:\\Users\\lauro.chicorski\\Desktop\\PL_CTe_300\\PL_CTe_300\\enviCTe_v3.00.xsd");
