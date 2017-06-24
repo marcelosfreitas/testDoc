@@ -1,0 +1,8 @@
+<deployment name="test" xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<!-- <transport name="http"
+		pivot="java:br.com.sankhya.nfe.HttpSender">
+	</transport>-->
+	<transport name="http"
+		pivot="java:org.apache.axis.transport.http.CommonsHTTPSender">
+	</transport>
+</deployment>

@@ -1,17 +1,23 @@
 package br.com.docrotas.docrotasweb.service.cte;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import br.com.docrotas.docrotasweb.entity.CTe;
 import br.com.docrotas.docrotasweb.entity.Empresa;
 import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.Pessoa;
+import br.com.docrotas.docrotasweb.entity.TipoAmbienteEmissao;
 import br.com.docrotas.docrotasweb.entity.TipoEndereco;
 import br.com.docrotas.docrotasweb.entity.TipoMedidas;
 import br.com.docrotas.docrotasweb.entity.TipoPessoaCTe;
@@ -19,27 +25,136 @@ import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
 
 public class GeradorXmlCte {
 	
+	private static final Logger log = Logger.getLogger(GeradorXmlCte.class);
+	
+	private static final SimpleDateFormat yyMM = new SimpleDateFormat("yyMM");
+	private static final String MODELO_DOCUMENTO_CTE = "57";
+	private static final String VERSAO_APLICACAO = "DOCROTAS";
+	private static final String MODAL_RODOVIARIO = "01";
+	private static final String VERSAO = "3.00";
+	private static final String NOME_HOMOLOGACAO = "CT-E EMITIDO EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	
 	public Document getDocumentXML(CTe cte) throws Exception{
 		Document documentCte = null;
 		
-		if(cte == null) {
+		if (cte == null) {
 			throw new Exception("Cte não informado.");
 		}
 		
-		Element infCte = new Element("infCte");
-		infCte.addContent(getElementIde(cte));
-		infCte.addContent(getElementCompl(cte));
-		infCte.addContent(getElementEmit(cte.getEmpresa()));
-		infCte.addContent(getElementPessoa(TipoPessoaCTe.REMETENTE, cte.getPessoaRemetente()));
-		infCte.addContent(getElementPessoa(TipoPessoaCTe.DESTINATARIO, cte.getPessoaDestinatario()));
-		infCte.addContent(getElementVprest(cte));
-		infCte.addContent(getElementImp(cte));
-		infCte.addContent(getElementInfCteNorm(cte));
+		if (!cte.temChaveAcesso()) {
+			atualizarChaveAcesso(cte);
+		}
+		Element enviCTe = new Element("enviCTe");
+		enviCTe.setAttribute("versao", VERSAO);
+		Element idLote = new Element("idLote");
+		idLote.addContent("11111");
+		Element elementCTe = new Element("CTe");
+		elementCTe.addContent(getElementInfCTe(cte));
 		
+		enviCTe.addContent(idLote);
+		enviCTe.addContent(elementCTe);
+
 		documentCte = new Document();
-		documentCte.setRootElement(infCte);
-		
+		documentCte.setRootElement(enviCTe);
+
+		log.info("XML Lote CT-e sem assinatura: " + new XMLOutputter(Format.getPrettyFormat()).outputString(documentCte));
+
 		return documentCte;
+	}
+	
+	public Document getConsReciCTe(String numRecibo, TipoAmbienteEmissao ambiente) {
+		Document document = null;
+
+		Element consReciCTe = new Element("consReciCTe");
+		consReciCTe.setAttribute("versao", VERSAO);
+
+//		Element versao = new Element("versao");
+//		versao.addContent(VERSAO);
+//		consReciCTe.addContent(versao);
+
+		Element tpAmb = new Element("tpAmb");
+		tpAmb.addContent(ambiente.getCodigo());
+		consReciCTe.addContent(tpAmb);
+
+		Element nRec = new Element("nRec");
+		nRec.addContent(numRecibo);
+		consReciCTe.addContent(nRec);
+		
+		document = new Document();
+		document.setRootElement(consReciCTe);
+		
+		log.info("XML Consulta Processamento de Lote de CT-e: " + new XMLOutputter(Format.getPrettyFormat()).outputString(document));
+
+		return document;
+	}
+
+	private void atualizarChaveAcesso(CTe cte) {
+		cte.setChave(gerarChaveAcesso(cte));
+	}
+
+	private String gerarChaveAcesso(CTe cte) {
+		StringBuilder stbChave = new StringBuilder();
+		stbChave.append(cte.getEmpresa().getCidade().getUf().getCodIBGE().toString());
+		stbChave.append(yyMM.format(cte.getDtEmissao()));
+		stbChave.append(cte.getEmpresa().getCnpj());
+		stbChave.append(MODELO_DOCUMENTO_CTE);
+		stbChave.append(StringUtils.leftPad(cte.getSerie().toString(), 3, '0'));
+		stbChave.append(StringUtils.leftPad(cte.getNumero().toString(), 9, '0'));
+		stbChave.append(cte.getTpEmissao().getCodigo());
+		stbChave.append(StringUtils.leftPad(cte.getNumero().toString(), 8, '0'));
+		stbChave.append(String.valueOf(getDigitoVerificador(stbChave.toString())));
+		
+		return stbChave.toString();
+	}
+
+	private String getNumeroAleatorio() {
+		Double numero = Math.random() * 10000000;
+		long numeroAleatorio = numero.longValue();
+		return String.valueOf(numeroAleatorio);
+	}
+
+	private int getDigitoVerificador(String chave) {
+		int total = 0;
+		int peso = 2;
+
+		for (int i = chave.length() - 1; i >= 0; i--){
+			int valor = 0;
+			
+			if (peso > 9) {
+				peso = 2;
+			}
+			
+			int digito = Integer.parseInt(String.valueOf(chave.charAt(i)));
+			valor = digito * peso;
+			
+			total = total + valor;
+
+			peso++;
+		}
+
+		int resto = total % 11;
+
+		return (resto == 0 || resto == 1) ? 0 : (11 - resto);
+	}
+	
+	private Element getElementInfCTe(CTe cte) {
+		String identificacao = "CTe" + cte.getChave();
+		
+		Element infCTe = new Element("infCte");
+
+		infCTe.setAttribute("Id", identificacao);
+		infCTe.setAttribute("versao", VERSAO);
+
+		infCTe.addContent(getElementIde(cte));
+		//infCTe.addContent(getElementCompl(cte));
+		infCTe.addContent(getElementEmit(cte.getEmpresa()));
+		infCTe.addContent(getElementPessoa(TipoPessoaCTe.REMETENTE, cte.getPessoaRemetente(), cte.getTpAmbiente()));
+		infCTe.addContent(getElementPessoa(TipoPessoaCTe.DESTINATARIO, cte.getPessoaDestinatario(), cte.getTpAmbiente()));
+		infCTe.addContent(getElementVprest(cte));
+		infCTe.addContent(getElementImp(cte));
+		infCTe.addContent(getElementInfCteNorm(cte));
+
+		return infCTe;
 	}
 
 	private Element getElementIde(CTe cte) {
@@ -50,7 +165,7 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementCuf);
 		
 		Element elementCct = new Element("cCT");
-		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getId()),8,"0"));
+		elementCct.addContent(StringUtils.leftPad(String.valueOf(cte.getNumero()),8,"0"));
 		elementIde.addContent(elementCct);
 		
 		Element elementCfop = new Element("CFOP");
@@ -62,9 +177,9 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementNatOp);
 		
 		Element elementMod = new Element("mod");
-		elementMod.addContent("57");
+		elementMod.addContent(MODELO_DOCUMENTO_CTE);
 		elementIde.addContent(elementMod);
-		
+
 		Element elementSerie = new Element("serie");
 		elementSerie.addContent(String.valueOf(cte.getSerie()));
 		elementIde.addContent(elementSerie);
@@ -72,15 +187,15 @@ public class GeradorXmlCte {
 		Element elementNCT = new Element("nCT");
 		elementNCT.addContent(String.valueOf(cte.getNumero()));
 		elementIde.addContent(elementNCT);
-		
+
 		Element elementDhEmi = new Element("dhEmi");
 		elementDhEmi.addContent(DocumentoEletronicoUtils.formatDate(cte.getDtEmissao()));
 		elementIde.addContent(elementDhEmi);
-		
+
 		Element elementTpImp = new Element("tpImp");
 		elementTpImp.addContent(cte.getEmpresa().getTipoImpressao().getCodigo());
 		elementIde.addContent(elementTpImp);
-		
+
 		//por enquanto "1-normal" (4-EPEC SVC/5-Contingencia FSDA/7-SVC_RS/8-SVC_SP)
 		Element elementTpEmis = new Element("tpEmis");
 		elementTpEmis.addContent(cte.getTpEmissao().getCodigo());
@@ -89,60 +204,57 @@ public class GeradorXmlCte {
 		Element elementCDV = new Element("cDV");
 		elementCDV.addContent(cte.getChave().substring(43,44));
 		elementIde.addContent(elementCDV);
-		
+
 		//--Ambiente 2-homologação (1-produção)
 		Element elementTpAmb = new Element("tpAmb");
 		elementTpAmb.addContent(cte.getTpAmbiente().getCodigo());
 		elementIde.addContent(elementTpAmb);
-		
-		//Emissão 0-Normal (1-Complemento/2-Anulação/3-Substituto)
+
 		Element elementTpCte = new Element("tpCTe");
 		elementTpCte.addContent(cte.getTpCte().getCodigo());
 		elementIde.addContent(elementTpCte);
-		
+
 		//Emitido por aplicativo do contribuinte 
 		Element elementProcEmi = new Element("procEmi");
 		elementProcEmi.addContent("0");
 		elementIde.addContent(elementProcEmi);
-		
-		//Versão da aplicação
+
 		Element elementVerProc = new Element("verProc");
-		elementVerProc.addContent("1.00");
+		elementVerProc.addContent(VERSAO_APLICACAO);
 		elementIde.addContent(elementVerProc);
-		
+
 		Element elementCMunEnv = new Element("cMunEnv");
 		elementCMunEnv.addContent(String.valueOf(cte.getEmpresa().getCidade().getCodIBGE()));
 		elementIde.addContent(elementCMunEnv);
-		
+
 		Element elementXMunEnv = new Element("xMunEnv");
 		elementXMunEnv.addContent(cte.getEmpresa().getCidade().getNome());
 		elementIde.addContent(elementXMunEnv);
-		
+
 		Element elementUfEnv = new Element("UFEnv");
 		elementUfEnv.addContent(cte.getEmpresa().getCidade().getUf().getSigla());
 		elementIde.addContent(elementUfEnv);
-		
-		//Rodoviário
+
 		Element elementModal = new Element("modal");
-		elementModal.addContent("01");
+		elementModal.addContent(MODAL_RODOVIARIO);
 		elementIde.addContent(elementModal);
-		
+
 		Element elementTpServ = new Element("tpServ");
 		elementTpServ.addContent(cte.getTpServico().getCodigo());
 		elementIde.addContent(elementTpServ);
-		
+
 		Element elementCMunIni = new Element("cMunIni");
 		elementCMunIni.addContent(String.valueOf(cte.getCidadeColeta().getCodIBGE()));
 		elementIde.addContent(elementCMunIni);
-		
+
 		Element elementXMunIni = new Element("xMunIni");
 		elementXMunIni.addContent(cte.getCidadeColeta().getNome());
 		elementIde.addContent(elementXMunIni);
-		
+
 		Element elementUfIni = new Element("UFIni");
 		elementUfIni.addContent(cte.getCidadeColeta().getUf().getSigla());
 		elementIde.addContent(elementUfIni);
-		
+
 		Element elementCMunFim = new Element("cMunFim");
 		elementCMunFim.addContent(String.valueOf(cte.getCidadeEntrega().getCodIBGE()));
 		elementIde.addContent(elementCMunFim);
@@ -239,7 +351,7 @@ public class GeradorXmlCte {
 		elementNro.addContent(String.valueOf(empresa.getNro()));
 		elementEnderEmit.addContent(elementNro);
 		
-		if(empresa.getComplemento() != null){
+		if(StringUtils.isNotEmpty(empresa.getComplemento())){
 			Element elementXcpl = new Element("xCpl");
 			elementXcpl.addContent(empresa.getComplemento());
 			elementEnderEmit.addContent(elementXcpl);
@@ -270,7 +382,7 @@ public class GeradorXmlCte {
 		return elementEmit;
 	}	
 	
-	private Element getElementPessoa(TipoPessoaCTe tipoPessoaCTe, Pessoa pessoa) {
+	private Element getElementPessoa(TipoPessoaCTe tipoPessoaCTe, Pessoa pessoa, TipoAmbienteEmissao tipoAmbienteEmissao) {
 		
 		Element elementPessoa;
 	
@@ -291,17 +403,22 @@ public class GeradorXmlCte {
 		}
 		
 		Element elementXnome = new Element("xNome");
-		elementXnome.addContent(pessoa.getRazao());
+		
+		if (TipoAmbienteEmissao.HOMOLOGACAO.equals(tipoAmbienteEmissao)) {
+			elementXnome.addContent(NOME_HOMOLOGACAO);
+		} else {
+			elementXnome.addContent(pessoa.getRazao());
+		}
 		elementPessoa.addContent(elementXnome);
 		
-		if(pessoa.getFantasia() != null){
+		if(TipoPessoaCTe.REMETENTE.equals(tipoPessoaCTe) && pessoa.getFantasia() != null){
 			Element elementXfant = new Element("xFant");
 			elementXfant.addContent(pessoa.getFantasia());
 			elementPessoa.addContent(elementXfant);
 		}
 		
 		Element elementEnder;
-		if(tipoPessoaCTe.toString().equals("rem")){
+		if(tipoPessoaCTe.equals(TipoPessoaCTe.REMETENTE)){
 			elementEnder = new Element("enderReme");
 		}else{
 			elementEnder = new Element("enderDest");

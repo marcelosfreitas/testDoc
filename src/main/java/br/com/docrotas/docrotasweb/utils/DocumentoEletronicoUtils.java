@@ -6,7 +6,7 @@ import java.util.Locale;
 
 public class DocumentoEletronicoUtils {
 	
-	private static SimpleDateFormat yyyyMMddTHHmmss = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");	
+	private static SimpleDateFormat yyyyMMddTHHmmss = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");	
 	
 	public static String formatDouble(Double valor, int qtdDecimais){
 		return String.format(Locale.US,"%1$."+ String.valueOf(qtdDecimais) +"f", valor);
