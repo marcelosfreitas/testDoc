@@ -16,17 +16,17 @@
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="cte_id">ID</label>
-			<input type="text" class="form-control" id="cte_id" ng-model="cte.id" ng-disabled="true">
+			<input type="text" class="form-control" id="cte_id" ng-model="ctrl.cte.id" ng-disabled="true">
 		</div>
 	</div>
     <div class=row>
         <div class="form-group col-md-4">
             <label for="cte_numero">Número</label>
-            <input type="text" class="form-control" id="cte_numero" ng-model="cte.numero">
+            <input type="text" class="form-control" id="cte_numero" ng-model="ctrl.cte.numero">
         </div>
         <div class="form-group col-md-4">
             <label for="cte_serie">Série</label>
-            <input type="text" class="form-control" id="cte_serie" ng-model="cte.serie">
+            <input type="text" class="form-control" id="cte_serie" ng-model="ctrl.cte.serie">
         </div>
         <div class="form-group col-md-4">
 			<label for="cte_dt_emissao">Data emissão</label>
@@ -58,7 +58,125 @@
 		</div>
 		<div class="form-group col-md-4">
             <label for="cte_vlr_frete">Valor frete</label>
-            <input type="text" class="form-control" id="cte_vlr_frete" ng-model="cte.freteTotal">
+            <input type="text" class="form-control" id="cte_vlr_frete" ng-model="ctrl.cte.freteTotal">
         </div>
+		<div class="form-group col-md-4">
+            <label for="cte_base_calculo">Base Cálculo</label>
+            <input type="text" class="form-control" id="cte_base_calculo" ng-model="ctrl.cte.baseCalculo">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="cte_vlr_icms">Valor ICMS</label>
+            <input type="text" class="form-control" id="cte_vlr_icms" ng-model="ctrl.cte.icms">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="cte_aliquota">Alíquota</label>
+            <input type="text" class="form-control" id="cte_aliquota" ng-model="ctrl.cte.aliquota">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="cte_produto">Produto</label>
+            <input type="text" class="form-control" id="cte_produto" ng-model="ctrl.cte.produto">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="cte_vlr_mercadoria">Valor da mercadoria</label>
+            <input type="text" class="form-control" id="cte_vlr_mercadoria" ng-model="ctrl.cte.vlrMercadoria">
+        </div>
+		<div class="form-group col-md-4">
+            <label for="cte_situacao">Situação</label>
+            <select id="cte_situacao" ng-model="ctrl.cte.situacao" ng-options="situacao.id as situacao.descricao for situacao in ctrl.situacaoOptions" class="form-control"></select>
+        </div>
+		<div class="form-group col-md-4">
+			<label for="cte_remetente">Remetente</label>
+			<p class="input-group">
+				<input type="text" class="form-control" id="veiculo_pessoa" ng-model="ctrl.cte.pessoaRemetente.razao">
+				<span class="input-group-btn">
+					<button ng-click="ctrl.abrirPopUpPesquisaPessoa()" class="btn btn-default"><i class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></i></button>
+				</span>
+			</p>
+		</div>
     </div>
 </form>
+<script type="text/ng-template" id="popUpPesquisaPessoa.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buscar Pessoa</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaPessoaCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="id">ID</option>
+					<option value="razao">Razão Social\Nome</option>
+					<option value="fantasia">Nome Fantasia\Apelido</option>
+					<option value="cpfCnpj">CPF/CNPJ</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaPessoaCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaPessoaCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>Sigla</strong></td>
+				<td><strong>Cód. IBGE</strong></td>
+			</tr>
+			<tr ng-repeat="pessoatb in pesquisaPessoaCtrl.pessoas" ng-click="pesquisaPessoaCtrl.selecionarPessoa(pessoatb)">
+				<td ng-bind="pessoatb.id"></td>
+				<td ng-bind="pessoatb.razao"></td>
+				<td ng-bind="pessoatb.fantasia"></td>
+				<td ng-bind="pessoatb.cpfCnpj"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaPessoaCtrl.totalItens" ng-model="pesquisaPessoaCtrl.paginaAtual" max-size="pesquisaPessoaCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaPessoaCtrl.pageChanged()" next-text='Próximo'></ul>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="pesquisaPessoaCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaPessoaCtrl.cancel()">Cancel</button>
+	</div>
+</script>
+<script type="text/ng-template" id="popUpPesquisaEmpresa.html">
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-title">Buscar Empresa</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-inline">
+			<div class="form-group">
+				<select name="tipoCampoBusca" ng-model="pesquisaEmpresaCtrl.campoSelecionado" class="form-control">
+					<option value=""></option>
+					<option value="id">ID</option>
+					<option value="razao">Razão Social\Nome</option>
+					<option value="cnpj">CNPJ</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input  class="form-control" type="text" id="busca" ng-model="pesquisaEmpresaCtrl.valorBusca">
+			</div>
+			<button ng-click="pesquisaEmpresaCtrl.buscarTodos(1)" class="btn btn-default"><span class="glyphicon glyphicon-search barraFerramenta" aria-hidden="true"></span></button>
+		</form>
+		<table class="table table-hover">
+			<tr>
+				<td><strong>ID</strong></td>
+				<td><strong>Nome</strong></td>
+				<td><strong>CNPJ</strong></td>
+			</tr>
+			<tr ng-repeat="empresatb in pesquisaEmpresaCtrl.empresas" ng-click="pesquisaEmpresaCtrl.selecionarEmpresa(empresatb)">
+				<td ng-bind="empresatb.id"></td>
+				<td ng-bind="empresatb.razao"></td>
+				<td ng-bind="empresatb.cnpj"></td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<ul uib-pagination total-items="pesquisaEmpresaCtrl.totalItens" ng-model="pesquisaEmpresaCtrl.paginaAtual" max-size="pesquisaEmpresaCtrl.tamanhoMax" class="pagination-sm" boundary-link-numbers="true"
+			previous-text='Anterior' ng-change="pesquisaEmpresaCtrl.pageChanged()" next-text='Próximo'></ul>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="pesquisaEmpresaCtrl.ok()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="pesquisaEmpresaCtrl.cancel()">Cancel</button>
+	</div>
+</script>

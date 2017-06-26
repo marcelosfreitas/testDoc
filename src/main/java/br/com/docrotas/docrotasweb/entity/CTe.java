@@ -93,7 +93,7 @@ public class CTe implements Serializable{
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "situacao")
-	private SituacaoDocumento situacao;
+	private SituacaoDocumento situacao = SituacaoDocumento.EM_EDICAO;
 	
 	@ManyToOne
 	@JoinColumn(name = "empresa_id")

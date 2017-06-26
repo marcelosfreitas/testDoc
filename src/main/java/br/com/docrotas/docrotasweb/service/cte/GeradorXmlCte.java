@@ -47,7 +47,7 @@ public class GeradorXmlCte {
 		Element enviCTe = new Element("enviCTe");
 		enviCTe.setAttribute("versao", VERSAO);
 		Element idLote = new Element("idLote");
-		idLote.addContent("11111");
+		idLote.addContent(String.valueOf(cte.getId()));
 		Element elementCTe = new Element("CTe");
 		elementCTe.addContent(getElementInfCTe(cte));
 		
@@ -189,7 +189,7 @@ public class GeradorXmlCte {
 		elementIde.addContent(elementNCT);
 
 		Element elementDhEmi = new Element("dhEmi");
-		elementDhEmi.addContent(DocumentoEletronicoUtils.formatDate(cte.getDtEmissao()));
+		elementDhEmi.addContent(DocumentoEletronicoUtils.formatDateComFusoHorario(cte.getDtEmissao()));
 		elementIde.addContent(elementDhEmi);
 
 		Element elementTpImp = new Element("tpImp");
