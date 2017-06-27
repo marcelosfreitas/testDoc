@@ -55,19 +55,19 @@ public class CTe implements Serializable{
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_emissao")
-	private TipoEmissao tpEmissao;
+	private TipoEmissao tpEmissao = TipoEmissao.NORMAL;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_ambiente")
-	private TipoAmbienteEmissao tpAmbiente;
+	private TipoAmbienteEmissao tpAmbiente = TipoAmbienteEmissao.HOMOLOGACAO;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_servico")
-	private TipoServico tpServico;
+	private TipoServico tpServico = TipoServico.NORMAL;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_cte")
-	private TipoCTe tpCte;
+	private TipoCTe tpCte = TipoCTe.NORMAL;
 	
 	@Column(name = "frete_total")
 	private Double freteTotal;
