@@ -175,29 +175,7 @@ angular.module('docrotasApp').controller('CteCtrl', function ($http, $rootScope,
       
         });
     };
-
-    self.abrirPopUpPesquisaTomador = function () {
-        var modalInstance = $uibModal.open({
-        animation: true,
-        ariaLabelledBy: 'modal-title',
-        ariaDescribedBy: 'modal-body',
-        templateUrl: 'popUpPesquisaEmpresa.html',
-        controller: 'PesquisaEmpresaCtrl',
-        controllerAs: 'pesquisaEmpresaCtrl',
-        resolve: {
-            items: function () {
-                return self.items;
-            }
-        }
-        });
-
-        modalInstance.result.then(function (empresa) {
-            self.cte.empresa = empresa;
-        }, function () {
-      
-        });
-    };
-
+    
     self.abrirPopUpPesquisaCidadeColeta = function () {
         var modalInstance = $uibModal.open({
         animation: true,
@@ -425,7 +403,7 @@ angular.module('docrotasApp').controller('PesquisaEmpresaCtrl', function ($uibMo
     self.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    self.selecionarPessoa = function (empresa) {
+    self.selecionarEmpresa = function (empresa) {
         self.empresaSelecionada = empresa;
         self.ok();
     }
