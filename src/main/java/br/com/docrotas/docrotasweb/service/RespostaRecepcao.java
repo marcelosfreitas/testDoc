@@ -1,8 +1,13 @@
-package br.com.docrotas.docrotasweb.entity;
+package br.com.docrotas.docrotasweb.service;
 
 import java.util.Date;
 
-public class RetornoEnvioCTe {
+import org.apache.commons.lang3.StringUtils;
+
+import br.com.docrotas.docrotasweb.entity.StatusProcessamento;
+import br.com.docrotas.docrotasweb.entity.TipoAmbienteEmissao;
+
+public class RespostaRecepcao {
 
 	private TipoAmbienteEmissao tipoAmbienteEmissao;
 	private String codUF;
@@ -35,13 +40,15 @@ public class RetornoEnvioCTe {
 	public StatusProcessamento getStatusProcessamento() {
 		return statusProcessamento;
 	}
-	public void setStatusProcessamento(StatusProcessamento statusProcessamento) {
-		this.statusProcessamento = statusProcessamento;
-	}
 	public String getCodStatus() {
 		return codStatus;
 	}
 	public void setCodStatus(String codStatus) {
+		if (StringUtils.isNotEmpty(codStatus)) {
+			statusProcessamento = StatusProcessamento.getStatusProcessamento(codStatus);
+		} else {
+			statusProcessamento = null;
+		}
 		this.codStatus = codStatus;
 	}
 	public String getMotivo() {

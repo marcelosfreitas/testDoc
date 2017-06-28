@@ -75,16 +75,16 @@ public class CTeComunicaoService {
 			/* monta a mensagem SOAP */
 			MessageFactory factory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
 			
-			AssinadorXMLCTe assinarXMLsCertfificadoA1 = new AssinadorXMLCTe();
-			xml = assinarXMLsCertfificadoA1.assinar(xml, pathCertificado, senhaCertificado, CTE, INFCTE);
-			xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","");
+//			AssinadorXMLCTe assinarXMLsCertfificadoA1 = new AssinadorXMLCTe();
+//			xml = assinarXMLsCertfificadoA1.assinar(xml, pathCertificado, senhaCertificado, CTE, INFCTE);
+//			xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","");
 	
-			Source schemaFile = new StreamSource("C:\\Users\\lauro.chicorski\\Desktop\\PL_CTe_300\\PL_CTe_300\\enviCTe_v3.00.xsd");
-			Source xmlFile = new StreamSource(xml);
-			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(schemaFile);
-			Validator validator = schema.newValidator();
-			validator.validate(new StreamSource(new StringReader(xml)));
+//			Source schemaFile = new StreamSource(path_schema);
+//			Source xmlFile = new StreamSource(xml);
+//			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//			Schema schema = schemaFactory.newSchema(schemaFile);
+//			Validator validator = schema.newValidator();
+//			validator.validate(new StreamSource(new StringReader(xml)));
 			
 			StringBuilder stb = new StringBuilder();
 			stb.append("<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">");

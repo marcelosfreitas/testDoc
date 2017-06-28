@@ -30,11 +30,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import br.com.docrotas.docrotasweb.entity.CTe;
-import br.com.docrotas.docrotasweb.entity.RetornoEnvioCTe;
 import br.com.docrotas.docrotasweb.entity.SituacaoDocumento;
 import br.com.docrotas.docrotasweb.entity.StatusProcessamento;
 import br.com.docrotas.docrotasweb.entity.TipoAmbienteEmissao;
 import br.com.docrotas.docrotasweb.repository.CTeRepository;
+import br.com.docrotas.docrotasweb.service.RespostaRecepcao;
+import br.com.docrotas.docrotasweb.service.RespostaRetornoRecepcao;
 import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
 
 @Service
@@ -42,14 +43,17 @@ public class CTeService {
 	
 	private static final Logger log = Logger.getLogger(CTeService.class);
 	
-	private static final String PATH_CERTIFICADO = "D:/certificado.pfx";
+	private static final String PATH_CERTIFICADO = "C:/certificado.pfx";
 	private static final String SENHA_CERTIFICADO = "12345678";
-	private static final String PATH_CACERTS = "D:/cacerts";
+	private static final String PATH_CACERTS = "C:/cacerts";
 	private static final String CODIGO_UF = "31";
 	private static final String VERSAO = "3.00";
+//	private static final String PATH_SCHEMA_ENVI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
+//	private static final String PATH_SCHEMA_CONS_RECI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
+
+	private static final String PATH_SCHEMA_ENVI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
+	private static final String PATH_SCHEMA_CONS_RECI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
 	
-	private static final String PATH_SCHEMA_ENVI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
-	private static final String PATH_SCHEMA_CONS_RECI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
 	
 	private static final String URL_CTE_RECEPCAO = "https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao";
 	private static final String URL_CTE_RET_RECEPCAO = "https://hcte.fazenda.mg.gov.br/cte/services/CteRetRecepcao";
@@ -57,7 +61,7 @@ public class CTeService {
 	@Autowired
 	private CTeRepository cteRepository;
 	
-	public void buscarAutorizacao(Long id) throws Exception {
+	public CTe buscarAutorizacao(Long id) throws Exception {
 		CTe cte = cteRepository.findById(id);
 
 		if (cte == null) {
@@ -73,6 +77,8 @@ public class CTeService {
 		} else {
 			buscarAutorizacao(cte);
 		}
+		
+		return cte;
 	}
 
 	public void buscarAutorizacao(CTe cte) throws Exception {
@@ -111,7 +117,7 @@ public class CTeService {
 		
 		log.info("XML retorno CTe Recepção: " + retorno.toString() + "\n");
 
-		RetornoEnvioCTe retornoEnvio = processarRetornoEnvio(retorno);
+		RespostaRecepcao retornoEnvio = processarRespostaRecepcao(retorno);
 
 		if (StatusProcessamento.LOTE_RECEBIDO.equals(retornoEnvio.getStatusProcessamento())) {
 			cte.setSituacao(SituacaoDocumento.AGUARDANDO_AUTORIZACAO);
@@ -125,52 +131,8 @@ public class CTeService {
 			throw new Exception(retornoEnvio.getMotivo());
 		}
 
+		Thread.sleep(10000);
 		consultarRetornoLote(cte);
-	}
-	
-	private RetornoEnvioCTe processarRetornoEnvio(String xml) throws JDOMException, IOException {
-		RetornoEnvioCTe retornoEnvio = new RetornoEnvioCTe();
-		
-		InputSource inStream = new InputSource();  
-		inStream.setCharacterStream(new StringReader(xml));  
-
-		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(inStream);
-		
-		Element root = doc.getRootElement();
-		
-		Element body = root.getChildren().get(1);
-		Element cteRecepcaoResult = body.getChildren().get(0);
-		Element retEnviCte = cteRecepcaoResult.getChildren().get(0);
-		
-		Element tpAmb = retEnviCte.getChildren().get(0);
-		retornoEnvio.setTipoAmbienteEmissao(TipoAmbienteEmissao.getTipoAmbienteEmissao(tpAmb.getTextTrim()));
-		
-		Element cUF = retEnviCte.getChildren().get(1);
-		retornoEnvio.setCodUF(cUF.getTextTrim());
-		
-		Element verAplic = retEnviCte.getChildren().get(2);
-		retornoEnvio.setVersao(verAplic.getTextTrim());
-		
-		Element cStat = retEnviCte.getChildren().get(3);
-		retornoEnvio.setCodStatus(cStat.getTextTrim());
-		retornoEnvio.setStatusProcessamento(StatusProcessamento.getStatusProcessamento(cStat.getTextTrim()));
-		
-		Element xMovito = retEnviCte.getChildren().get(4);
-		retornoEnvio.setMotivo(xMovito.getTextTrim());
-		
-		Element infRec = retEnviCte.getChildren().get(5);
-
-		Element nRec = infRec.getChildren().get(0);
-		retornoEnvio.setNumRecibo(nRec.getTextTrim());
-		
-		Element dhRecbto = infRec.getChildren().get(1);
-		retornoEnvio.setDtRecibemento(DocumentoEletronicoUtils.getDate(dhRecbto.getTextTrim()));
-
-		Element tMed = infRec.getChildren().get(2);
-		retornoEnvio.setTempoMedio(Integer.parseInt(tMed.getTextTrim()));
-
-		return retornoEnvio;
 	}
 
 	public void consultarRetornoLote(CTe cte) throws Exception {
@@ -191,9 +153,45 @@ public class CTeService {
 				
 				RetornoRecepcaoCTeService retornoRecepcaoCTeService = new RetornoRecepcaoCTeService(PATH_CERTIFICADO, PATH_CACERTS, SENHA_CERTIFICADO, url, CODIGO_UF, VERSAO);
 				
-				String retorno = retornoRecepcaoCTeService.comunicar(xml);
+				String resposta = retornoRecepcaoCTeService.comunicar(xml);
+				
+				log.info("XML retorno CTe Retorno Recepção: " + resposta.toString() + "\n");
 
-				log.info("XML retorno CTe Retorno Recepção: " + retorno.toString() + "\n");	
+				RespostaRetornoRecepcao respostaRetornoRecepcao = processarRespostaRetornoRecepcao(resposta);
+				
+				if (StatusProcessamento.AUTORIZADO.equals(respostaRetornoRecepcao.getStatusProcessamentoCTe())) {
+					if (StringUtils.isNotEmpty(respostaRetornoRecepcao.getNumProtocolo())) {
+						cte.setProtocoloAutorizacao(respostaRetornoRecepcao.getNumProtocolo());
+					} else {
+						throw new Exception("Não foi possível encontrar o protocolo de autorização");
+					}
+					
+					if (respostaRetornoRecepcao.getDtRecebimento() != null) {
+						cte.setDtProtocoloAutorizacao(respostaRetornoRecepcao.getDtRecebimento());
+					}
+
+					cteRepository.save(cte);
+				} else if (respostaRetornoRecepcao.getStatusProcessamentoCTe() != null) {
+					StringBuilder stbErro = new StringBuilder();
+					stbErro.append("Não foi possível aprovar o CT-e");
+
+					if (respostaRetornoRecepcao.getMotivoCTe() != null) {
+						stbErro.append(": ");
+						stbErro.append(respostaRetornoRecepcao.getMotivoCTe());
+					}
+
+					throw new Exception(stbErro.toString());
+				} else {
+					StringBuilder stbErro = new StringBuilder();
+					stbErro.append("Não foi possível aprovar o CT-e");
+
+					if (respostaRetornoRecepcao.getMotivo() != null) {
+						stbErro.append(": ");
+						stbErro.append(respostaRetornoRecepcao.getMotivo());
+					}
+
+					throw new Exception(stbErro.toString());
+				}
 			} else {
 				throw new Exception("Não foi encontrado o número de recibo do protocolo de recimento do lote");
 			}
@@ -204,6 +202,124 @@ public class CTeService {
 		}
 	}
 	
+	private RespostaRecepcao processarRespostaRecepcao(String xml) throws JDOMException, IOException {
+		RespostaRecepcao resposta = new RespostaRecepcao();
+		
+		InputSource inStream = new InputSource();  
+		inStream.setCharacterStream(new StringReader(xml));  
+
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build(inStream);
+		
+		Element root = doc.getRootElement();
+		
+		Element body = root.getChildren().get(1);
+		Element cteRecepcaoResult = body.getChildren().get(0);
+		Element retEnviCte = cteRecepcaoResult.getChildren().get(0);
+		
+		Element tpAmb = retEnviCte.getChildren().get(0);
+		resposta.setTipoAmbienteEmissao(TipoAmbienteEmissao.getTipoAmbienteEmissao(tpAmb.getTextTrim()));
+		
+		Element cUF = retEnviCte.getChildren().get(1);
+		resposta.setCodUF(cUF.getTextTrim());
+		
+		Element verAplic = retEnviCte.getChildren().get(2);
+		resposta.setVersao(verAplic.getTextTrim());
+		
+		Element cStat = retEnviCte.getChildren().get(3);
+		resposta.setCodStatus(cStat.getTextTrim());
+		
+		Element xMovito = retEnviCte.getChildren().get(4);
+		resposta.setMotivo(xMovito.getTextTrim());
+		
+		Element infRec = retEnviCte.getChildren().get(5);
+
+		Element nRec = infRec.getChildren().get(0);
+		resposta.setNumRecibo(nRec.getTextTrim());
+		
+		Element dhRecbto = infRec.getChildren().get(1);
+		resposta.setDtRecibemento(DocumentoEletronicoUtils.getDate(dhRecbto.getTextTrim()));
+
+		Element tMed = infRec.getChildren().get(2);
+		resposta.setTempoMedio(Integer.parseInt(tMed.getTextTrim()));
+
+		return resposta;
+	}
+	
+	private RespostaRetornoRecepcao processarRespostaRetornoRecepcao(String xml) throws Exception {
+		RespostaRetornoRecepcao resposta = new RespostaRetornoRecepcao();
+		
+		InputSource inStream = new InputSource();  
+		inStream.setCharacterStream(new StringReader(xml));  
+
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = builder.build(inStream);
+		
+		Element root = doc.getRootElement();
+		
+		Element body = root.getChildren().get(1);
+		Element cteRecepcaoResult = body.getChildren().get(0);
+		Element retEnviCte = cteRecepcaoResult.getChildren().get(0);
+
+		Element tpAmb = retEnviCte.getChild("tpAmb", retEnviCte.getNamespace());
+		
+		if (tpAmb != null) {
+			resposta.setTipoAmbienteEmissao(TipoAmbienteEmissao.getTipoAmbienteEmissao(tpAmb.getTextTrim()));
+		}
+		
+		Element verAplic = retEnviCte.getChild("verAplic", retEnviCte.getNamespace());
+		if (verAplic != null) {
+			resposta.setVersao(verAplic.getTextTrim());
+		}
+		
+		Element cUF = retEnviCte.getChild("cUF", retEnviCte.getNamespace());
+		if (cUF != null) {
+			resposta.setCodUF(cUF.getTextTrim());
+		}
+		
+		Element cStat = retEnviCte.getChild("cStat", retEnviCte.getNamespace());
+		if (cStat != null) {
+			resposta.setCodStatus(cStat.getTextTrim());
+		}
+		
+		Element xMovito = retEnviCte.getChild("xMotivo", retEnviCte.getNamespace());
+		if (xMovito != null) {
+			resposta.setMotivo(xMovito.getTextTrim());
+		}
+
+		Element protCTe = retEnviCte.getChild("protCTe", retEnviCte.getNamespace());
+		
+		if (protCTe != null) {
+			Element infProt = protCTe.getChild("infProt", retEnviCte.getNamespace());
+			
+			if (infProt != null) {
+				Element cStatProtCTe = infProt.getChild("cStat", infProt.getNamespace());		
+				if (cStatProtCTe != null) {
+					resposta.setCodStatusCTe(cStatProtCTe.getTextTrim());
+				} else {
+					throw new Exception("Não foi possível encontrar a tag 'cStat' do 'intProt' na resposta do retorno da recepção do CT-e.");
+				}
+				
+				Element dhRecbtoCTe = infProt.getChild("dhRecbto", infProt.getNamespace());
+				if (dhRecbtoCTe != null) {
+					resposta.setDtRecebimento(DocumentoEletronicoUtils.getDate(dhRecbtoCTe.getTextTrim()));
+				}
+				
+				Element xMotivoCTe = infProt.getChild("xMotivo", infProt.getNamespace());
+				if (xMotivoCTe != null) {
+					resposta.setMotivoCTe(xMotivoCTe.getTextTrim());
+				}
+				
+				Element nProt = infProt.getChild("nProt", infProt.getNamespace());
+				if (nProt != null) {
+					resposta.setNumProtocolo(nProt.getTextTrim());
+				}
+			}
+		}
+		
+		return resposta;
+	}
+
 	private String getNumeroRecibo(String xml) throws JDOMException, IOException {
 		InputSource inStream = new InputSource();  
 		inStream.setCharacterStream(new StringReader(xml));  
