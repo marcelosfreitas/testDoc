@@ -5,10 +5,6 @@ import java.io.StringReader;
 import java.net.URL;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.SOAPException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -20,7 +16,6 @@ import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -320,24 +315,6 @@ public class CTeService {
 		return resposta;
 	}
 
-	private String getNumeroRecibo(String xml) throws JDOMException, IOException {
-		InputSource inStream = new InputSource();  
-		inStream.setCharacterStream(new StringReader(xml));  
-
-		SAXBuilder builder = new SAXBuilder();
-		Document doc = builder.build(inStream);
-		
-		Element root = doc.getRootElement();
-		
-		Element body = root.getChildren().get(1);
-		Element cteRecepcaoResult = body.getChildren().get(0);
-		Element retEnviCte = cteRecepcaoResult.getChildren().get(0);
-		Element infRec = retEnviCte.getChildren().get(5);
-		Element nRec = infRec.getChildren().get(0);
-
-		return nRec.getText();
-	}
-	
 	public void validarSchema(String xml, String pathSchema) throws SAXException, IOException {
 		Source schemaFile = new StreamSource(pathSchema);
 		Source xmlFile = new StreamSource(xml);
