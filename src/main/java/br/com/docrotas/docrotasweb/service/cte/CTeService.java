@@ -43,6 +43,7 @@ public class CTeService {
 	private static final String PATH_CACERTS = "C:/cacerts";
 	private static final String CODIGO_UF = "31";
 	private static final String VERSAO = "3.00";
+
 //	private static final String PATH_SCHEMA_ENVI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
 //	private static final String PATH_SCHEMA_CONS_RECI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
 
