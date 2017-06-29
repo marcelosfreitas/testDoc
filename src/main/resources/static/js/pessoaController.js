@@ -141,9 +141,7 @@ angular.module('docrotasApp').controller('PessoaCtrl', function ($http, $rootSco
         $http.delete(path + '/' + id)
             .then ( function (response) {
                 self.buscarTodos();
-                if (id === pessoa.id) {
-                    self.novo();
-                }
+                self.novo();
             }, function (errResponse) {
                  abrirPopUpErro(errResponse.data.message);
             })

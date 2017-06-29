@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.docrotas.docrotasweb.listerner.PessoaListerner;
 
 @Entity
@@ -57,6 +59,7 @@ public class Pessoa implements Serializable {
 	@JoinColumn(name="pessoa_id")
 	private List<Endereco> enderecos;
 	
+	@JsonIgnore
 	public Endereco getEnderecoPrincipal(){
 		for (Endereco endereco : enderecos) {
 			if(endereco.getTipoEndereco().equals(TipoEndereco.PRINCIPAL)){

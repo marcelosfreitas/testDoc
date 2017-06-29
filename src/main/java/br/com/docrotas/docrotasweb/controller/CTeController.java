@@ -47,12 +47,12 @@ public class CTeController {
 	
 	@PostMapping(value = "/cte")
 	public CTe salvar(@RequestBody CTe cte){
-		return cteRepository.save(cte);
+		return cteService.salvar(cte);
 	}
 	
 	@PostMapping(value = "/cte/buscarAutorizacao/{id}")
-	public void buscarAutorizacao(@PathVariable Long id) throws Exception{
-		cteService.buscarAutorizacao(id);
+	public CTe buscarAutorizacao(@PathVariable Long id) throws Exception{
+		return cteService.buscarAutorizacao(id);
 	}
 	
 	@DeleteMapping("/cte/{id}")
