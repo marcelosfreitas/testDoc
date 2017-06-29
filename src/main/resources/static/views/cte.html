@@ -13,6 +13,9 @@
   </div>
 </div>
 <form ng-show="ctrl.modoFormulario">
+	<div class="row" style="margin-bottom:10px; margin-left:10px">
+		<button ng-click="ctrl.buscarAutorizacao(ctrl.cte.id)" class="btn btn-primary">Buscar Autorização</button>
+	</div>
 	<div class="row">
 		<div class="form-group col-md-4">
 			<label for="cte_id">ID</label>
@@ -150,6 +153,12 @@
 				</span>
 			</p>
 		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+            <label for="cte_chave">Chave de acesso</label>
+            <input type="text" class="form-control" id="cte_protocolo_lote" ng-model="ctrl.cte.chave" ng-disabled="true">
+        </div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-4">

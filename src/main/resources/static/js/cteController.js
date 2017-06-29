@@ -67,7 +67,6 @@ angular.module('docrotasApp').controller('CteCtrl', function ($http, $rootScope,
             .then(function sucesso (response) {
                 self.cte = response.data;
                 self.buscarTodos(self.paginaAtual);
-                self.novo();
 
             }, function(errResponse) {
                 abrirPopUpErro(errResponse.data.message);
@@ -81,6 +80,16 @@ angular.module('docrotasApp').controller('CteCtrl', function ($http, $rootScope,
                 if (id === cte.id) {
                     self.novo();
                 }
+            }, function (errResponse) {
+                 abrirPopUpErro(errResponse.data.message);
+            });
+    };
+
+    self.buscarAutorizacao = function (id) {
+        $http.post(path + '/buscarAutorizacao/' + id)
+            .then ( function (response) {
+                self.cte = response.data;
+
             }, function (errResponse) {
                  abrirPopUpErro(errResponse.data.message);
             });
@@ -238,8 +247,8 @@ angular.module('docrotasApp').controller('CteCtrl', function ($http, $rootScope,
         }
         });
 
-        modalInstance.result.then(function (cidade) {
-            self.cte.cidadeEntrega = cidade;
+        modalInstance.result.then(function (empresa) {
+            self.cte.empresa = empresa;
         }, function () {
         
         });

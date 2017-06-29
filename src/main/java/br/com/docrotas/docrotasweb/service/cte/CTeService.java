@@ -3,6 +3,7 @@ package br.com.docrotas.docrotasweb.service.cte;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -25,10 +26,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import br.com.docrotas.docrotasweb.entity.CTe;
+import br.com.docrotas.docrotasweb.entity.NFe;
 import br.com.docrotas.docrotasweb.entity.SituacaoDocumento;
 import br.com.docrotas.docrotasweb.entity.StatusProcessamento;
 import br.com.docrotas.docrotasweb.entity.TipoAmbienteEmissao;
 import br.com.docrotas.docrotasweb.repository.CTeRepository;
+import br.com.docrotas.docrotasweb.repository.NFeRepository;
 import br.com.docrotas.docrotasweb.service.RespostaRecepcao;
 import br.com.docrotas.docrotasweb.service.RespostaRetornoRecepcao;
 import br.com.docrotas.docrotasweb.utils.DocumentoEletronicoUtils;
@@ -44,11 +47,11 @@ public class CTeService {
 	private static final String CODIGO_UF = "31";
 	private static final String VERSAO = "3.00";
 
-//	private static final String PATH_SCHEMA_ENVI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
-//	private static final String PATH_SCHEMA_CONS_RECI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
+	private static final String PATH_SCHEMA_ENVI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
+	private static final String PATH_SCHEMA_CONS_RECI_CTE = "D:\\workspace\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
 
-	private static final String PATH_SCHEMA_ENVI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
-	private static final String PATH_SCHEMA_CONS_RECI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
+//	private static final String PATH_SCHEMA_ENVI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\enviCTe_v3.00.xsd";
+//	private static final String PATH_SCHEMA_CONS_RECI_CTE = "C:\\Users\\lauro.chicorski\\Desktop\\lauro\\git\\docrtoasweb2\\src\\main\\resources\\schema\\PL_CTe_300\\consReciCTe_v3.00.xsd";
 	
 	
 	private static final String URL_CTE_RECEPCAO = "https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao";
@@ -56,6 +59,8 @@ public class CTeService {
 	
 	@Autowired
 	private CTeRepository cteRepository;
+	@Autowired
+	private NFeRepository nFeRepository;
 	
 	public CTe buscarAutorizacao(Long id) throws Exception {
 		CTe cte = cteRepository.findById(id);
@@ -75,6 +80,17 @@ public class CTeService {
 		}
 		
 		return cte;
+	}
+	
+	public CTe salvar(CTe cte) {
+		if (cte.getNfes() == null || cte.getNfes().isEmpty()) {
+			ArrayList<NFe> nfes = new ArrayList<NFe>();
+			NFe nfe = nFeRepository.findById(1L);
+			nfes.add(nfe);
+			cte.setNfes(nfes);
+		}
+		
+		return cteRepository.save(cte);
 	}
 
 	public void buscarAutorizacao(CTe cte) throws Exception {
@@ -165,6 +181,8 @@ public class CTeService {
 					if (respostaRetornoRecepcao.getDtRecebimento() != null) {
 						cte.setDtProtocoloAutorizacao(respostaRetornoRecepcao.getDtRecebimento());
 					}
+					
+					cte.setSituacao(SituacaoDocumento.APROVADO);
 
 					cteRepository.save(cte);
 				} else if (respostaRetornoRecepcao.getStatusProcessamentoCTe() != null) {
