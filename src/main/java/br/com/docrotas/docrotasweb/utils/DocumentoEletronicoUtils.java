@@ -7,8 +7,6 @@ import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
-import br.com.docrotas.docrotasweb.service.cte.CTeService;
-
 public class DocumentoEletronicoUtils {
 	
 	private static final Logger log = Logger.getLogger(DocumentoEletronicoUtils.class);
