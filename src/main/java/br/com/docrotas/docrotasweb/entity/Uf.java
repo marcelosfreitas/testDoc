@@ -19,10 +19,11 @@ import br.com.docrotas.docrotasweb.listerner.UfListerner;
 public class Uf implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "cod_ibge", precision = 2)
+	private Long codIBGE;	
 
 	@Column(name = "descricao", length = 45, nullable = false)
 	private String descricao;
@@ -30,24 +31,12 @@ public class Uf implements Serializable  {
 	@Column(name = "sigla", length = 2, nullable = false)
 	private String sigla;
 
-	@Column(name = "cod_ibge", precision = 2)
-	private Long codIBGE;
-
 	@Column(name = "dt_criacao")
 	private Date dtCriacao;
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
 	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -92,7 +81,7 @@ public class Uf implements Serializable  {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((codIBGE == null) ? 0 : codIBGE.hashCode());
 		return result;
 	}
 
@@ -105,18 +94,18 @@ public class Uf implements Serializable  {
 		if (getClass() != obj.getClass())
 			return false;
 		Uf other = (Uf) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (codIBGE == null) {
+			if (other.codIBGE != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!codIBGE.equals(other.codIBGE))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Uf [id=" + id + ", descricao=" + descricao + ", sigla=" + sigla + ", codIBGE=" + codIBGE
-				+ ", dtCriacao=" + dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
+		return "Uf [codIBGE=" + codIBGE + ", descricao=" + descricao + ", sigla=" + sigla + ", dtCriacao=" + dtCriacao
+				+ ", dtAlteracao=" + dtAlteracao + "]";
 	}
 
 }

@@ -9,6 +9,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.com.docrotas.docrotasweb.listerner.UsuarioListerner;
@@ -27,10 +29,10 @@ public class Usuario implements Serializable {
 	@Column(name = "login", length = 20, nullable = false)
 	private String login;
 	
-	@Column(name = "senha", length = 20, nullable = false)
+	@Column(name = "senha", length = 255, nullable = false)
 	private String senha;
 	
-	@Column(name = "email", length = 80, nullable = true)
+	@Column(name = "email", length = 100, nullable = true)
 	private String email;
 	
 	@Column(name = "dt_criacao")
@@ -38,6 +40,10 @@ public class Usuario implements Serializable {
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
+	
+	@ManyToOne
+	@JoinColumn(name = "conta_id")
+	private Conta conta;
 
 	public Long getId() {
 		return id;
@@ -87,6 +93,14 @@ public class Usuario implements Serializable {
 		this.dtAlteracao = dtAlteracao;
 	}
 
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -115,7 +129,7 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", login=" + login + ", senha=" + senha + ", email=" + email + ", dtCriacao="
-				+ dtCriacao + ", dtAlteracao=" + dtAlteracao + "]";
+				+ dtCriacao + ", dtAlteracao=" + dtAlteracao + ", conta=" + conta + "]";
 	}	
 
 }

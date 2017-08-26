@@ -11,8 +11,6 @@ import br.com.docrotas.docrotasweb.entity.Uf;
 @Repository
 public interface UfRepository extends JpaRepository<Uf, Long>, JpaSpecificationExecutor<Uf>{
 	
-	public Page<Uf> findById(Long id, Pageable pageable);
-	
 	public Page<Uf> findBySiglaContaining(String sigla, Pageable pageable);
 	
 	public Page<Uf> findByCodIBGE(Long codIBGE, Pageable pageable);

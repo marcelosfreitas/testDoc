@@ -36,7 +36,7 @@ public class CidadeController {
 		}else if(nome != null){
 			pageCidades = cidadeRepository.findByNomeContaining(nome, pageable);
 		}else if(ufId != null){
-			pageCidades = cidadeRepository.findByUfId(ufId, pageable);
+			pageCidades = cidadeRepository.findByCodIBGE(ufId, pageable);
 		}else if(codibge != null){
 			pageCidades = cidadeRepository.findByCodIBGE(codibge, pageable);
 		}else{

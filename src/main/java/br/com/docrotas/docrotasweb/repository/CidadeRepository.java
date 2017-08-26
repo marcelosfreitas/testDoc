@@ -17,6 +17,6 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long>, JpaSpecif
 	
 	public Page<Cidade> findByNomeContaining(String nome, Pageable pageable);
 	
-	public Page<Cidade> findByUfId(Long uf, Pageable pageable);
+	public Page<Cidade> findByUf(Long codIBGEuf, Pageable pageable);
 	
 }

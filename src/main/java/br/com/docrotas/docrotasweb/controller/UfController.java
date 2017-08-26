@@ -24,21 +24,18 @@ public class UfController {
 	@GetMapping("/uf")
 	public Page<Uf> buscarTodos(@RequestParam(value = "pagina", required = true)int pagina,
 								@RequestParam(value = "qtd", required = true)int qtd,
-								@RequestParam(value = "id", required = false)Long id,
 								@RequestParam(value = "sigla", required = false)String sigla,
 								@RequestParam(value = "descricao", required = false)String descricao,
 								@RequestParam(value = "codibge", required = false)Long codibge){
 		Pageable pageable = new PageRequest(pagina, qtd);		
 
 		Page<Uf> pageUfs;
-		if(id != null){
-			pageUfs = ufRepository.findById(id, pageable);
+		if(codibge != null){
+			pageUfs = ufRepository.findByCodIBGE(codibge, pageable);
 		}else if(sigla != null){
 			pageUfs = ufRepository.findBySiglaContaining(sigla, pageable);
 		}else if(descricao != null){
 			pageUfs = ufRepository.findByDescricaoContaining(descricao, pageable);
-		}else if(codibge != null){
-			pageUfs = ufRepository.findByCodIBGE(codibge, pageable);
 		}else{
 			pageUfs = ufRepository.findAll(pageable);
 		}
@@ -51,7 +48,7 @@ public class UfController {
 		return ufRepository.save(uf);
 	}
 	
-	@DeleteMapping("/uf/{id}")
+	@DeleteMapping("/uf/{codibge}")
 	public void excluir(@PathVariable Long id) {
 		ufRepository.delete(id);
 	}

@@ -94,6 +94,12 @@
 		    <artifactId>commons-httpclient</artifactId>
 		    <version>3.0.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+		<dependency>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-core</artifactId>
+		    <version>4.2.0</version>
+		</dependency>		
 	</dependencies>
 
 	<build>
