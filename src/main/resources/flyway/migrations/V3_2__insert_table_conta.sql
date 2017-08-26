@@ -1,0 +1,2 @@
+insert into conta (nome, dt_criacao, dt_alteracao) values ('LC Logística e Transportes Ltda', now(), now());
+insert into conta (nome, dt_criacao, dt_alteracao) values ('Expresso Dalva Eireli', now(), now());
