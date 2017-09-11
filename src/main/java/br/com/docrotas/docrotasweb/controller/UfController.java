@@ -52,4 +52,5 @@ public class UfController {
 	public void excluir(@PathVariable Long id) {
 		ufRepository.delete(id);
 	}
+	
 }
